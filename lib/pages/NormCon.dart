@@ -39,6 +39,7 @@ class _MyFormState extends State<MyForm> {
             margin: const EdgeInsets.fromLTRB(10, 20, 0, 0),
             child: const Text("allowed filetype: jpeg, jpg, png, pdf"),
           ),
+          SizedBox(height: 3.0),
           Container( // upload button
             alignment: Alignment.centerLeft,
             margin: const EdgeInsets.fromLTRB(10, 0, 0, 3),
