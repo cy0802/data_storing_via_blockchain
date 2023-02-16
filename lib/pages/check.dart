@@ -19,7 +19,7 @@ class _CheckContractState extends State<CheckContract> {
         child: Column(
           children: <Widget>[
             Container(
-              margin: const EdgeInsets.fromLTRB(10, 20, 0, 20),
+              margin: const EdgeInsets.fromLTRB(30, 20, 30, 20),
               child: TextFormField(
               decoration: const InputDecoration(
                 hintText: 'key',
@@ -43,8 +43,7 @@ class _CheckContractState extends State<CheckContract> {
             )
           ],
           
-        )
-        
+        ),
       )
     );
   }
