@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.data_storing_via_blockchain">
-   <application
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <application
         android:label="data_storing_via_blockchain"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

@@ -1,6 +1,9 @@
 // normal contract 
 import 'package:flutter/material.dart';
+import 'package:flutter_ipfs/flutter_ipfs.dart';
+import 'package:flutter_ipfs/src/service/file_picker.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class NormCon extends StatelessWidget{
@@ -26,8 +29,11 @@ class MyForm extends StatefulWidget {
 
 class _MyFormState extends State<MyForm> {
   String filename = "none";
+  String cid = "";
   bool valid = false;
+  FilePickerResult? file;
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -39,25 +45,40 @@ class _MyFormState extends State<MyForm> {
             margin: const EdgeInsets.fromLTRB(10, 20, 0, 0),
             child: const Text("allowed filetype: jpeg, jpg, png, pdf"),
           ),
-          SizedBox(height: 3.0),
+          const SizedBox(height: 3.0),
           Container( // upload button
             alignment: Alignment.centerLeft,
             margin: const EdgeInsets.fromLTRB(10, 0, 0, 3),
             child: ElevatedButton(
                 onPressed: () async {
-                  FilePickerResult? result = await FilePicker.platform.pickFiles(
-                    type: FileType.custom,
-                    allowedExtensions: ["jpg", "png", "pdf", "jpeg"],
-                  );
-                  if(result != null) {
-                    setState(() {
-                      result.files.forEach((element) {
-                        print(element.size);
-                        filename = element.name;
-                        // em... if the document didn't cheat me
-                        // element.bytes will contain the byte data of the file
+                  // file picker
+                  try {
+                    final FilePicker picker = FilePicker.platform;
+                    file = await picker.pickFiles(
+                      type: FileType.custom,
+                      allowedExtensions: ["jpg", "png", "pdf", "jpeg"],
+                    );
+                    if(file == null){
+                      Fluttertoast.showToast(
+                        msg: 'No File Selected',
+                      );
+                      return;
+                    } else {
+                      setState(() {
+                          filename = file!.files[0].name;
                       });
-                    });
+                    }
+                    debugPrint("successfully select file");
+                  } catch(e) {
+                    debugPrint('Error at file picker: $e');
+                    SnackBar(
+                      content: Text(
+                        'Error at file picker: $e',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                    );
+                    return;
                   }
                 },
                 child: const Text("upload contract"),
@@ -107,7 +128,10 @@ class _MyFormState extends State<MyForm> {
                   child: const Text("validate email"),
                   onPressed: (){
                     // TODO: send email to this person
-                    // remember to set valid to true
+                    // remember to add some conditions to set valid to true
+                    setState(() {
+                      valid = true;
+                    });
                   },
                 )
               ],
@@ -117,12 +141,20 @@ class _MyFormState extends State<MyForm> {
             alignment: Alignment.centerLeft,
             margin: const EdgeInsets.fromLTRB(10, 0, 0, 3),
             child: ElevatedButton(
-              onPressed: (){
+              onPressed: () async {
                 if(_formKey.currentState!.validate() && valid == true){
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
+                  // upload to IPFS
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) => const ProgressDialog(
+                      status: 'Uploading to IPFS',
+                    ),
                   );
-                  // TODO: upload to IPFS, generate private keys
+                  cid = await FlutterIpfs().uploadToIpfs(file!.files.single.path!);
+                  debugPrint(cid);
+                  Navigator.pop(context);
+                  // TODO: call functions on the ethereum
                 }
               },
               child: const Text("submit"),
@@ -133,5 +165,3 @@ class _MyFormState extends State<MyForm> {
     );
   }
 }
-
-
