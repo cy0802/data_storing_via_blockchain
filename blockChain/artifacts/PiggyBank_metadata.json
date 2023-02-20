@@ -1,0 +1,62 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "payable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "withdraw",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"SimpleBank.sol": "PiggyBank"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"SimpleBank.sol": {
+			"keccak256": "0x27bfcd9425a626c2f2e46eac388a25c89ce94d74feba0fcd5688c50a3c9db8ef",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://45d83bb0917eaae90c508de195f0a574e4a488a340ca1a32f5b35194352bf644",
+				"dweb:/ipfs/QmX6BUhudmi2v3BVGNWuGRPhdzySsA2G56gBMRpzCbuxHW"
+			]
+		}
+	},
+	"version": 1
+}
