@@ -10,7 +10,7 @@ class Home extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 105, 94, 179),
+        backgroundColor: const Color.fromARGB(255, 105, 94, 179),
         title: const Text('Data Storing via Blockchain'),
         centerTitle: true,
       ),
@@ -54,15 +54,15 @@ class Home extends StatelessWidget {
           const SizedBox(height: 10.0),
           Container(
             child: ElevatedButton(
-              child: Text(
+              child: const Text(
                 '檢查合約',
                 style: TextStyle(
                   color: Colors.white,
                 )
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor:Color.fromARGB(255, 62, 161, 243),
-                padding: EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                backgroundColor:const Color.fromARGB(255, 62, 161, 243),
+                padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
               ),
               onPressed: (){
                 Navigator.pushNamed(context, '/check');
