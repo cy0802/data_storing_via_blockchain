@@ -1,15 +1,9 @@
 // normal contract 
 
-//import 'package:data_storing_via_blockchain/api/google_auth_api.dart';
-//import 'package:data_storing_via_blockchain/server/SendEmail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ipfs/flutter_ipfs.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-//import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:url_launcher/url_launcher.dart';
-//import 'package:mailer/mailer.dart';
-//import 'package:mailer/smtp_server.dart';
 
 
 class NormCon extends StatelessWidget{
@@ -135,34 +129,7 @@ class _MyFormState extends State<MyForm> {
                       hintText: '輸入對方的電子郵件',
                     ),
                   ),
-                ),
-                ElevatedButton(
-                  child: const Text("validate email"),
-                  onPressed: () async {
-                    //sendEmail();
-                    // TODO: send email to this person
-                    // remember to add some conditions to set valid to true
-                    
-                    if(_formKey.currentState!.validate() ){
-                      String? encodeQueryParameters(Map<String, String> params) {
-                        return params.entries
-                            .map((MapEntry<String, String> e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-                            .join('&');
-                      }
-
-                      final Uri emailLaunchUri = Uri(
-                        scheme: 'mailto',
-                        path: '$val',
-                        query: encodeQueryParameters(<String, String>{'subject': '寄送信件測試', 'body': '您好, 寄送信件測試。'}),
-                      );
-                      launchUrl(emailLaunchUri);
-                    }
-                    
-                    setState(() {
-                      valid = true;
-                    });
-                  },
-                )
+                ),  
               ],
             ),
           ),
@@ -171,6 +138,7 @@ class _MyFormState extends State<MyForm> {
             margin: const EdgeInsets.fromLTRB(10, 0, 0, 3),
             child: ElevatedButton(
               onPressed: () async {
+<<<<<<< Updated upstream
                 if(_formKey.currentState!.validate() && valid == true){
                   // upload to IPFS
                   showDialog(
@@ -185,6 +153,29 @@ class _MyFormState extends State<MyForm> {
                   debugPrint(cid);
                   Navigator.pop(context);
                   // TODO: call functions on the ethereum
+=======
+                if(_formKey.currentState!.validate() ){
+                  
+                  if(valid ==true){
+                    // upload to IPFS
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext context) => const ProgressDialog(
+                        status: 'Uploading to IPFS',
+                      ),
+                    );
+                    cid = await FlutterIpfs().uploadToIpfs(file!.files.single.path!);
+                    debugPrint(cid);
+                    Navigator.pop(context);
+                    // TODO: call functions on the ethereum
+                  } else {
+                    // TODO: wait for consent
+                    setState(() {
+                      valid = true;
+                    });
+                  }
+>>>>>>> Stashed changes
                 }
               },
               child: const Text("submit"),
@@ -194,52 +185,4 @@ class _MyFormState extends State<MyForm> {
       ),
     );
   }
-
-
-
-
 }
-  /*Future sendEmail() async{
-
-  final user = await GoogleAuthApi.signIn();
-
-  if(user == null) return;
-
-  final email = user.email;
-  final auth = await user.authentication;
-  final token = auth.accessToken!;
-
-  print('Authenticated: $email');
-
-  final smtpServer = gmailRelaySaslXoauth2(email, token);
-  final message = Message()
-   ..from = Address(email, 'ian')
-   ..recipients = ['ian52759@gmail.com']
-   ..subject = 'Hello Johannes'
-   ..text = 'This is a test email!';
-
-  try{
-    await send(message, smtpServer);
-    //showSnackBar('Sent email successfully!');
-  } on MailerException catch (e){
-    print(e);
-    return null;
-  }
-}*/
-
-  /*
-
-void showSnackBar(String text){
-  final snackBar = SnackBar(
-    content: Text(
-      text,
-      style: TextStyle(fontSize: 20),
-    ),
-    backgroundColor: Colors.green,
-  );
-
-  ScaffoldMessenger.of(context)
-    ..removeCurrentSnackBar()
-    ..showSnackBar(snackBar);
-}*/
-
