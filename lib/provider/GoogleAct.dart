@@ -13,6 +13,7 @@ class GoogleSignInProvider extends ChangeNotifier {
 
   Future googleLogin() async{  // Login
     try{
+      
       final googleUser = await googleSignIn.signIn();
       if(googleUser == null) return;
 
