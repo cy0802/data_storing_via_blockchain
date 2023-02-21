@@ -4,7 +4,6 @@
 //import 'package:data_storing_via_blockchain/server/SendEmail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ipfs/flutter_ipfs.dart';
-import 'package:flutter_ipfs/src/service/file_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -182,6 +181,7 @@ class _MyFormState extends State<MyForm> {
                     ),
                   );
                   cid = await FlutterIpfs().uploadToIpfs(file!.files.single.path!);
+                  debugPrint(file!.files.single.path!);
                   debugPrint(cid);
                   Navigator.pop(context);
                   // TODO: call functions on the ethereum

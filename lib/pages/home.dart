@@ -8,28 +8,26 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final user = FirebaseAuth.instance.currentUser!;
 
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(204, 27, 107, 255),
-        title: const Text('Data Storing via Blockchain'),
-        actions :[
-          TextButton(
-            child: const Text('Logout'),
-            onPressed: (){
-              final provider = 
-                  Provider.of<GoogleSignInProvider>(context, listen: false);
-                  provider.googleLogout();
-            },
-          )
-        ]
-      ),
+          backgroundColor: const Color.fromARGB(255, 105, 94, 179),
+          title: const Text('Data Storing via Blockchain'),
+          actions: [
+            TextButton(
+              child: const Text('Logout'),
+              onPressed: () {
+                final provider =
+                    Provider.of<GoogleSignInProvider>(context, listen: false);
+                provider.googleLogout();
+              },
+            )
+          ]),
       body: Column(
         children: [
-          const Spacer(flex:4),
+          const Spacer(flex: 4),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -46,8 +44,9 @@ class Home extends StatelessWidget {
                   const SizedBox(height: 20.0),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:const Color.fromARGB(255, 102, 184, 251),
-                      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 90),
+                      backgroundColor: const Color.fromARGB(255, 102, 184, 251),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 60, vertical: 90),
                     ),
                     icon: const Icon(
                       Icons.add_to_home_screen,
@@ -72,8 +71,9 @@ class Home extends StatelessWidget {
                   const SizedBox(height: 20.0),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:const Color.fromARGB(255, 102, 184, 251),
-                      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 90),
+                      backgroundColor: const Color.fromARGB(255, 102, 184, 251),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 60, vertical: 90),
                     ),
                     icon: const Icon(
                       Icons.article_rounded,
@@ -85,48 +85,44 @@ class Home extends StatelessWidget {
                     },
                   ),
                 ],
-                ),
+              ),
             ],
           ),
-          const Spacer(flex:1),
+          const Spacer(flex: 1),
           Container(
             child: ElevatedButton(
-              child: const Text(
-                '檢查合約',
-                style: TextStyle(
-                  color: Colors.white,
-                )
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor:const Color.fromARGB(255, 62, 161, 243),
-                padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
-              ),
-              onPressed: (){
-                Navigator.pushNamed(context, '/check');
-              }
-            ), 
+                child: const Text('檢查合約',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 62, 161, 243),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/check');
+                }),
           ),
-          const Spacer(flex:1),
+          const Spacer(flex: 1),
           Container(
             child: ElevatedButton(
-              child: const Text(
-                '歷史合約',
-                style: TextStyle(
-                  color: Colors.white,
-                )
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor:const Color.fromARGB(255, 62, 161, 243),
-                padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
-              ),
-              onPressed: (){
-                Navigator.pushNamed(context, '/RecordedCon');
-              }
-            ), 
+                child: const Text('歷史合約',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 62, 161, 243),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/RecordedCon');
+                }),
           ),
-          const Spacer(flex:4),
+          const Spacer(flex: 4),
         ],
-      ),  
+      ),
     );
   }
 }
