@@ -107,6 +107,7 @@ class Home extends StatelessWidget {
           const Spacer(flex: 1),
           Container(
             child: ElevatedButton(
+<<<<<<< Updated upstream
                 child: const Text('歷史合約',
                     style: TextStyle(
                       color: Colors.white,
@@ -119,6 +120,22 @@ class Home extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(context, '/RecordedCon');
                 }),
+=======
+              child: const Text(
+                '我的合約',
+                style: TextStyle(
+                  color: Colors.white,
+                )
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor:const Color.fromARGB(255, 62, 161, 243),
+                padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+              ),
+              onPressed: (){
+                Navigator.pushNamed(context, '/RecordedCon');
+              }
+            ), 
+>>>>>>> Stashed changes
           ),
           const Spacer(flex: 4),
         ],
