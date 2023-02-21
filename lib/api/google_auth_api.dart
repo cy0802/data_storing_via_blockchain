@@ -1,3 +1,5 @@
+//NOW IT IS NOT USED
+
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleAuthApi {
