@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter_ipfs: 0.0.2
   file_picker:
+  web3dart:
+  path_provider:
   fluttertoast:
   flutter:
     sdk: flutter

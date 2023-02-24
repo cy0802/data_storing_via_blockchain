@@ -1,9 +1,17 @@
 // normal contract 
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_ipfs/flutter_ipfs.dart';
 import 'package:flutter_ipfs/src/service/file_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'dart:math';
+import 'package:web3dart/web3dart.dart';
+import 'package:data_storing_via_blockchain/pages/protectedInfo.dart';
+import 'package:http/http.dart';
 
 
 class NormCon extends StatelessWidget{
@@ -33,6 +41,43 @@ class _MyFormState extends State<MyForm> {
   bool valid = false;
   FilePickerResult? file;
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController controller1 = TextEditingController();
+  final TextEditingController controller2 = TextEditingController();
+  String filePath = "";
+  Future<String> get _localPath async {
+    final directory = await getTemporaryDirectory();
+    return directory.path;
+  }
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    filePath = '$path/tmpData.json';
+    debugPrint(filePath);
+    return File('$path/tmpData.json');
+  }
+  Future<File> writeFile(String json) async {
+    final file = await _localFile;
+    return file.writeAsString(json);
+  }
+  Future<int> readFile() async {
+    try {
+      final file = await _localFile;
+
+      // Read the file
+      final contents = await file.readAsString();
+      debugPrint(contents);
+
+      return int.parse(contents);
+    } catch (e) {
+      // If encountering an error, return 0
+      return 0;
+    }
+  }
+  @override
+  void dispose() {
+    controller1.dispose();
+    controller2.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +137,7 @@ class _MyFormState extends State<MyForm> {
           Container(
             margin: const EdgeInsets.fromLTRB(13, 10, 13, 20),
             child: TextFormField(
+              controller: controller1,
               validator: (value){
                 if(value == null || value.isEmpty || !value.contains("@")){
                   return "invalid email";
@@ -111,6 +157,7 @@ class _MyFormState extends State<MyForm> {
               children: [
                 Expanded(
                   child: TextFormField(
+                    controller: controller2,
                     validator: (value){
                       if(value == null || value.isEmpty || !value.contains("@")){
                         return "invalid email";
@@ -143,17 +190,37 @@ class _MyFormState extends State<MyForm> {
             child: ElevatedButton(
               onPressed: () async {
                 if(_formKey.currentState!.validate() && valid == true){
-                  // upload to IPFS
+                  // upload file to IPFS
                   showDialog(
                     barrierDismissible: false,
                     context: context,
                     builder: (BuildContext context) => const ProgressDialog(
-                      status: 'Uploading to IPFS',
+                      status: 'Contract Uploading to IPFS',
                     ),
                   );
-                  cid = await FlutterIpfs().uploadToIpfs(file!.files.single.path!);
-                  debugPrint(cid);
+                  var cidOfContract = await FlutterIpfs().uploadToIpfs(file!.files.single.path!);
+                  debugPrint("cidOfContract: $cidOfContract");
                   Navigator.pop(context);
+
+                  var email1 = controller1.text;
+                  var email2 = controller2.text;
+                  debugPrint(email1);
+                  debugPrint(email2);
+                  var data = "{'email1': '$email1', 'email2': '$email2', 'cidOfContract': '$cidOfContract'}";
+                  writeFile(data);
+                  //readFile();
+                  debugPrint(filePath);
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) => const ProgressDialog(
+                      status: 'Json File Uploading to IPFS',
+                    ),
+                  );
+                  var cidOfJson = await FlutterIpfs().uploadToIpfs(filePath);
+                  debugPrint("cidOfJson: $cidOfJson");
+                  Navigator.pop(context);
+
                   // TODO: call functions on the ethereum
                 }
               },
