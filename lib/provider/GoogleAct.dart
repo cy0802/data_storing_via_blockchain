@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server/gmail.dart';
+//import 'package:mailer/mailer.dart'; 
+//import 'package:mailer/smtp_server/gmail.dart';
 
 class GoogleSignInProvider extends ChangeNotifier {
   final googleSignIn = GoogleSignIn();
@@ -12,6 +14,7 @@ class GoogleSignInProvider extends ChangeNotifier {
   GoogleSignInAccount get user => _user!;
 
   Future googleLogin() async{  // Login
+
     try{
       
       final googleUser = await googleSignIn.signIn();
@@ -19,12 +22,21 @@ class GoogleSignInProvider extends ChangeNotifier {
 
       _user = googleUser;
 
+      //print(user.email);
+
+      //傳到firebase
+      await FirebaseMessaging.instance.getToken().then((token) async {
+        await FirebaseFirestore.instance.collection("userTokens").doc(user.email).set({'token' : token });
+      }
+      );
+
       final googleAuth = await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
+
 
       await FirebaseAuth.instance.signInWithCredential(credential);
 
