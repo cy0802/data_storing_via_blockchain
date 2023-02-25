@@ -1,0 +1,413 @@
+//.......................................................................................................................
+//
+//                                                     用來暫存一些資料
+//
+//.......................................................................................................................
+
+
+/*
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
+import 'package:data_storing_via_blockchain/api/google_auth_api.dart';
+import 'package:data_storing_via_blockchain/server/SendEmail.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:url_launcher/url_launcher.dart';
+//import 'package:url_launcher/link.dart';
+
+
+
+
+//寄EMAIL IN background
+
+/*Future sendEmail() async{
+    final message = Message()
+      ..from = Address('ian52759@gmail.com', 'ian')
+      ..recipients.add('ian52759@gmail.com')
+      ..subject = 'hi'
+      ..text = 'hey';
+  
+    final smtpServer = gmail('ian52759@gmail.com', 'Asdf85697437');
+    
+
+    try{
+      await send(message, smtpServer);
+    } on MailerException catch (e){
+      print(e);
+      return null;
+    }*/
+    
+    
+    /*final Email email = Email(
+      body: 'hihi',
+      subject: 'hi',
+      recipients: ['ian52759@gmail.com'],
+      attachmentPaths: ['/path/to/attachment'],
+      isHTML: false,
+    );
+    await FlutterEmailSender.send(email);
+  }*/ 
+
+  /*Future sendEmail() async{
+
+  final user = await GoogleAuthApi.signIn();
+
+  if(user == null) return;
+
+  final email = user.email;
+  final auth = await user.authentication;
+  final token = auth.accessToken!;
+
+  print('Authenticated: $email');
+  GoogleAuthApi.signOut();
+
+  final smtpServer = gmailSaslXoauth2(email, token);
+  final message = Message()
+   ..from = Address(email, 'ian')
+   ..recipients = ['ian52759@gmail.com']
+   ..subject = 'Hello Johannes'
+   ..text = 'This is a test email!';
+
+  try{
+    await send(message, smtpServer);
+    //showSnackBar('Sent email successfully!');
+  } on MailerException catch (e){
+    print(e);
+    return null;
+  }
+}*/
+
+  /*
+
+void showSnackBar(String text){
+  final snackBar = SnackBar(
+    content: Text(
+      text,
+      style: TextStyle(fontSize: 20),
+    ),
+    backgroundColor: Colors.green,
+  );
+
+  ScaffoldMessenger.of(context)
+    ..removeCurrentSnackBar()
+    ..showSnackBar(snackBar);
+}*/
+
+
+
+//手動寄EMAIL
+/*if(_formKey.currentState!.validate() ){
+                      String? encodeQueryParameters(Map<String, String> params) {
+                        return params.entries
+                            .map((MapEntry<String, String> e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+                            .join('&');
+                      }
+
+                      final Uri emailLaunchUri = Uri(
+                        scheme: 'mailto',
+                        path: '$val',
+                        query: encodeQueryParameters(<String, String>{
+                          'subject': '合約上傳確認信', 
+                          'body': '請點選下列網址進行合約確認'
+                        }),
+                      );
+                      launchUrl(emailLaunchUri);
+                    }*/
+
+
+//無用botton
+/*
+ElevatedButton(
+                  child: const Text("validate email"),
+                  onPressed: () async {
+                    
+                    // remember to add some conditions to set valid to true
+                          
+                    setState(() {
+                      valid = true;
+                    });
+                  },
+                )
+                */
+                IconButton(
+            onPressed: ()=> showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text('AlertDialog Title'),
+                content: const Text('AlertDialog description'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+            ),
+            icon: Icon(Icons.account_circle_outlined),
+          ),
+
+          child: const Text('Logout'),
+              onPressed: () {
+                final provider =
+                    Provider.of<GoogleSignInProvider>(context, listen: false);
+                provider.googleLogout();
+              },
+
+
+
+import 'package:data_storing_via_blockchain/firebase_options.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+import 'package:data_storing_via_blockchain/pages/LoginHome.dart';
+import 'package:data_storing_via_blockchain/pages/NormCon.dart';
+import 'package:data_storing_via_blockchain/pages/RecordedCon.dart';
+import 'package:data_storing_via_blockchain/pages/Setting.dart';
+import 'package:data_storing_via_blockchain/pages/StdCon.dart';
+import 'package:data_storing_via_blockchain/pages/check.dart';
+import 'package:data_storing_via_blockchain/pages/home.dart';
+import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
+import 'package:data_storing_via_blockchain/widget/SignUp.dart';
+
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+
+
+
+// not used
+
+/*import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:data_storing_via_blockchain/new_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart'; //so weird
+import 'package:http/http.dart' as http;
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+
+class _MainScreenState extends State<MainScreen> {
+
+  String? mtoken = "";
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  late final int FLAG_IMMUTABLE;
+  
+  TextEditingController username = TextEditingController();
+  TextEditingController title = TextEditingController();
+  TextEditingController body = TextEditingController();
+
+  @override
+  void initState(){
+    super.initState();
+    requestPermission();
+    getToken();
+    initInfo();
+  }
+ 
+  initInfo(){
+    var androidInitialize = const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var iOSInitialize = const IOSInitializationSettings();
+    var initializationsSettings = InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
+
+//the function does not work
+    flutterLocalNotificationsPlugin.initialize(initializationsSettings, onSelectNotification: (String? payload) async {
+      try{
+        if(payload != null && payload.isNotEmpty){
+          print(".......................onBackgroundMessage.......................");
+          print("fdfdffdfdfdfdff");
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
+            return NewPage(info: payload.toString());
+          }
+          ));
+        } else {
+          print(".......................onBackgroundMessage.......................");
+          print("fdfdffdfdfdfdff");
+          
+        }
+      }catch(e){
+        print(e.toString());
+      }
+      return;
+    });
+
+///some problem here I can not address
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
+      print(".......................onMessage.......................");
+      print("onMessage: ${message.notification?.title}/${message.notification?.body}");
+
+      BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
+        message.notification!.body.toString(), 
+        htmlFormatBigText: true,
+        contentTitle: message.notification!.title.toString(), 
+        htmlFormatContentTitle: true,
+      );
+
+      AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'hi', 
+        'hi channel',
+        'hi',
+        importance: Importance.high,
+        styleInformation: bigTextStyleInformation, 
+        priority: Priority.high, 
+        playSound: true,
+        additionalFlags: Int32List.fromList([FLAG_IMMUTABLE]),
+
+      );
+
+      NotificationDetails PlatformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: const IOSNotificationDetails()
+      );
+      await flutterLocalNotificationsPlugin.show(
+        0, 
+        message.notification?.title,
+        message.notification?.body, 
+        PlatformChannelSpecifics,
+        payload: message.data['body']);
+    });
+  }
+
+  void getToken() async{
+    await FirebaseMessaging.instance.getToken().then(
+      (token) {
+        setState((){
+          mtoken = token;
+          //print("my token is $mtoken");
+        });
+        saveToken(token!);
+      }
+    );
+  }
+
+  void saveToken(String token) async{
+    await FirebaseFirestore.instance.collection("userTokens").doc("User1").set({
+      'token' : token,
+    });
+  }
+
+  void requestPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if(settings.authorizationStatus == AuthorizationStatus.authorized){
+      print('User granted permission');
+    } else if(settings.authorizationStatus == AuthorizationStatus.provisional){
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
+
+  void sendPushMessage(String token, String title, String body)async{
+    try{
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'key=AAAARCD6qcU:APA91bFaf-FagTZePoWGBGoFRHE1Nu0-8Og_N_IDYdEU6PkZt5YCjSs3pCVzlfg7zgtfJsz36NE6HLNTlYY-XEtrkzhFkLZR1n4qrb-ofJtZzHas28qL1DJS6LOwyJYZwdFSgJgDDxb7',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+
+            'priority': 'high',
+            //到指定頁面
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'status': 'done',
+              'title': title,
+              'body': body,
+            },
+            "notification": <String, dynamic>{
+              "title": title,
+              "body": body,
+              "android_channel_id": "hi"
+            },
+            "to": token,
+          },
+        ),
+      );
+    } catch(e){
+      if(kDebugMode){
+        print("error push notification");
+      }
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextFormField(
+              controller: username,
+            ),
+            TextFormField(
+              controller: title,
+            ),
+            TextFormField(
+              controller: body,
+            ),
+            GestureDetector(
+              onTap:()async{
+                String name = username.text.trim();
+                String titleText = title.text;
+                String bodyText = body.text;
+
+                if(name != ""){
+                  DocumentSnapshot snap =
+                  await FirebaseFirestore.instance.collection("userTokens").doc(name).get();
+
+                  String token = snap['token'];
+                  print(token);
+                  sendPushMessage(token, titleText, bodyText);
+                }
+              },
+              child: Container(
+                margin: const EdgeInsets.all(20),
+                height: 40,
+                width: 200,
+
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.redAccent.withOpacity(0.5),
+                    )
+                  ]
+                ),
+                child: Center(child: const Text("button")),
+              ),
+            )
+          ],
+        ),
+      )
+    );
+  }
+}*/
+
+
+
