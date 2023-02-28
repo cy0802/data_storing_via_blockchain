@@ -3,27 +3,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:provider/provider.dart';
 
-
 class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
+    final user = FirebaseAuth.instance.currentUser ?? 0;
 
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 105, 94, 179),
-        title: const Text('Data Storing via Blockchain'),
-        actions: [
-          IconButton(
-          onPressed: ()=> show_dialog(context),
-           icon: Icon(Icons.account_circle_outlined),
-          ),
-          
-        ]
-      ),
+          backgroundColor: const Color.fromARGB(255, 105, 94, 179),
+          title: const Text('Data Storing via Blockchain'),
+          actions: [
+            IconButton(
+              onPressed: () => show_dialog(context),
+              icon: Icon(Icons.account_circle_outlined),
+            ),
+          ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: Colors.grey[800],
@@ -111,20 +108,18 @@ class Home extends StatelessWidget {
           const Spacer(flex: 1),
           Container(
             child: ElevatedButton(
-              child: const Text(
-                '我的合約',
-                style: TextStyle(
-                  color: Colors.white,
-                )
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor:const Color.fromARGB(255, 62, 161, 243),
-                padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
-              ),
-              onPressed: (){
-                Navigator.pushNamed(context, '/RecordedCon');
-              }
-            ), 
+                child: const Text('我的合約',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 62, 161, 243),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/RecordedCon');
+                }),
           ),
           const Spacer(flex: 4),
         ],

@@ -13,16 +13,15 @@ import 'package:data_storing_via_blockchain/pages/home.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:data_storing_via_blockchain/widget/SignUp.dart';
 
-
 //..........................................................我是分隔線.........................................................
 
 // used to send notification
-Future<void> _backgroundHandler(RemoteMessage message) async{
+Future<void> _backgroundHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
 }
 
 //initialize firebase
-Future main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await FirebaseMessaging.instance.getInitialMessage();
@@ -38,19 +37,18 @@ class MyAPP extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/LoginHome',
-        routes: {
-          '/home': (context) => const Home(),
-          '/NormCon': (context) => const NormCon(),
-          '/StdCon': (context) => StdCon(),
-          '/check': (context) => const CheckContract(),
-          '/SignUp': (context) => const SignUpWidget(),
-          '/LoginHome' : (context) => const HomePage(),
-          '/RecordedCon' : (context) => const History(),
-          '/Setting' : (context) => const Setting(),
-        }
-      ),
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/LoginHome',
+          routes: {
+            '/home': (context) => const Home(),
+            '/NormCon': (context) => const NormCon(),
+            '/StdCon': (context) => StdCon(),
+            '/check': (context) => const CheckContract(),
+            '/SignUp': (context) => const SignUpWidget(),
+            '/LoginHome': (context) => const HomePage(),
+            '/RecordedCon': (context) => const History(),
+            '/Setting': (context) => const Setting(),
+          }),
     );
   }
 }

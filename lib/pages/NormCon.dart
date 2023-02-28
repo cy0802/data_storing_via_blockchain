@@ -11,16 +11,14 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart'; /
 import 'package:http/http.dart' as http;
 
 // 用來用immutable的
-import 'package:flutter/foundation.dart'; 
+import 'package:flutter/foundation.dart';
 
 //上傳資料
 import 'package:flutter_ipfs/flutter_ipfs.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
 //..........................................................我是分隔線...........................................................
-
 
 class NormCon extends StatelessWidget {
   const NormCon({super.key});
@@ -35,7 +33,7 @@ class NormCon extends StatelessWidget {
     );
   }
 }
- 
+
 class MyForm extends StatefulWidget {
   const MyForm({super.key});
 
@@ -44,12 +42,12 @@ class MyForm extends StatefulWidget {
 }
 
 class _MyFormState extends State<MyForm> {
-
-  //send notofication 
-  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  //send notofication
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
   late final int FLAG_IMMUTABLE;
-  
-  TextEditingController email_1 = TextEditingController();  
+
+  TextEditingController email_1 = TextEditingController();
   TextEditingController email_2 = TextEditingController();
 
   //upload contract
@@ -60,73 +58,74 @@ class _MyFormState extends State<MyForm> {
   final _formKey = GlobalKey<FormState>();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     requestPermission();
     initInfo();
   }
 
-  // purpose : receive notification in foreground, 
-  initInfo(){
-    var androidInitialize = const AndroidInitializationSettings('@mipmap/ic_launcher');
+  // purpose : receive notification in foreground,
+  initInfo() {
+    var androidInitialize =
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
     var iOSInitialize = const IOSInitializationSettings();
-    var initializationsSettings = InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
+    var initializationsSettings =
+        InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
 
     //the function does not work
-    flutterLocalNotificationsPlugin.initialize(initializationsSettings, onSelectNotification: (String? payload) async {
-      try{
-        if(payload != null && payload.isNotEmpty){
-          print(".......................onBackgroundMessage.......................");
+    flutterLocalNotificationsPlugin.initialize(initializationsSettings,
+        onSelectNotification: (String? payload) async {
+      try {
+        if (payload != null && payload.isNotEmpty) {
+          print(
+              ".......................onBackgroundMessage.......................");
           print("fdfdffdfdfdfdff");
-          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
+          Navigator.push(context,
+              MaterialPageRoute(builder: (BuildContext context) {
             return History();
-          }
-          ));
+          }));
         } else {
-          print(".......................onBackgroundMessage.......................");
+          print(
+              ".......................onBackgroundMessage.......................");
           print("fdfdffdfdfdfdff");
-          
         }
-      }catch(e){
+      } catch (e) {
         print(e.toString());
       }
       return;
     });
 
     //some problems here I can not address
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       print(".......................onMessage.......................");
-      print("onMessage: ${message.notification?.title}/${message.notification?.body}");
+      print(
+          "onMessage: ${message.notification?.title}/${message.notification?.body}");
 
       BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
-        message.notification!.body.toString(), 
+        message.notification!.body.toString(),
         htmlFormatBigText: true,
-        contentTitle: message.notification!.title.toString(), 
+        contentTitle: message.notification!.title.toString(),
         htmlFormatContentTitle: true,
       );
 
-      AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'hi', 
+      AndroidNotificationDetails androidPlatformChannelSpecifics =
+          AndroidNotificationDetails(
+        'hi',
         'hi channel',
         'hi',
         importance: Importance.high,
-        styleInformation: bigTextStyleInformation, 
-        priority: Priority.high, 
+        styleInformation: bigTextStyleInformation,
+        priority: Priority.high,
         playSound: true,
         additionalFlags: Int32List.fromList([FLAG_IMMUTABLE]),
-
       );
 
       NotificationDetails PlatformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: const IOSNotificationDetails()
-      );
-      await flutterLocalNotificationsPlugin.show(
-        0, 
-        message.notification?.title,
-        message.notification?.body, 
-        PlatformChannelSpecifics,
-        payload: message.data['body']);
+          android: androidPlatformChannelSpecifics,
+          iOS: const IOSNotificationDetails());
+      await flutterLocalNotificationsPlugin.show(0, message.notification?.title,
+          message.notification?.body, PlatformChannelSpecifics,
+          payload: message.data['body']);
     });
   }
 
@@ -144,9 +143,10 @@ class _MyFormState extends State<MyForm> {
       sound: true,
     );
 
-    if(settings.authorizationStatus == AuthorizationStatus.authorized){
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
-    } else if(settings.authorizationStatus == AuthorizationStatus.provisional){
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       print('User granted provisional permission');
     } else {
       print('User declined or has not accepted permission');
@@ -154,17 +154,17 @@ class _MyFormState extends State<MyForm> {
   }
 
   //API send message
-  void sendPushMessage(String token, String title, String body)async{
-    try{
+  void sendPushMessage(String token, String title, String body) async {
+    try {
       await http.post(
         Uri.parse('https://fcm.googleapis.com/fcm/send'),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          'Authorization': 'key=AAAARCD6qcU:APA91bFaf-FagTZePoWGBGoFRHE1Nu0-8Og_N_IDYdEU6PkZt5YCjSs3pCVzlfg7zgtfJsz36NE6HLNTlYY-XEtrkzhFkLZR1n4qrb-ofJtZzHas28qL1DJS6LOwyJYZwdFSgJgDDxb7',
+          'Authorization':
+              'key=AAAARCD6qcU:APA91bFaf-FagTZePoWGBGoFRHE1Nu0-8Og_N_IDYdEU6PkZt5YCjSs3pCVzlfg7zgtfJsz36NE6HLNTlYY-XEtrkzhFkLZR1n4qrb-ofJtZzHas28qL1DJS6LOwyJYZwdFSgJgDDxb7',
         },
         body: jsonEncode(
           <String, dynamic>{
-
             'priority': 'high',
             //到指定頁面
             'data': <String, dynamic>{
@@ -182,14 +182,12 @@ class _MyFormState extends State<MyForm> {
           },
         ),
       );
-    } catch(e){
-      if(kDebugMode){
+    } catch (e) {
+      if (kDebugMode) {
         print("error push notification");
       }
     }
   }
-  
-
 
   @override
   Widget build(BuildContext context) {
@@ -273,7 +271,6 @@ class _MyFormState extends State<MyForm> {
                   child: TextFormField(
                     controller: email_2,
                     validator: (value) {
-
                       if (value == null ||
                           value.isEmpty ||
                           !value.contains("@")) {
@@ -311,18 +308,20 @@ class _MyFormState extends State<MyForm> {
                       debugPrint(cid);
                       Navigator.pop(context);
                       // TODO: call functions on the ethereum
-
                     } else {
                       String email_2Text = email_2.text;
 
                       // TODO: wait for consent
-                      DocumentSnapshot snap =
-                      await FirebaseFirestore.instance.collection("userTokens").doc(email_2Text).get();
+                      DocumentSnapshot snap = await FirebaseFirestore.instance
+                          .collection("userTokens")
+                          .doc(email_2Text)
+                          .get();
 
                       String token = snap['token'];
                       //print(token);
-                      sendPushMessage(token, "New contract!", "Log in and sign the contract");
-                      
+                      sendPushMessage(token, "New contract!",
+                          "Log in and sign the contract");
+
                       /*setState(() {
                         valid = true;
                       });*/
