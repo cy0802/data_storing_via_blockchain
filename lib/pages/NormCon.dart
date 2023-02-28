@@ -222,6 +222,31 @@ class _MyFormState extends State<MyForm> {
                   Navigator.pop(context);
 
                   // TODO: call functions on the ethereum
+                  /*var fromAddress = EthereumAddress.fromHex(walletAddress);
+                  var toAddress = EthereumAddress.fromHex(contractAddress);
+                  var value = EtherAmount.inWei(BigInt.from(1000000000000000000));
+                  var gasPrice = EtherAmount.inWei(BigInt.from(20000000000));
+                  var gasLimit = 21000;
+                  var smartContract = DeployedContract(/* abi */, toAddress);
+                  var calledFunction = ContractFunction(/* name */, /* parameters */);
+                  var transaction = Transaction.callContract(
+                    contract: ,
+                    function: ,
+                    parameters: ,
+                    nonce: 0,
+                    from: fromAddress,
+                    value: value,
+                    gasPrice: gasPrice,
+                    maxGas: gasLimit,
+                    //TODO: maybe data here?
+                  );
+                  var rng = Random.secure();
+                  Credentials credentials = EthPrivateKey.createRandom(rng);
+                  //var address = await credentials.extractAddress();
+                  //debugPrint(address.hex);
+                  var httpClient = Client();
+                  var client = Web3Client(rpcEndPoint, httpClient);
+                  var signature = await client.signTransaction(credentials, transaction);*/
                 }
               },
               child: const Text("submit"),

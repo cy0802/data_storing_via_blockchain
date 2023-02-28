@@ -44,3 +44,5 @@ app.*.map.json
 /android/app/release
 
 lib/pages/protectedInfo.dart
+asset/openZeppelinNFT_sol_fileStore.abi
+android/app/google-services.json
