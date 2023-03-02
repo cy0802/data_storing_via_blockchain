@@ -1,5 +1,5 @@
 import 'package:data_storing_via_blockchain/pages/home.dart';
-import 'package:data_storing_via_blockchain/widget/SignUp.dart';
+import 'package:data_storing_via_blockchain/pages/widget/SignUp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot){
           if(snapshot.connectionState == ConnectionState.waiting){
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasData){
             return Home();
           } else if(snapshot.hasError){
@@ -25,4 +25,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-}
+} 
