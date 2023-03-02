@@ -1,3 +1,6 @@
+
+
+
 import 'package:data_storing_via_blockchain/Classes/ShowDialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,19 +16,34 @@ class Home extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 105, 94, 179),
-          title: const Text('Data Storing via Blockchain'),
-          actions: [
-            IconButton(
-              onPressed: () => show_dialog(context),
-              icon: Icon(Icons.account_circle_outlined),
-            ),
-          ]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Colors.grey[800],
-        child: const Icon(Icons.add),
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          color: Colors.black,
+          onPressed: (){},
+        ),
+        title: const Text(
+          'Data Storing via Blockchain',
+          style: TextStyle(
+            color: Colors.black,
+          )
+        ),
+        actions: [
+          IconButton(
+          onPressed: ()=> show_dialog(context),
+           icon: Icon(
+            Icons.account_circle_rounded,
+            color: Colors.black,
+          ),
+          ),
+          
+        ]
       ),
+      /*floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Color.fromARGB(255, 82, 81, 81),
+        child: const Icon(Icons.add),
+      ),*/
       body: Column(
         children: [
           const Spacer(flex: 4),
