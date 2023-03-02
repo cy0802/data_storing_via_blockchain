@@ -11,12 +11,19 @@ import 'package:data_storing_via_blockchain/pages/StdCon.dart';
 import 'package:data_storing_via_blockchain/pages/check.dart';
 import 'package:data_storing_via_blockchain/pages/home.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
-import 'package:data_storing_via_blockchain/widget/SignUp.dart';
+import 'package:data_storing_via_blockchain/pages/widget/SignUp.dart';
+import 'package:data_storing_via_blockchain/pages/MyConSubPage/ShowPage.dart';
+import 'package:data_storing_via_blockchain/pages/ShowFile.dart';
 
 //..........................................................我是分隔線.........................................................
 
+<<<<<<< Updated upstream
 // used to send notification
 Future<void> _backgroundHandler(RemoteMessage message) async {
+=======
+// used to send notification 
+Future<void> _backgroundHandler(RemoteMessage message) async{
+>>>>>>> Stashed changes
   print('Handling a background message ${message.messageId}');
 }
 
@@ -37,6 +44,7 @@ class MyAPP extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
       child: MaterialApp(
+<<<<<<< Updated upstream
           debugShowCheckedModeBanner: false,
           initialRoute: '/LoginHome',
           routes: {
@@ -49,6 +57,23 @@ class MyAPP extends StatelessWidget {
             '/RecordedCon': (context) => const History(),
             '/Setting': (context) => const Setting(),
           }),
+=======
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/LoginHome',
+        routes: {
+          '/home': (context) => const Home(),
+          '/NormCon': (context) => const NormCon(),
+          '/StdCon': (context) => const StdCon(),
+          '/check': (context) => const CheckContract(),
+          '/SignUp': (context) => const SignUpWidget(),
+          '/LoginHome' : (context) => const HomePage(),
+          '/RecordedCon' : (context) => const History(),
+          '/Setting' : (context) => const Setting(),
+          '/ShowPage' : (context) => const showData(),
+          
+        }
+      ),
+>>>>>>> Stashed changes
     );
   }
 }
