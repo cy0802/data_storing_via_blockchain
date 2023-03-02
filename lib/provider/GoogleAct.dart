@@ -16,10 +16,10 @@ class GoogleSignInProvider extends ChangeNotifier {
   Future googleLogin() async {
     // Login
 
-    try {
-      final googleUser =
-          await googleSignIn.signIn().catchError((onError) => print(onError));
-      if (googleUser == null) return;
+    try{
+      
+      final googleUser = await googleSignIn.signIn();
+      if(googleUser == null) return null;
 
       _user = googleUser;
 
@@ -27,13 +27,14 @@ class GoogleSignInProvider extends ChangeNotifier {
 
       //傳到firebase
       await FirebaseMessaging.instance.getToken().then((token) async {
-        await FirebaseFirestore.instance
-            .collection("userTokens")
-            .doc(user.email)
-            .set({'token': token});
-      });
+        await FirebaseFirestore.instance.collection("user").doc(user.email).set({'token' : token });
+      }
+      );
+      
+      //將現在用戶email存起來
 
-      final googleAuth = await googleUser.authentication;
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -41,11 +42,13 @@ class GoogleSignInProvider extends ChangeNotifier {
       );
 
       await FirebaseAuth.instance.signInWithCredential(credential);
-    } catch (e) {
+      
+
+    } catch(e){
       print(e.toString());
     }
-
-    notifyListeners();
+    
+    notifyListeners(); 
   }
 
   Future googleLogout() async {
