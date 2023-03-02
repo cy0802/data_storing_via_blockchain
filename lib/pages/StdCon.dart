@@ -1,3 +1,5 @@
+// standard contract
+
 import 'package:flutter/material.dart';
 
 //import 'firebase_options.dart';
