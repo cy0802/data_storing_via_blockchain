@@ -100,11 +100,11 @@ void mint(String jsonPath) async {
   var gasPrice = EtherAmount.inWei(BigInt.from(20000000000));
   var gasLimit = 21000;
   var smartContract = await getContract();
-  ContractFunction function = smartContract.function('safeMint');
+  ContractFunction function = smartContract.function('mint');
   var transaction = Transaction.callContract(
     contract: smartContract,
     function: function,
-    parameters: [/*url*/],
+    parameters: [url],
     nonce: 0,
     from: fromAddress,
     value: value,
