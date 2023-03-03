@@ -1,17 +1,12 @@
-// normal contract 
-import 'dart:typed_data';
-
+// normal contract
 import 'package:flutter/material.dart';
 import 'package:flutter_ipfs/flutter_ipfs.dart';
-import 'package:flutter_ipfs/src/service/file_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'dart:math';
-import 'package:web3dart/web3dart.dart';
-import 'package:data_storing_via_blockchain/pages/protectedInfo.dart';
-import 'package:http/http.dart';
+import 'generateNFT.dart';
+
 
 
 class NormCon extends StatelessWidget{
@@ -80,7 +75,7 @@ class _MyFormState extends State<MyForm> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Form(
       key: _formKey,
       child: Column(
@@ -204,49 +199,14 @@ class _MyFormState extends State<MyForm> {
 
                   var email1 = controller1.text;
                   var email2 = controller2.text;
-                  debugPrint(email1);
-                  debugPrint(email2);
-                  var data = "{'email1': '$email1', 'email2': '$email2', 'cidOfContract': '$cidOfContract'}";
-                  writeFile(data);
-                  //readFile();
-                  debugPrint(filePath);
-                  showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (BuildContext context) => const ProgressDialog(
-                      status: 'Json File Uploading to IPFS',
-                    ),
-                  );
-                  var cidOfJson = await FlutterIpfs().uploadToIpfs(filePath);
-                  debugPrint("cidOfJson: $cidOfJson");
-                  Navigator.pop(context);
+                  String jsonPath = "";
+                  generateNFT(cidOfContract, email1, email2).then((s){
+                    setState(() {
+                      jsonPath = s;
+                    });
+                    mint(jsonPath);
+                  });
 
-                  // TODO: call functions on the ethereum
-                  /*var fromAddress = EthereumAddress.fromHex(walletAddress);
-                  var toAddress = EthereumAddress.fromHex(contractAddress);
-                  var value = EtherAmount.inWei(BigInt.from(1000000000000000000));
-                  var gasPrice = EtherAmount.inWei(BigInt.from(20000000000));
-                  var gasLimit = 21000;
-                  var smartContract = DeployedContract(/* abi */, toAddress);
-                  var calledFunction = ContractFunction(/* name */, /* parameters */);
-                  var transaction = Transaction.callContract(
-                    contract: ,
-                    function: ,
-                    parameters: ,
-                    nonce: 0,
-                    from: fromAddress,
-                    value: value,
-                    gasPrice: gasPrice,
-                    maxGas: gasLimit,
-                    //TODO: maybe data here?
-                  );
-                  var rng = Random.secure();
-                  Credentials credentials = EthPrivateKey.createRandom(rng);
-                  //var address = await credentials.extractAddress();
-                  //debugPrint(address.hex);
-                  var httpClient = Client();
-                  var client = Web3Client(rpcEndPoint, httpClient);
-                  var signature = await client.signTransaction(credentials, transaction);*/
                 }
               },
               child: const Text("submit"),
