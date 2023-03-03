@@ -63,6 +63,7 @@ dependencies:
   #pdf view
   flutter_pdfview: ^1.2.5
   syncfusion_flutter_pdfviewer: ^20.4.52
+  web3dart: ^2.6.1
 
   
 
