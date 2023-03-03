@@ -1,5 +1,5 @@
 import 'package:data_storing_via_blockchain/pages/home.dart';
-import 'package:data_storing_via_blockchain/pages/widget/SignUp.dart';
+import 'package:data_storing_via_blockchain/pages/SignUp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
