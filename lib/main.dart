@@ -1,29 +1,24 @@
+
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
 import 'package:data_storing_via_blockchain/pages/LoginHome.dart';
-import 'package:data_storing_via_blockchain/pages/NormCon.dart';
-import 'package:data_storing_via_blockchain/pages/RecordedCon.dart';
-import 'package:data_storing_via_blockchain/pages/Setting.dart';
-import 'package:data_storing_via_blockchain/pages/StdCon.dart';
-import 'package:data_storing_via_blockchain/pages/check.dart';
+import 'package:data_storing_via_blockchain/pages/kids/MyContract/RecordedCon.dart';
+import 'package:data_storing_via_blockchain/pages/kids/NormalContract/NormCont.dart';
+import 'package:data_storing_via_blockchain/pages/kids/Setting.dart';
+import 'package:data_storing_via_blockchain/pages/kids/StdCon.dart';
+import 'package:data_storing_via_blockchain/pages/kids/check.dart';
 import 'package:data_storing_via_blockchain/pages/home.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
-import 'package:data_storing_via_blockchain/pages/widget/SignUp.dart';
-import 'package:data_storing_via_blockchain/pages/MyConSubPage/ShowPage.dart';
-import 'package:data_storing_via_blockchain/pages/ShowFile.dart';
+import 'package:data_storing_via_blockchain/pages/SignUp.dart';
+import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/ShowPage.dart';
 
 //..........................................................我是分隔線.........................................................
 
-<<<<<<< Updated upstream
-// used to send notification
-Future<void> _backgroundHandler(RemoteMessage message) async {
-=======
 // used to send notification 
 Future<void> _backgroundHandler(RemoteMessage message) async{
->>>>>>> Stashed changes
   print('Handling a background message ${message.messageId}');
 }
 
@@ -44,20 +39,6 @@ class MyAPP extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
       child: MaterialApp(
-<<<<<<< Updated upstream
-          debugShowCheckedModeBanner: false,
-          initialRoute: '/LoginHome',
-          routes: {
-            '/home': (context) => const Home(),
-            '/NormCon': (context) => const NormCon(),
-            '/StdCon': (context) => StdCon(),
-            '/check': (context) => const CheckContract(),
-            '/SignUp': (context) => const SignUpWidget(),
-            '/LoginHome': (context) => const HomePage(),
-            '/RecordedCon': (context) => const History(),
-            '/Setting': (context) => const Setting(),
-          }),
-=======
         debugShowCheckedModeBanner: false,
         initialRoute: '/LoginHome',
         routes: {
@@ -73,7 +54,6 @@ class MyAPP extends StatelessWidget {
           
         }
       ),
->>>>>>> Stashed changes
     );
   }
 }
