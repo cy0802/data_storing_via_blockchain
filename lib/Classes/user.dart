@@ -2,7 +2,7 @@ class User {
   final String name;
   final String contractname;
   final String another_email;
-  final String have_checked;
+  final bool have_checked;
   
   User({
     required this.name,
