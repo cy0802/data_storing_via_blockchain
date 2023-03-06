@@ -2,10 +2,10 @@ import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void show_dialog(BuildContext context) =>  showDialog(
+void show_dialog(BuildContext context, String email) =>  showDialog(
   context: context,
   builder: (BuildContext context) => SimpleDialog(
-    title: const Text('your email'),
+    title: Text(email),
     children: <Widget>[
       Divider(color: Colors.grey[500]),
       SimpleDialogOption(
