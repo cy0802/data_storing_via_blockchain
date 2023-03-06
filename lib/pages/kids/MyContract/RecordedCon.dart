@@ -1,3 +1,4 @@
+
 import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/signed.dart';
 import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/unsign.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _HistoryState extends State<History> {
           title: const Text('History contract'),
           bottom: const TabBar(
             tabs: [
-              Tab(text: '待簽署', icon: Icon(Icons.border_color)),
+              Tab(text: '需簽署', icon: Icon(Icons.border_color)),
               Tab(text: '已簽署', icon: Icon(Icons.assignment_turned_in)),
             ],
           )
