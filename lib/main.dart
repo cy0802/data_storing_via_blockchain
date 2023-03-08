@@ -1,4 +1,5 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,7 +14,7 @@ import 'package:data_storing_via_blockchain/pages/kids/check.dart';
 import 'package:data_storing_via_blockchain/pages/home.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:data_storing_via_blockchain/pages/SignUp.dart';
-import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/ShowPage.dart';
+
 
 //..........................................................我是分隔線.........................................................
 
@@ -31,9 +32,37 @@ Future<void> main() async {
   runApp(MyAPP());
 }
 
-class MyAPP extends StatelessWidget {
+class MyAPP extends StatefulWidget {
   const MyAPP({super.key});
 
+  @override
+  State<MyAPP> createState() => _MyAPPState();
+}
+
+class _MyAPPState extends State<MyAPP> with WidgetsBindingObserver{
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached ||
+        state == AppLifecycleState.paused) {
+      _logout();
+    }
+  }
+  void _logout() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirebaseAuth.instance.signOut();
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -50,7 +79,6 @@ class MyAPP extends StatelessWidget {
           '/LoginHome' : (context) => const HomePage(),
           '/RecordedCon' : (context) => const History(),
           '/Setting' : (context) => const Setting(),
-          '/ShowPage' : (context) => const showData(),
           
         }
       ),

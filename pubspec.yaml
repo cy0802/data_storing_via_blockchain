@@ -50,7 +50,6 @@ dependencies:
   firebase_auth: ^4.2.2
   google_sign_in: ^6.0.1
   provider: ^6.0.5
-  path_provider: ^2.0.12
 
   #send notification
   firebase_core: ^2.6.1
@@ -62,7 +61,7 @@ dependencies:
   #pdf view
   flutter_pdfview: ^1.2.5
   syncfusion_flutter_pdfviewer: ^20.4.52
-  web3dart: ^2.6.1
+  intl: ^0.18.0
 
 
 
@@ -91,7 +90,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - asset/openZeppelinNFT_sol_fileStore.abi
-
+     - assets/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
