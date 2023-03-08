@@ -30,8 +30,6 @@ environment:
 dependencies:
   flutter_ipfs: 0.0.2
   file_picker:
-  web3dart:
-  path_provider:
   fluttertoast:
   flutter:
     sdk: flutter
@@ -54,24 +52,17 @@ dependencies:
   provider: ^6.0.5
   path_provider: ^2.0.12
 
-  #send notification 
+  #send notification
   firebase_core: ^2.6.1
   http: ^0.13.5
   firebase_messaging: ^14.2.5
   cloud_firestore: ^4.4.3
   flutter_local_notifications: ^8.2.0
-  
 
   #pdf view
   flutter_pdfview: ^1.2.5
   syncfusion_flutter_pdfviewer: ^20.4.52
   web3dart: ^2.6.1
-
-  
-
-  
-
-  
 
 
 
