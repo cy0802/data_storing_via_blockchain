@@ -1,9 +1,9 @@
-
-
-
 import 'package:data_storing_via_blockchain/Classes/ShowDialog.dart';
+import 'package:data_storing_via_blockchain/font/utils.dart';
+import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 //import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {
@@ -12,33 +12,37 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser ?? 0;
+    late String email;
+    final tmp = Provider.of<GoogleSignInProvider>(context);
+    email = tmp.user.email;
 
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          color: Colors.black,
-          onPressed: (){},
-        ),
-        title: const Text(
-          'Data Storing via Blockchain',
-          style: TextStyle(
+          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+          leading: IconButton(
+            icon: Icon(Icons.menu),
             color: Colors.black,
-          )
-        ),
-        actions: [
-          IconButton(
-          onPressed: ()=> show_dialog(context),
-           icon: Icon(
-            Icons.account_circle_rounded,
-            color: Colors.black,
+            onPressed: () {},
           ),
-          ),
-          
-        ]
-      ),
+          centerTitle: true,
+          title: Text('與你相鏈',
+              style: SafeGoogleFont(
+                letterSpacing: 2,
+                'Twinkle Star',
+                color: Colors.black,
+                fontSize: 22,
+                //fontWeight: FontWeight.bold,
+              )),
+          actions: [
+            IconButton(
+              onPressed: () => show_dialog(context, email),
+              icon: Icon(
+                Icons.account_circle_rounded,
+                color: Colors.black,
+              ),
+            ),
+          ]),
       /*floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: Color.fromARGB(255, 82, 81, 81),
