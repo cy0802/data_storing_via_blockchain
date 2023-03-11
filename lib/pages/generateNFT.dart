@@ -89,8 +89,7 @@ Future<String> generateNFT(
 Future<DeployedContract> getContract() async {
   const name = "";
   const address = contractAddress;
-  String abi =
-      await rootBundle.loadString("asset/openZeppelinNFT_sol_fileStore.abi");
+  String abi = await rootBundle.loadString("asset/fileStore.abi");
   DeployedContract contract = DeployedContract(
     ContractAbi.fromJson(abi, name),
     EthereumAddress.fromHex(address),
@@ -103,21 +102,20 @@ void mint(String jsonPath) async {
   String url = "ipfs://$cidOfJson";
   var fromAddress = EthereumAddress.fromHex(walletAddress);
   // error msg: Unhandled Exception: RPCError: got code -32000 with msg "insufficient funds for gas * price + value"
-  //var value = EtherAmount.inWei(BigInt.from(1000000000000000000));
-  //var gasPrice = EtherAmount.inWei(BigInt.from(20000000000));
-  //var gasLimit = 21000;
+  // value要填寫account全部有的錢，可以稍微少一點，1ETH = 10^18 Wei，填的數字都要是偶數
+  var value = EtherAmount.inWei(BigInt.from(400000));
+  var gasPrice = EtherAmount.inWei(BigInt.from(200000));
+  var gasLimit = 21000;
   var smartContract = await getContract();
   ContractFunction function = smartContract.function('mint');
-  var transaction = Transaction.callContract(
-    contract: smartContract,
-    function: function,
-    parameters: [url],
-    nonce: 0,
-    from: fromAddress,
-    //value: value,
-    //gasPrice: gasPrice,
-    //maxGas: gasLimit,
-  );
+  var transaction = Transaction(
+      from: fromAddress,
+      to: smartContract.address,
+      value: value,
+      gasPrice: gasPrice,
+      maxGas: gasLimit,
+      data: Transaction.callContract(
+          contract: smartContract, function: function, parameters: [url]).data);
   var rng = Random.secure();
   Credentials credentials = EthPrivateKey.createRandom(rng);
   print(credentials);
@@ -129,8 +127,7 @@ void mint(String jsonPath) async {
       .sendTransaction(
     credentials,
     transaction,
-    fetchChainIdFromNetworkId: true,
-    chainId: null,
+    chainId: 5,
   )
       .then((s) {
     debugPrint(s);

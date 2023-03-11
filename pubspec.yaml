@@ -30,8 +30,6 @@ environment:
 dependencies:
   flutter_ipfs: 0.0.2
   file_picker:
-  web3dart:
-  path_provider:
   fluttertoast:
   flutter:
     sdk: flutter
@@ -99,7 +97,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - asset/openZeppelinNFT_sol_fileStore.abi
+     - asset/fileStore.abi
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
