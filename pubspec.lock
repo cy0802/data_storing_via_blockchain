@@ -481,7 +481,7 @@ packages:
     source: hosted
     version: "2.6.3"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       sha256: a3715e3bc90294e971cb7dc063fbf3cd9ee0ebf8604ffeafabd9e6f16abbdbe6
@@ -585,7 +585,7 @@ packages:
     source: hosted
     version: "1.8.2"
   path_provider:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path_provider
       sha256: "04890b994ee89bfa80bf3080bfec40d5a92c5c7a785ebb02c13084a099d2b6f9"
@@ -692,10 +692,10 @@ packages:
     dependency: transitive
     description:
       name: sec
-      sha256: "78e2ed80b8782fe03496ff3c626d5f6139efbe00c577327c613ad8540ea4b14a"
+      sha256: "8bbd56df884502192a441b5f5d667265498f2f8728a282beccd9db79e215f379"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.1.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -913,10 +913,10 @@ packages:
     dependency: transitive
     description:
       name: wallet
-      sha256: bd4156eccab0951a3f0ed8773c7ab3ae6f9e81be8b2e01eff4eb4ec1a28d609d
+      sha256: "569c91c2af13a9e1119c001f9c09218eccf3f383eb8d15ba13a5b558010c1bc0"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.11"
+    version: "0.0.12+1"
   web3dart:
     dependency: "direct main"
     description:
