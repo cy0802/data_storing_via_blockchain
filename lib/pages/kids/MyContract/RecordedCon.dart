@@ -23,8 +23,8 @@ class _HistoryState extends State<History> {
           title: const Text('History contract'),
           bottom: const TabBar(
             tabs: [
-              Tab(text: '需簽署', icon: Icon(Icons.border_color)),
-              Tab(text: '已簽署', icon: Icon(Icons.assignment_turned_in)),
+              Tab(text: '待上鏈', icon: Icon(Icons.border_color)),
+              Tab(text: '已上鏈', icon: Icon(Icons.assignment_turned_in)),
             ],
           )
         ),
