@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:data_storing_via_blockchain/Classes/userpreserve.dart';
+import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WaitUpload extends StatefulWidget {
   final String contractname;
@@ -31,7 +35,8 @@ class _WaitUploadState extends State<WaitUpload> {
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
-
+    final tmp = Provider.of<GoogleSignInProvider>(context);
+    String email1 = tmp.user.email;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -183,9 +188,41 @@ class _WaitUploadState extends State<WaitUpload> {
               ),
               onPressed: () async{
                 if(isChecked){
-                  Navigator.of(context).pop();
-
+                  final doc1 = await FirebaseFirestore.instance.collection("user").doc(email1).collection("contract").doc(contractname);
+                  DocumentSnapshot snap1 = await doc1.get();
+                  String email2 = snap1['another_email'];
+                  final doc2 = await FirebaseFirestore.instance.collection("user").doc(email2).collection("contract").doc(contractname);
+                  await FirebaseFirestore.instance
+                        .collection("user")
+                        .doc(email1)
+                        .collection("contractPreserve")
+                        .doc(contractname)
+                        .set(UserPreserve(
+                          name: name,
+                          contractname: contractname,
+                          another_email: email2,
+                          key: "12",
+                          time: user1time,
+                          pic_cid: "123",
+                        ).toJson());
+                  await FirebaseFirestore.instance
+                        .collection("user")
+                        .doc(email2)
+                        .collection("contractPreserve")
+                        .doc(contractname)
+                        .set(UserPreserve(
+                          name: name,
+                          contractname: contractname,
+                          another_email: email1,
+                          key: "23",
+                          time: user2time,
+                          pic_cid: "123",
+                        ).toJson());
                   
+                  doc1.delete();
+                  doc2.delete();
+                  
+                  Navigator.of(context).pop();
                 }
               }
             ),
