@@ -6,8 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 //import 'package:provider/provider.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  String value = "3";
 
   @override
   Widget build(BuildContext context) {
@@ -17,32 +24,36 @@ class Home extends StatelessWidget {
     email = tmp.user.email;
 
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 255, 255, 255),
-          leading: IconButton(
-            icon: Icon(Icons.menu),
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          color: Colors.black,
+          onPressed: (){},
+        ),
+        centerTitle: true,
+        title: Text(
+          '與你相鏈',
+          style: SafeGoogleFont(
+            letterSpacing: 2,
+            'Twinkle Star',
             color: Colors.black,
-            onPressed: () {},
+            fontSize: 22,
+            //fontWeight: FontWeight.bold,
+          )
+        ),
+        actions: [
+          IconButton(
+          onPressed: ()=> show_dialog(context, email),
+           icon: Icon(
+            Icons.account_circle_rounded,
+            color: Colors.black,
           ),
-          centerTitle: true,
-          title: Text('與你相鏈',
-              style: SafeGoogleFont(
-                letterSpacing: 2,
-                'Twinkle Star',
-                color: Colors.black,
-                fontSize: 22,
-                //fontWeight: FontWeight.bold,
-              )),
-          actions: [
-            IconButton(
-              onPressed: () => show_dialog(context, email),
-              icon: Icon(
-                Icons.account_circle_rounded,
-                color: Colors.black,
-              ),
-            ),
-          ]),
+          ),
+          
+        ]
+      ),
       /*floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: Color.fromARGB(255, 82, 81, 81),
