@@ -66,22 +66,23 @@ class _MyAPPState extends State<MyAPP> with WidgetsBindingObserver{
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => GoogleSignInProvider(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/LoginHome',
-        routes: {
-          '/home': (context) => const Home(),
-          '/NormCon': (context) => const NormCon(),
-          '/StdCon': (context) => const StdCon(),
-          '/check': (context) => const CheckContract(),
-          '/SignUp': (context) => const SignUpWidget(),
-          '/LoginHome' : (context) => const HomePage(),
-          '/RecordedCon' : (context) => const History(),
-          '/Setting' : (context) => const Setting(),
-          
-        }
-      ),
+      create: (_) => GoogleSignInProvider(),
+      builder: (context, child){
+        return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            initialRoute: '/LoginHome',
+            routes: {
+              '/LoginHome' : (context) => const HomePage(),
+              '/SignUp': (context) => const SignUpWidget(),
+              '/home': (context) => const Home(),
+              '/NormCon': (context) => const NormCon(),
+              '/StdCon': (context) => const StdCon(),
+              '/check': (context) => const CheckContract(),
+              '/RecordedCon' : (context) => const History(),
+              '/Setting' : (context) => const Setting(),
+            }
+        );
+      }
     );
   }
 }
