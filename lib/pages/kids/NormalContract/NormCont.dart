@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'dart:math';
 import 'dart:io';
 import 'package:data_storing_via_blockchain/Classes/usermodel.dart';
-import 'package:data_storing_via_blockchain/pages/generateNFT.dart';
+//import 'package:data_storing_via_blockchain/pages/generateNFT.dart';
 import 'package:flutter/material.dart';
 import 'package:data_storing_via_blockchain/pages/kids/MyContract/RecordedCon.dart';
 import 'package:data_storing_via_blockchain/Classes/user.dart';
@@ -26,7 +26,7 @@ import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:web3dart/web3dart.dart';
+//import 'package:web3dart/web3dart.dart';
 //import 'package:data_storing_via_blockchain/pages/protectedInfo.dart';
 
 
@@ -248,8 +248,6 @@ class _MyFormState extends State<MyForm> {
     }
   }
   
-  
-  
   void openPDF(BuildContext context, File file) => Navigator.of(context)
     .push(MaterialPageRoute(builder: (context) => PDFViewPage(file: file)));
   
@@ -297,9 +295,9 @@ class _MyFormState extends State<MyForm> {
                       setState(() {
                         filename = file!.files[0].name;
                         result = File(file!.files.single.path!);
-                        final userModel = UserModel(file: result);
+                        /*final userModel = UserModel(file: result);
                         final userProvider = Provider.of<UserProvider>(context, listen: false);
-                        userProvider.setUserModel(userModel);
+                        userProvider.setUserModel(userModel);*/
                         openPDF(context, result);
                       });
                     }
@@ -391,8 +389,12 @@ class _MyFormState extends State<MyForm> {
           ),
           Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.fromLTRB(10, 0, 0, 3),
+              margin: const EdgeInsets.fromLTRB(20, 0, 0, 3),
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: StadiumBorder(),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     String time = await getTime();
@@ -437,7 +439,7 @@ class _MyFormState extends State<MyForm> {
                       //print(token);
                       sendPushMessage(token, "New contract!", "Log in and sign the contract");
 
-                    //Navigator.pop(context);
+                    Navigator.pop(context);
                     // upload file to IPFS
                     /*showDialog(
                       barrierDismissible: false,
