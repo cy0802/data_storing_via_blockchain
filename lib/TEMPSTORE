@@ -158,125 +158,6 @@ ElevatedButton(
 
 
 
-import 'package:data_storing_via_blockchain/firebase_options.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-
-import 'package:data_storing_via_blockchain/pages/LoginHome.dart';
-import 'package:data_storing_via_blockchain/pages/NormCon.dart';
-import 'package:data_storing_via_blockchain/pages/RecordedCon.dart';
-import 'package:data_storing_via_blockchain/pages/Setting.dart';
-import 'package:data_storing_via_blockchain/pages/StdCon.dart';
-import 'package:data_storing_via_blockchain/pages/check.dart';
-import 'package:data_storing_via_blockchain/pages/home.dart';
-import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
-import 'package:data_storing_via_blockchain/widget/SignUp.dart';
-
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
-
-
-
-// not used
-
-/*import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:data_storing_via_blockchain/new_screen.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart'; //so weird
-import 'package:http/http.dart' as http;
-
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
-
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-
-class _MainScreenState extends State<MainScreen> {
-
-  String? mtoken = "";
-  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  late final int FLAG_IMMUTABLE;
-  
-  TextEditingController username = TextEditingController();
-  TextEditingController title = TextEditingController();
-  TextEditingController body = TextEditingController();
-
-  @override
-  void initState(){
-    super.initState();
-    requestPermission();
-    getToken();
-    initInfo();
-  }
- 
-  initInfo(){
-    var androidInitialize = const AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOSInitialize = const IOSInitializationSettings();
-    var initializationsSettings = InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
-
-//the function does not work
-    flutterLocalNotificationsPlugin.initialize(initializationsSettings, onSelectNotification: (String? payload) async {
-      try{
-        if(payload != null && payload.isNotEmpty){
-          print(".......................onBackgroundMessage.......................");
-          print("fdfdffdfdfdfdff");
-          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
-            return NewPage(info: payload.toString());
-          }
-          ));
-        } else {
-          print(".......................onBackgroundMessage.......................");
-          print("fdfdffdfdfdfdff");
-          
-        }
-      }catch(e){
-        print(e.toString());
-      }
-      return;
-    });
-
-///some problem here I can not address
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
-      print(".......................onMessage.......................");
-      print("onMessage: ${message.notification?.title}/${message.notification?.body}");
-
-      BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
-        message.notification!.body.toString(), 
-        htmlFormatBigText: true,
-        contentTitle: message.notification!.title.toString(), 
-        htmlFormatContentTitle: true,
-      );
-
-      AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'hi', 
-        'hi channel',
-        'hi',
-        importance: Importance.high,
-        styleInformation: bigTextStyleInformation, 
-        priority: Priority.high, 
-        playSound: true,
-        additionalFlags: Int32List.fromList([FLAG_IMMUTABLE]),
-
-      );
-
-      NotificationDetails PlatformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: const IOSNotificationDetails()
-      );
-      await flutterLocalNotificationsPlugin.show(
-        0, 
-        message.notification?.title,
-        message.notification?.body, 
-        PlatformChannelSpecifics,
-        payload: message.data['body']);
-    });
-  }
 
   void getToken() async{
     await FirebaseMessaging.instance.getToken().then(
@@ -318,96 +199,113 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  void sendPushMessage(String token, String title, String body)async{
-    try{
-      await http.post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'Authorization': 'key=AAAARCD6qcU:APA91bFaf-FagTZePoWGBGoFRHE1Nu0-8Og_N_IDYdEU6PkZt5YCjSs3pCVzlfg7zgtfJsz36NE6HLNTlYY-XEtrkzhFkLZR1n4qrb-ofJtZzHas28qL1DJS6LOwyJYZwdFSgJgDDxb7',
-        },
-        body: jsonEncode(
-          <String, dynamic>{
 
-            'priority': 'high',
-            //到指定頁面
-            'data': <String, dynamic>{
-              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-              'status': 'done',
-              'title': title,
-              'body': body,
-            },
-            "notification": <String, dynamic>{
-              "title": title,
-              "body": body,
-              "android_channel_id": "hi"
-            },
-            "to": token,
-          },
+
+
+ Stream<List<UserPreserve>> readUsers(String email) => FirebaseFirestore.instance
+      .collection('user').doc(email).collection('contractPreserve')
+      .snapshots()
+      .map((snapshot)=>
+              snapshot.docs.map((doc) => UserPreserve.fromJson(doc.data())).toList());
+
+Widget buildUser(UserPreserve user) => 
+    Card(
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Color.fromARGB(255, 209, 208, 208),
         ),
-      );
-    } catch(e){
-      if(kDebugMode){
-        print("error push notification");
-      }
-    }
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextFormField(
-              controller: username,
-            ),
-            TextFormField(
-              controller: title,
-            ),
-            TextFormField(
-              controller: body,
-            ),
-            GestureDetector(
-              onTap:()async{
-                String name = username.text.trim();
-                String titleText = title.text;
-                String bodyText = body.text;
-
-                if(name != ""){
-                  DocumentSnapshot snap =
-                  await FirebaseFirestore.instance.collection("userTokens").doc(name).get();
-
-                  String token = snap['token'];
-                  print(token);
-                  sendPushMessage(token, titleText, bodyText);
-                }
-              },
-              child: Container(
-                margin: const EdgeInsets.all(20),
-                height: 40,
-                width: 200,
-
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.redAccent.withOpacity(0.5),
-                    )
-                  ]
-                ),
-                child: Center(child: const Text("button")),
-              ),
-            )
-          ],
+        title: Text(
+          user.contractname,
+          style: TextStyle(
+            fontSize: 20,
+          )
         ),
+        subtitle: Text(user.name),
+        trailing: Icon(Icons.arrow_forward_ios ),
+        onTap: ()async{
+        }
       )
     );
+
+
+return ListView.builder(
+              shrinkWrap: true,
+              itemCount: snapshot.data!.docs.length, 
+              itemBuilder: (context, index) {
+                String user2Time="";
+                var data = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                setState(() async{
+                  String anotherEmail1 = data['another_email'];
+                  DocumentSnapshot snap =
+                  await FirebaseFirestore.instance.collection("user")
+                  .doc(anotherEmail1)
+                  .collection("contract")
+                  .doc(data['contractname'])
+                  .get();
+                  userorder = data['order'];
+                  user1HaveCheck = data['have_checked'];
+                  user2Time = snap['time'];
+                  user2HaveCheck = snap['have_checked'];
+                });
+
+                setState(() async{
+                  String anotherEmail1 = data['another_email'];
+                  DocumentSnapshot snap =
+                  await FirebaseFirestore.instance.collection("user")
+                  .doc(anotherEmail1)
+                  .collection("contract")
+                  .doc(data['contractname'])
+                  .get();
+                  userorder = data['order'];
+                  user1HaveCheck = data['have_checked'];
+                  user2Time = snap['time'];
+                  user2HaveCheck = snap['have_checked'];
+                });
+
+StreamBuilder(
+                  stream: getData(data),
+                  builder: (context, snapshots){
+                      return Card(
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Color.fromARGB(255, 209, 208, 208),
+                          ),
+                          title: Text(
+                            data['contractname'],
+                            style: TextStyle(
+                              fontSize: 20, 
+                            )
+                          ),
+                          subtitle: Text(data['name']),
+                          trailing: hi(),
+                          onTap: (){
+                            print("1");
+                            if(data['have_checked'] && user2HaveCheck){
+                              if(userorder=="first"){
+                                Show_data1(context, data['contractname'], data['name'], data['time'], user2Time);
+                              }else{
+                                Show_data4(context, data['contractname'], data['name'], data['time']);
+                              }
+                              
+                            } else if (data['have_checked']){
+                              Show_data2(context, data['contractname'], data['name'], data['time']);
+                            } else {
+                              Show_data3(context, data['contractname'], data['name'], data['time']);
+                            }
+                          }
+                        )
+                      );
+                  }
+                );
+                Stream<Map<String, dynamic>> getData(Map<String, dynamic> data) async* {
+    DocumentSnapshot snap =
+    await FirebaseFirestore.instance.collection("user")
+                  .doc(data['another_email'])
+                  .collection("contract")
+                  .doc(data['contractname'])
+                  .get();
+    userorder = data['order'];
+    user1HaveCheck = data['have_checked'];
+    user2Time = snap['time'];
+    user2HaveCheck = snap['have_checked'];
   }
-}*/
-
-
-
