@@ -6,28 +6,38 @@ import 'package:provider/provider.dart';
 
 
 class ShowInfo extends StatefulWidget {
-  final String contractname;
-  final String name;
-  final String time;
+  final Map<String, dynamic>data;
 
   const ShowInfo({
     super.key,
-    required this.contractname,
-    required this.name,
-    required this.time
+    required this.data,
   });
 
   @override
-  State<ShowInfo> createState() => _ShowInfoState(contractname: contractname, name: name, time: time);
+  State<ShowInfo> createState() => _ShowInfoState(data: data);
 }
 
 class _ShowInfoState extends State<ShowInfo> {
-  final String contractname;
-  final String name;
-  final String time;
+  late String contractname;
+  late String name;
+  late String time;
+  late String path;
+  final Map<String, dynamic>data;
+  _ShowInfoState({required this.data});
 
-  _ShowInfoState({required this.contractname,
-    required this.name, required this.time});
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initialization();
+  }
+
+  void initialization()async{
+    contractname = data['contractname'];
+    name = data['name'];
+    time = data['time'];
+    path = data['path'];
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -135,11 +145,9 @@ class _ShowInfoState extends State<ShowInfo> {
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
             onPressed: () async {
-              //應該有點問題
-              final userProvider = Provider.of<UserProvider>(context);
-              final userModel = userProvider.userModel;
-              openPDF(context, userModel.file as File);
 
+              var result = File(path);
+              openPDF(context, result);
             }, 
           ),
           const Spacer(flex: 19),
