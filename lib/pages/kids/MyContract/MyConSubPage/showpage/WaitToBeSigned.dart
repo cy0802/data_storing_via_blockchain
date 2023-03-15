@@ -6,29 +6,39 @@ import 'package:provider/provider.dart';
 
 
 class WaitToBeSigned extends StatefulWidget {
-  final String contractname;
-  final String name;
-  final String time;
+  final Map<String, dynamic>data;
 
   const WaitToBeSigned({
     super.key,
-    required this.contractname,
-    required this.name,
-    required this.time
+    required this.data,
   });
 
   @override
-  State<WaitToBeSigned> createState() => _WaitToBeSignedState(contractname: contractname, name: name, time: time);
+  State<WaitToBeSigned> createState() => _WaitToBeSignedState(data: data);
 }
 
 class _WaitToBeSignedState extends State<WaitToBeSigned> {
-  final String contractname;
-  final String name;
-  final String time;
+  late String contractname;
+  late String name;
+  late String time;
+  late String path;
+  final Map<String, dynamic>data;
 
-  _WaitToBeSignedState({required this.contractname,
-    required this.name, required this.time});
-  
+  _WaitToBeSignedState({required this.data});
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initialization();
+  }
+  void initialization()async{
+    contractname = data['contractname'];
+    name = data['name'];
+    time = data['time'];
+    path = data['path'];
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -133,11 +143,8 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
             onPressed: () async {
-              //應該有點問題
-              final userProvider = Provider.of<UserProvider>(context);
-              final userModel = userProvider.userModel;
-              openPDF(context, userModel.file as File);
-
+              var result = File(path);
+              openPDF(context, result);
             }, 
           ),
           const Spacer(flex: 19),
@@ -145,7 +152,7 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
             padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
             alignment:Alignment.bottomCenter,
             child: Text(
-              "等待對方簽署",
+              "等待對方同意",
               style: TextStyle(
                 fontSize: 26,
               ),
