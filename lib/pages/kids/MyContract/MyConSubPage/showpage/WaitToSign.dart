@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -8,29 +10,42 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class WaitToSign extends StatefulWidget {
-  final String contractname;
-  final String name;
-  final String time;
-
+  final Map<String, dynamic>data;
   const WaitToSign({
     super.key,
-    required this.contractname,
-    required this.name,
-    required this.time
+    required this.data,
   });
 
   @override
-  State<WaitToSign> createState() => _WaitToSignState(contractname: contractname, name: name, time: time);
+  State<WaitToSign> createState() => _WaitToSignState(data: data);
 }
 
 class _WaitToSignState extends State<WaitToSign> {
-  final String contractname;
-  final String name;
-  late final String time;
 
-  _WaitToSignState({required this.contractname,
-    required this.name, required this.time});
+  late String contractname;
+  late String name;
+  late String time;
+  late String path;
   bool isChecked = false;
+  final Map<String, dynamic>data;
+  _WaitToSignState({required this.data});
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initialization();
+  }
+
+  void initialization()async{
+    contractname = data['contractname'];
+    name = data['name'];
+    time = data['time'];
+    path = data['path'];
+  }
+
+  void openPDF(BuildContext context, File file) => Navigator.of(context)
+    .push(MaterialPageRoute(builder: (context) => PDFViewPage(file: file)));
   
   @override
   Widget build(BuildContext context) {
@@ -140,6 +155,8 @@ class _WaitToSignState extends State<WaitToSign> {
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
             onPressed: () async {
+              var result = File(path);
+              openPDF(context, result);
             }, 
           ),
           CheckboxListTile(
@@ -164,7 +181,7 @@ class _WaitToSignState extends State<WaitToSign> {
             
             child: ElevatedButton(
               child: Text(
-                "請完成簽署",
+                "請完成同意",
                 style: TextStyle(
                   fontSize: 18,
                 ),
