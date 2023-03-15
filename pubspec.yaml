@@ -32,7 +32,6 @@ dependencies:
   file_picker:
   web3dart: 
   fluttertoast:
-  web3dart:
   flutter:
     sdk: flutter
 
