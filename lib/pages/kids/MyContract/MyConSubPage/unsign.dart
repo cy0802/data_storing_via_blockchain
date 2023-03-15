@@ -1,7 +1,5 @@
 
-
-//(帶簽署)
-
+//(待簽署)
 
 import 'dart:convert';
 
@@ -32,8 +30,6 @@ class _UnSignConState extends State<UnSignCon> {
   String user2Time="";
   bool e = true;
 
-  
-  
   @override
   Widget build(BuildContext context) {
 
@@ -93,15 +89,14 @@ class _UnSignConState extends State<UnSignCon> {
                         print(user2Time);
                         if(data['have_checked'] && user2HaveCheck){
                           if(userorder=="first"){
-                            Show_data1(context, data['contractname'], data['name'], data['time'], user2Time);
+                            Show_data1(context, data, email, user2Time);
                           }else{
-                            Show_data4(context, data['contractname'], data['name'], data['time']);
+                            Show_data4(context, data);
                           }
-                          
                         } else if (data['have_checked']){
-                          Show_data2(context, data['contractname'], data['name'], data['time']);
+                          Show_data2(context, data);
                         } else {
-                          Show_data3(context, data['contractname'], data['name'], data['time']);
+                          Show_data3(context, data);
                         }
       
                       }
@@ -155,23 +150,12 @@ class _UnSignConState extends State<UnSignCon> {
 }
 
 
-void Show_data1(BuildContext context, String contractname, String name, String user1time, String user2time) => Navigator.of(context)
-    .push(MaterialPageRoute(builder: (context) => WaitUpload(contractname: contractname, name: name, user1time: user1time, user2time: user2time)));
-void Show_data2(BuildContext context, String contractname, String name, String time) => Navigator.of(context)
-    .push(MaterialPageRoute(builder: (context) => WaitToBeSigned(contractname: contractname, name: name, time: time)));
-void Show_data3(BuildContext context, String contractname, String name, String time) => Navigator.of(context)
-    .push(MaterialPageRoute(builder: (context) => WaitToSign(contractname: contractname, name: name, time: time)));
-void Show_data4(BuildContext context, String contractname, String name, String time) => Navigator.of(context)
-    .push(MaterialPageRoute(builder: (context) => ShowInfo(contractname: contractname, name: name, time: time)));
+void Show_data1(BuildContext context, Map<String, dynamic>data, String email, String user2time) => Navigator.of(context)
+    .push(MaterialPageRoute(builder: (context) => WaitUpload(data: data, user2time: user2time, email: email)));
+void Show_data2(BuildContext context, Map<String, dynamic>data) => Navigator.of(context)
+    .push(MaterialPageRoute(builder: (context) => WaitToBeSigned(data: data)));
+void Show_data3(BuildContext context, Map<String, dynamic>data) => Navigator.of(context)
+    .push(MaterialPageRoute(builder: (context) => WaitToSign(data: data)));
+void Show_data4(BuildContext context, Map<String, dynamic>data) => Navigator.of(context)
+    .push(MaterialPageRoute(builder: (context) => ShowInfo(data: data)));
 
-
-/*
-.then(
-                    (DocumentSnapshot doc){
-                      final data2 = doc.data() as Map<String, dynamic>;
-                      setState(() async{
-                        user2Time = data2['time'];
-                        user2HaveCheck = data2['have_checked'];
-                      });
-                    }
-                  );*/
