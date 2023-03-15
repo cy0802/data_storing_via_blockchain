@@ -1,42 +1,64 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_storing_via_blockchain/Classes/userpreserve.dart';
+import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ipfs/flutter_ipfs.dart';
 import 'package:provider/provider.dart';
 
 class WaitUpload extends StatefulWidget {
-  final String contractname;
-  final String name;
-  final String user1time;
-  final String user2time;
 
+  final Map<String, dynamic>data;
+  final String email;
+  final String user2time;
 
   const WaitUpload({
     super.key,
-    required this.contractname,
-    required this.name,
- 
-    required this.user1time, 
-    required this.user2time
+    required this.data,
+    required this.email, required this.user2time,
   });
 
   @override
-  State<WaitUpload> createState() => _WaitUploadState(contractname: contractname, name: name, user1time: user1time, user2time: user2time);
+  State<WaitUpload> createState() => _WaitUploadState(data: data, email: email, user2time: user2time);
 }
 
 class _WaitUploadState extends State<WaitUpload> {
-  final String contractname;
-  final String name;
-  final String user1time;
-  final String user2time;
-  _WaitUploadState({required this.user1time, required this.user2time, required this.contractname,
-    required this.name, });
 
+  late String contractname;
+  late String name;
+  late String user1time;
+  late String user2time;
+  late String emailuser2;
+  late String path;
   bool isChecked = false;
+
+  final Map<String, dynamic>data;
+  final String email;
+  _WaitUploadState({ required this.data, required this.email, required this.user2time});
+
+  void openPDF(BuildContext context, File file) => Navigator.of(context)
+    .push(MaterialPageRoute(builder: (context) => PDFViewPage(file: file)));
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initialization();
+  }
+
+  void initialization()async{
+    contractname = data['contractname'];
+    name = data['name'];
+    user1time = data['time'];
+    emailuser2 = data['another_email'];
+    path = data['path'];
+  }
+  
   @override
   Widget build(BuildContext context) {
-    final tmp = Provider.of<GoogleSignInProvider>(context);
-    String email1 = tmp.user.email;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -47,7 +69,7 @@ class _WaitUploadState extends State<WaitUpload> {
           )
         ),
         centerTitle: true,
-        actions: []
+        actions: [],
       ),
       body: Column(
         children: [
@@ -157,6 +179,8 @@ class _WaitUploadState extends State<WaitUpload> {
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
             onPressed: () async {
+              var result = File(path);
+              openPDF(context, result);
             }, 
           ),
           CheckboxListTile(
@@ -188,39 +212,56 @@ class _WaitUploadState extends State<WaitUpload> {
               ),
               onPressed: () async{
                 if(isChecked){
-                  final doc1 = await FirebaseFirestore.instance.collection("user").doc(email1).collection("contract").doc(contractname);
-                  DocumentSnapshot snap1 = await doc1.get();
-                  String email2 = snap1['another_email'];
-                  final doc2 = await FirebaseFirestore.instance.collection("user").doc(email2).collection("contract").doc(contractname);
+  
+                  //var cidOfContract = await FlutterIpfs().uploadToIpfs(path);
+                  
                   await FirebaseFirestore.instance
                         .collection("user")
-                        .doc(email1)
+                        .doc(email)
                         .collection("contractPreserve")
                         .doc(contractname)
                         .set(UserPreserve(
                           name: name,
                           contractname: contractname,
-                          another_email: email2,
+                          another_email: emailuser2,
                           key: "12",
                           time: user1time,
                           pic_cid: "123",
                         ).toJson());
+
                   await FirebaseFirestore.instance
                         .collection("user")
-                        .doc(email2)
+                        .doc(emailuser2)
                         .collection("contractPreserve")
                         .doc(contractname)
                         .set(UserPreserve(
                           name: name,
                           contractname: contractname,
-                          another_email: email1,
+                          another_email: email,
                           key: "23",
                           time: user2time,
                           pic_cid: "123",
                         ).toJson());
-                  
-                  doc1.delete();
-                  doc2.delete();
+
+                  /*showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext context) => const ProgressDialog(
+                        status: 'Contract Uploading to IPFS',
+                      ),
+                    );
+
+                  debugPrint("cidOfContract: $cidOfContract");
+                  String jsonPath = "";
+                    generateNFT(cidOfContract, email, emailuser2).then((s) {
+                      setState(() {
+                        jsonPath = s;
+                      });
+                      mint(jsonPath);
+                    });*/
+
+                  FirebaseFirestore.instance.collection("user").doc(email).collection("contract").doc(contractname).delete();
+                  FirebaseFirestore.instance.collection("user").doc(emailuser2).collection("contract").doc(contractname).delete();
                   
                   Navigator.of(context).pop();
                 }
