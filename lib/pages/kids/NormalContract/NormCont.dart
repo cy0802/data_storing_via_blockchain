@@ -277,7 +277,6 @@ class _MyFormState extends State<MyForm> {
                 ),
                 onPressed: () async {
                   // file picker
-
                   try {
 
                     final FilePicker picker = FilePicker.platform;
@@ -406,6 +405,8 @@ class _MyFormState extends State<MyForm> {
                     var email1 = controller1.text;
                     var email2 = controller2.text;
 
+                    var cidOfContract = file!.files.single.path!;
+
                     await FirebaseFirestore.instance
                         .collection("user")
                         .doc(email1)
@@ -418,6 +419,7 @@ class _MyFormState extends State<MyForm> {
                           have_checked: true,
                           time: time,
                           order: "first",
+                          path: cidOfContract,
                         ).toJson());
                     await FirebaseFirestore.instance
                         .collection("user")
@@ -430,7 +432,8 @@ class _MyFormState extends State<MyForm> {
                           another_email: email1,
                           have_checked: false,
                           time: "not sign yet",
-                          order: "second"
+                          order: "second",
+                          path: cidOfContract,
                         ).toJson());
 
                     DocumentSnapshot snap =
@@ -439,27 +442,13 @@ class _MyFormState extends State<MyForm> {
                       //print(token);
                       sendPushMessage(token, "New contract!", "Log in and sign the contract");
 
-                    Navigator.pop(context);
-                    // upload file to IPFS
-                    /*showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) => const ProgressDialog(
-                        status: 'Contract Uploading to IPFS',
+                    Navigator.pushReplacement(
+                      context, 
+                      MaterialPageRoute(
+                        builder: (context) => const History(),
                       ),
                     );
-                    var cidOfContract = await FlutterIpfs()
-                        .uploadToIpfs(file!.files.single.path!);
-                    debugPrint("cidOfContract: $cidOfContract");*/
-                    
 
-                    /*String jsonPath = "";
-                    generateNFT(cidOfContract, email1, email2).then((s) {
-                      setState(() {
-                        jsonPath = s;
-                      });
-                      mint(jsonPath);
-                    });*/
                   }
                 },
                 child: const Text("submit"),
