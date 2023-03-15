@@ -5,6 +5,9 @@ class User {
   final bool have_checked;
   final String time;
   final String order;
+  final String path;
+  
+
   
   User({
     required this.name,
@@ -13,6 +16,7 @@ class User {
     required this.have_checked,
     required this.time,
     required this.order,
+    required this.path,
   });
 
   Map<String, dynamic> toJson() =>{
@@ -22,6 +26,7 @@ class User {
     'have_checked': have_checked,
     'time': time,
     'order': order,
+    'path': path
   };
   
   static User fromJson(Map<String, dynamic> json)=>User(
@@ -30,6 +35,7 @@ class User {
     another_email: json['another_email'],
     have_checked: json['have_checked'],
     time: json['time'],
-    order: json['order'],
+    order: json['order'], 
+    path: json['path'],
   );
 }
