@@ -62,13 +62,10 @@ class _UnSignConState extends State<UnSignCon> {
                   .get().then(
                   (DocumentSnapshot doc) {
                     final datas = doc.data() as Map<String, dynamic>;
-                    if(e){
-                      setState(() {
+                      /*setState(() {
                       user2Time = datas['time'];
                       user2HaveCheck = datas['have_checked'];
-                      e = false;
-                    });
-                    }
+                    });*/
                   },
                 );
 
@@ -77,11 +74,15 @@ class _UnSignConState extends State<UnSignCon> {
                       leading: CircleAvatar(
                         backgroundColor: Color.fromARGB(255, 209, 208, 208),
                       ),
-                      title: Text(
-                        data['contractname'],
-                        style: TextStyle(
-                          fontSize: 20,
-                        )
+                      title: Expanded(
+                        child: Text(
+                          data['contractname'],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 20,
+                          )
+                        ),
                       ),
                       subtitle: Text(data['name']),
                       trailing: hi(),
