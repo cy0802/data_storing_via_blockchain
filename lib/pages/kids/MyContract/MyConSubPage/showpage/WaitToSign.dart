@@ -78,12 +78,14 @@ class _WaitToSignState extends State<WaitToSign> {
                   ) 
                 ),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
-                child: Text(
-                  contractname,
-                  style: TextStyle(
-                    fontSize: 20,
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
+                  child: Text(
+                    contractname,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
@@ -116,7 +118,7 @@ class _WaitToSignState extends State<WaitToSign> {
               Container(
                 padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
                 child: Text(
-                  "簽署時間 : ",
+                  "同意時間 : ",
                   style: TextStyle(
                     fontSize: 20,
                   ) 
