@@ -15,7 +15,7 @@ import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.d
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 //選資料
 //import 'package:flutter_ipfs/flutter_ipfs.dart';
@@ -58,7 +58,7 @@ class MyForm extends StatefulWidget {
 class _MyFormState extends State<MyForm> {
 
   //變數
-  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  //static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   String filename = "";
   String filePath = "";
   String cid = "";
@@ -75,7 +75,7 @@ class _MyFormState extends State<MyForm> {
 
   
   //函式
-  Future<String> get _localPath async {
+  /*Future<String> get _localPath async {
     final directory = await getTemporaryDirectory();
     return directory.path;
   }
@@ -105,7 +105,7 @@ class _MyFormState extends State<MyForm> {
       // If encountering an error, return 0
       return 0;
     }
-  }
+  }*/
 
   Future<String> getTime() async{
   Response response =  await get(Uri.parse('http://worldtimeapi.org/api/timezone/Asia/Taipei')) ;
@@ -136,9 +136,9 @@ class _MyFormState extends State<MyForm> {
   void initState(){
     super.initState();
     requestPermission();
-    initInfo();
+    //initInfo();
   }
-  initInfo(){
+  /*initInfo(){
     var androidInitialize = const AndroidInitializationSettings('@mipmap/ic_launcher');
     var iOSInitialize = const DarwinInitializationSettings();
     var initializationsSettings = InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
@@ -159,8 +159,8 @@ class _MyFormState extends State<MyForm> {
       }
       return;
     });
-    //some problems here I can not address
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
+    some problems here I can not address
+    */ /*FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
       print(".......................onMessage.......................");
       print("onMessage: ${message.notification?.title}/${message.notification?.body}");
       BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
@@ -189,7 +189,7 @@ class _MyFormState extends State<MyForm> {
         PlatformChannelSpecifics,
         payload: message.data['body']);
     });
-  }
+  }*/
   void requestPermission() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     NotificationSettings settings = await messaging.requestPermission(
@@ -273,11 +273,11 @@ class _MyFormState extends State<MyForm> {
                 onPressed: () async {
                   // file picker
                   try {
-
                     final FilePicker picker = FilePicker.platform;
                     file = await picker.pickFiles(
                       type: FileType.custom,
                       allowedExtensions: ["jpg", "png", "pdf", "jpeg"],
+                      withData: true,
                     );
                     if (file == null) {
                       Fluttertoast.showToast(
@@ -286,8 +286,20 @@ class _MyFormState extends State<MyForm> {
                       return;
 
                     } else {
+                      //here
+                      Directory appDocDir = await getApplicationDocumentsDirectory();
+                      String appDocPath = appDocDir.path;
+                      String tmp = file!.files[0].name;
+                      //debugPrint("*********$appDoc")
+                      String filePath = "$appDocPath/$tmp";
+                      var localFile = File(filePath);
+                      bool t = (file!.files.first.bytes == null);
+                      //debugPrint("********$t");
+                      localFile.writeAsBytes(file!.files.first.bytes as Uint8List);
+                      //debugPrint("********$appDocPath/$tmp");
+                      //debugPrint("*******${file!.files}");
+
                       setState(() {
-                        String tmp = file!.files[0].name;
                         int size = tmp.length;
                         for(int i=0; i<size-4; i++){
                           filename += tmp[i];

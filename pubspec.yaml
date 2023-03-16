@@ -28,7 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  #flutter_ipfs: 
+  flutter_ipfs:
   file_picker:
   web3dart: 
   fluttertoast:
@@ -57,7 +57,7 @@ dependencies:
   http: ^0.13.5
   firebase_messaging: ^14.2.5
   cloud_firestore: ^4.4.3
-  flutter_local_notifications:  ^13.0.0
+  #flutter_local_notifications:  ^13.0.0
 
   #pdf view
   flutter_pdfview: ^1.2.5
