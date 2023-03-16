@@ -18,8 +18,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 //選資料
-import 'package:flutter_ipfs/flutter_ipfs.dart';
-import 'package:flutter_ipfs/src/service/file_picker.dart';
+//import 'package:flutter_ipfs/flutter_ipfs.dart';
+//import 'package:flutter_ipfs/src/service/file_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
@@ -58,9 +58,8 @@ class MyForm extends StatefulWidget {
 class _MyFormState extends State<MyForm> {
 
   //變數
-  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  late final int FLAG_IMMUTABLE;
-  String filename = "none";
+  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  String filename = "";
   String filePath = "";
   String cid = "";
   FilePickerResult? file;
@@ -141,22 +140,19 @@ class _MyFormState extends State<MyForm> {
   }
   initInfo(){
     var androidInitialize = const AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOSInitialize = const IOSInitializationSettings();
+    var iOSInitialize = const DarwinInitializationSettings();
     var initializationsSettings = InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
     //the function does not work
-    flutterLocalNotificationsPlugin.initialize(initializationsSettings, onSelectNotification: (String? payload) async {
+    flutterLocalNotificationsPlugin.initialize(initializationsSettings, onDidReceiveNotificationResponse: (payload) async {
       try{
-        if(payload != null && payload.isNotEmpty){
+        if(payload != null){
           print(".......................onBackgroundMessage.......................");
           print("fdfdffdfdfdfdff");
           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
             return History();
           }
           ));
-        } else {
-          print(".......................onBackgroundMessage.......................");
-          print("fdfdffdfdfdfdff");
-          
+        } else {          
         }
       }catch(e){
         print(e.toString());
@@ -175,17 +171,16 @@ class _MyFormState extends State<MyForm> {
       );
       AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'hi', 
-        'hi channel',
         'hi',
-        importance: Importance.high,
+        importance: Importance.max,
         styleInformation: bigTextStyleInformation, 
         priority: Priority.high, 
         playSound: true,
-        additionalFlags: Int32List.fromList([FLAG_IMMUTABLE]),
+
       );
       NotificationDetails PlatformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
-        iOS: const IOSNotificationDetails()
+        iOS: const DarwinNotificationDetails()
       );
       await flutterLocalNotificationsPlugin.show(
         0, 
@@ -292,7 +287,14 @@ class _MyFormState extends State<MyForm> {
 
                     } else {
                       setState(() {
-                        filename = file!.files[0].name;
+                        String tmp = file!.files[0].name;
+                        int size = tmp.length;
+                        for(int i=0; i<size-4; i++){
+                          filename += tmp[i];
+                        }
+                        print(size);
+                        print(tmp);
+                        print(filename);
                         result = File(file!.files.single.path!);
                         /*final userModel = UserModel(file: result);
                         final userProvider = Provider.of<UserProvider>(context, listen: false);
