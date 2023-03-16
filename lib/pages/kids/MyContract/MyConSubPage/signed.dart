@@ -116,11 +116,15 @@ class _SignedConState extends State<SignedCon> {
                             leading: CircleAvatar(
                               backgroundColor: Color.fromARGB(255, 209, 208, 208),
                             ),
-                            title: Text(
-                              data['contractname'],
-                              style: TextStyle(
-                                fontSize: 20,
-                              )
+                            title: Expanded(
+                              child: Text(
+                                data['contractname'],
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                )
+                              ),
                             ),
                             subtitle: Text(data['name']),
                             trailing: Icon(Icons.arrow_forward_ios),
