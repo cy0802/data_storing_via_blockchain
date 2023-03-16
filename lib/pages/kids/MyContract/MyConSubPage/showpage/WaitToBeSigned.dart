@@ -68,12 +68,14 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
                   ) 
                 ),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
-                child: Text(
-                  contractname,
-                  style: TextStyle(
-                    fontSize: 20,
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
+                  child: Text(
+                    contractname,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
