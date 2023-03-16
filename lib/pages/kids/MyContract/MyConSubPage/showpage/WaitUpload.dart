@@ -5,7 +5,7 @@ import 'package:data_storing_via_blockchain/Classes/userpreserve.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ipfs/flutter_ipfs.dart';
+//import 'package:flutter_ipfs/flutter_ipfs.dart';
 import 'package:provider/provider.dart';
 
 class WaitUpload extends StatefulWidget {
@@ -84,12 +84,14 @@ class _WaitUploadState extends State<WaitUpload> {
                   ) 
                 ),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
-                child: Text(
-                  contractname,
-                  style: TextStyle(
-                    fontSize: 20,
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
+                  child: Text(
+                    contractname,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
