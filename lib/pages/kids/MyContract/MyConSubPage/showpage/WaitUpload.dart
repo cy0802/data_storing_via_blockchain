@@ -3,25 +3,24 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_storing_via_blockchain/Classes/userpreserve.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
-import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_ipfs/flutter_ipfs.dart';
-import 'package:provider/provider.dart';
 
 class WaitUpload extends StatefulWidget {
 
   final Map<String, dynamic>data;
   final String email;
-  final String user2time;
+  final String time;
 
   const WaitUpload({
     super.key,
     required this.data,
-    required this.email, required this.user2time,
+    required this.email,
+    required this.time
   });
 
   @override
-  State<WaitUpload> createState() => _WaitUploadState(data: data, email: email, user2time: user2time);
+  State<WaitUpload> createState() => _WaitUploadState(data: data, email: email, time: time);
 }
 
 class _WaitUploadState extends State<WaitUpload> {
@@ -29,26 +28,28 @@ class _WaitUploadState extends State<WaitUpload> {
   late String contractname;
   late String name;
   late String user1time;
-  late String user2time;
   late String emailuser2;
   late String path;
+
   bool isChecked = false;
 
   final Map<String, dynamic>data;
   final String email;
-  _WaitUploadState({ required this.data, required this.email, required this.user2time});
+  final String time;
+  _WaitUploadState({ required this.data, required this.email, required this.time});
 
   void openPDF(BuildContext context, File file) => Navigator.of(context)
     .push(MaterialPageRoute(builder: (context) => PDFViewPage(file: file)));
 
   @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     super.initState();
     initialization();
   }
 
-  void initialization()async{
+  void initialization() async{
+    
     contractname = data['contractname'];
     name = data['name'];
     user1time = data['time'];
@@ -58,7 +59,8 @@ class _WaitUploadState extends State<WaitUpload> {
   
   @override
   Widget build(BuildContext context) {
-
+    
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -153,7 +155,7 @@ class _WaitUploadState extends State<WaitUpload> {
             alignment: Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(30, 0, 10, 20),
             child: Text(
-              user2time,
+              time,
               style: TextStyle(
                 fontSize: 20,
               ),
@@ -241,7 +243,7 @@ class _WaitUploadState extends State<WaitUpload> {
                           contractname: contractname,
                           another_email: email,
                           key: "23",
-                          time: user2time,
+                          time: time,
                           pic_cid: "123",
                         ).toJson());
 
@@ -261,10 +263,10 @@ class _WaitUploadState extends State<WaitUpload> {
                       });
                       mint(jsonPath);
                     });*/
-
-                  FirebaseFirestore.instance.collection("user").doc(email).collection("contract").doc(contractname).delete();
-                  FirebaseFirestore.instance.collection("user").doc(emailuser2).collection("contract").doc(contractname).delete();
-                  
+                  final doc2 = FirebaseFirestore.instance.collection("user").doc(emailuser2).collection("contract").doc(contractname);
+                  final doc1 = FirebaseFirestore.instance.collection("user").doc(email).collection("contract").doc(contractname);
+                  doc1.delete();
+                  doc2.delete();
                   Navigator.of(context).pop();
                 }
               }
