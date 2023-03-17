@@ -19,6 +19,7 @@ class _HistoryState extends State<History> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        
         appBar: AppBar(
           title: const Text('History contract'),
           bottom: const TabBar(
