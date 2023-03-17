@@ -1,8 +1,6 @@
 import 'dart:io';
-import 'package:data_storing_via_blockchain/Classes/usermodel.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 
 class ShowInfo extends StatefulWidget {
@@ -58,7 +56,6 @@ class _ShowInfoState extends State<ShowInfo> {
         children: [
           Row(
             children: [
-              
               Container(
                 padding: EdgeInsets.fromLTRB(10, 20, 0, 15),
                 child: Text(
@@ -163,8 +160,7 @@ class _ShowInfoState extends State<ShowInfo> {
               ),
             ),
           ),
-          const Spacer(flex: 1),
-          
+          const Spacer(flex: 1),  
         ],
       )
     );
