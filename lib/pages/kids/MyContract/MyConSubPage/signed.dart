@@ -22,6 +22,7 @@ class _SignedConState extends State<SignedCon> {
     String email= tmp.user.email;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: [
           Container(
