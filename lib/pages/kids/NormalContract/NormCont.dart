@@ -4,13 +4,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:math';
 import 'dart:io';
-import 'package:data_storing_via_blockchain/Classes/usermodel.dart';
 //import 'package:data_storing_via_blockchain/pages/generateNFT.dart';
 import 'package:flutter/material.dart';
 import 'package:data_storing_via_blockchain/pages/kids/MyContract/RecordedCon.dart';
 import 'package:data_storing_via_blockchain/Classes/user.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
-//import 'package:permission_handler/permission_handler.dart';
+
 //寄通知
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -25,7 +24,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 //import 'package:web3dart/web3dart.dart';
 //import 'package:data_storing_via_blockchain/pages/protectedInfo.dart';
 
@@ -63,7 +62,7 @@ class _MyFormState extends State<MyForm> {
   String filePath = "";
   String cid = "";
   FilePickerResult? file;
-  var result;
+  late File result;
   final _formKey = GlobalKey<FormState>();
   
   //email controller
@@ -291,7 +290,7 @@ class _MyFormState extends State<MyForm> {
                       String appDocPath = appDocDir.path;
                       String tmp = file!.files[0].name;
                       //debugPrint("*********$appDoc")
-                      String filePath = "$appDocPath/$tmp";
+                      filePath = "$appDocPath/$tmp";
                       var localFile = File(filePath);
                       bool t = (file!.files.first.bytes == null);
                       //debugPrint("********$t");
@@ -304,17 +303,12 @@ class _MyFormState extends State<MyForm> {
                         for(int i=0; i<size-4; i++){
                           filename += tmp[i];
                         }
-                        print(size);
-                        print(tmp);
-                        print(filename);
-                        result = File(file!.files.single.path!);
-                        /*final userModel = UserModel(file: result);
-                        final userProvider = Provider.of<UserProvider>(context, listen: false);
-                        userProvider.setUserModel(userModel);*/
-                        openPDF(context, result);
+                        //result = File(file!.files.single.path!);
+                        result = File(filePath);
                       });
+                      openPDF(context, result);
+                      debugPrint("successfully select file");
                     }
-                    debugPrint("successfully select file");
                   } catch (e) {
                     debugPrint('Error at file picker: $e');
                     SnackBar(
@@ -383,9 +377,7 @@ class _MyFormState extends State<MyForm> {
                   child: TextFormField(
                     controller: controller2,
                     validator: (value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          !value.contains("@")) {
+                      if (value == null || value.isEmpty || !value.contains("@")) {
                         return "invalid email";
                       } else {
                         return null;
@@ -419,42 +411,37 @@ class _MyFormState extends State<MyForm> {
                     var email1 = controller1.text;
                     var email2 = controller2.text;
 
-                    var cidOfContract = file!.files.single.path!;
+                    //var cidOfContract = file!.files.single.path!;
+                    //var cidOfContract = "1";
 
-                    await FirebaseFirestore.instance
-                        .collection("user")
-                        .doc(email1)
+                    await FirebaseFirestore.instance.collection("user").doc(email1)
                         .collection("contract")
                         .doc(filename)
                         .set(User(
                           name: name,
                           contractname: filename,
                           another_email: email2,
-                          have_checked: true,
                           time: time,
-                          order: "first",
-                          path: cidOfContract,
+                          order: "等待對方同意",
+                          path: filePath,
                         ).toJson());
-                    await FirebaseFirestore.instance
-                        .collection("user")
-                        .doc(email2)
+                    await FirebaseFirestore.instance.collection("user").doc(email2)
                         .collection("contract")
                         .doc(filename)
                         .set(User(
                           name: name,
                           contractname: filename,
                           another_email: email1,
-                          have_checked: false,
                           time: "not sign yet",
-                          order: "second",
-                          path: cidOfContract,
+                          order: "需同意",
+                          path: filePath,
                         ).toJson());
 
                     DocumentSnapshot snap =
                       await FirebaseFirestore.instance.collection("user").doc(email2).get();
                       String token = snap['token'];
-                      //print(token);
-                      sendPushMessage(token, "New contract!", "Log in and sign the contract");
+
+                    sendPushMessage(token, "New contract!", "Log in and sign the contract");
 
                     Navigator.pushReplacement(
                       context, 
@@ -462,7 +449,6 @@ class _MyFormState extends State<MyForm> {
                         builder: (context) => const History(),
                       ),
                     );
-
                   }
                 },
                 child: const Text("submit"),
