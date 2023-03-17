@@ -1,8 +1,6 @@
 import 'dart:io';
-import 'package:data_storing_via_blockchain/Classes/usermodel.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 
 class WaitToBeSigned extends StatefulWidget {
