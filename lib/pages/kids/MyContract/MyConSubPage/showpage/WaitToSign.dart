@@ -189,19 +189,24 @@ class _WaitToSignState extends State<WaitToSign> {
                 ),
               ),
               onPressed: () async{
-                final docuser = await FirebaseFirestore.instance.collection("user").doc(email).collection("contract").doc(contractname);
+                final docuser1 = await FirebaseFirestore.instance.collection("user").doc(email).collection("contract").doc(contractname);
+                DocumentSnapshot snap = await docuser1.get();
+                String email2 = snap['another_email'];
+                final docuser2 = await FirebaseFirestore.instance.collection("user").doc(email2).collection("contract").doc(contractname);
                 if(isChecked){
-                  docuser.update({
-                    'have_checked': true,
+                  docuser1.update({
+                    'order': "等待對方上鏈",
                     'time': await getTime(),
+                  });
+                  docuser2.update({
+                    'order': "等待上鏈",
                   });
                   Navigator.of(context).pop();
                 }
               },
             ),
           ),
-          const Spacer(flex: 1),
-          
+          const Spacer(flex: 1), 
         ],
       )
     );
