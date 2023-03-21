@@ -86,11 +86,16 @@ Future<String> generateNFT(
   return Future.value("$appDocPath/${artWork.title}.json");
 }
 
+class BlockChain {
+  static Client httpClient = Client();
+  static Web3Client ethClient = Web3Client(rpcEndPoint, httpClient);
+}
+
 Future<DeployedContract> getContract() async {
   const name = "";
   const address = contractAddress;
   String abi = await rootBundle.loadString("asset/fileStore.abi");
-  DeployedContract contract = DeployedContract(
+  final contract = DeployedContract(
     ContractAbi.fromJson(abi, name),
     EthereumAddress.fromHex(address),
   );
@@ -100,36 +105,43 @@ Future<DeployedContract> getContract() async {
 void mint(String jsonPath) async {
   var cidOfJson = await FlutterIpfs().uploadToIpfs(jsonPath);
   String url = "ipfs://$cidOfJson";
-  var fromAddress = EthereumAddress.fromHex(walletAddress);
+  // var fromAddress = EthereumAddress.fromHex(walletAddress);
   // error msg: Unhandled Exception: RPCError: got code -32000 with msg "insufficient funds for gas * price + value"
   // value要填寫account全部有的錢，可以稍微少一點，1ETH = 10^18 Wei，填的數字都要是偶數
-  var value = EtherAmount.inWei(BigInt.from(400000));
-  var gasPrice = EtherAmount.inWei(BigInt.from(200000));
-  var gasLimit = 21000;
+  // var value = EtherAmount.inWei(BigInt.from(400000));
+  // var gasPrice = EtherAmount.inWei(BigInt.from(200000));
+  // var gasLimit = 21000;
   var smartContract = await getContract();
   ContractFunction function = smartContract.function('mint');
-  var transaction = Transaction(
-      from: fromAddress,
-      to: smartContract.address,
-      value: value,
-      gasPrice: gasPrice,
-      maxGas: gasLimit,
-      data: Transaction.callContract(
-          contract: smartContract, function: function, parameters: [url]).data);
-  var rng = Random.secure();
-  Credentials credentials = EthPrivateKey.createRandom(rng);
-  print(credentials);
-  //var address = await credentials.extractAddress();
-  //debugPrint(address.hex);
-  var httpClient = Client();
-  var client = Web3Client(rpcEndPoint, httpClient);
-  await client
+  Credentials key = EthPrivateKey.fromHex(walletPrivateKey);
+  await BlockChain.ethClient
       .sendTransaction(
-    credentials,
-    transaction,
-    chainId: 5,
-  )
+          key,
+          Transaction.callContract(
+              contract: smartContract, function: function, parameters: [url]),
+          chainId: 5)
       .then((s) {
     debugPrint(s);
   });
+//   var transaction = Transaction(
+//       from: fromAddress,
+//       to: smartContract.address,
+//       value: value,
+//       gasPrice: gasPrice,
+//       maxGas: gasLimit,
+//       data: Transaction.callContract(
+//           contract: smartContract, function: function, parameters: [url]).data);
+//   var rng = Random.secure();
+//   Credentials credentials = EthPrivateKey.createRandom(rng);
+//   print(credentials);
+//   var address = await credentials.extractAddress();
+//   debugPrint(address.hex);
+//   await client
+//       .sendTransaction(
+//     credentials,
+//     transaction,
+//     chainId: 5,
+//   ).then((s) {
+//     debugPrint(s);
+//   });
 }
