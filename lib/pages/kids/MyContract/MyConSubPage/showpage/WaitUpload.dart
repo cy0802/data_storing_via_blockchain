@@ -221,6 +221,9 @@ class _WaitUploadState extends State<WaitUpload> {
               ),
               onPressed: () async{
                 if(isChecked){
+                  final path1 = await appDocPath;
+                  totalPath = '$path1/$path';
+                  file = File(totalPath);
   
                   //var cidOfContract = await FlutterIpfs().uploadToIpfs();
                   
