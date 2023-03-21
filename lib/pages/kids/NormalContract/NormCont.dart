@@ -4,28 +4,29 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:math';
 import 'dart:io';
-import 'package:data_storing_via_blockchain/Classes/usermodel.dart';
 //import 'package:data_storing_via_blockchain/pages/generateNFT.dart';
+import 'package:data_storing_via_blockchain/function/local_folder.dart';
+import 'package:dio/dio.dart' hide Response;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:data_storing_via_blockchain/pages/kids/MyContract/RecordedCon.dart';
 import 'package:data_storing_via_blockchain/Classes/user.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
-//import 'package:permission_handler/permission_handler.dart';
+
 //寄通知
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 //選資料
-import 'package:flutter_ipfs/flutter_ipfs.dart';
-import 'package:flutter_ipfs/src/service/file_picker.dart';
+//import 'package:flutter_ipfs/flutter_ipfs.dart';
+//import 'package:flutter_ipfs/src/service/file_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 //import 'package:web3dart/web3dart.dart';
 //import 'package:data_storing_via_blockchain/pages/protectedInfo.dart';
 
@@ -58,13 +59,13 @@ class MyForm extends StatefulWidget {
 class _MyFormState extends State<MyForm> {
 
   //變數
-  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  late final int FLAG_IMMUTABLE;
-  String filename = "none";
+  //static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  String filename = "";
   String filePath = "";
   String cid = "";
   FilePickerResult? file;
-  var result;
+  PlatformFile? pickedFile;
+  late File result;
   final _formKey = GlobalKey<FormState>();
   
   //email controller
@@ -76,7 +77,7 @@ class _MyFormState extends State<MyForm> {
 
   
   //函式
-  Future<String> get _localPath async {
+  /*Future<String> get _localPath async {
     final directory = await getTemporaryDirectory();
     return directory.path;
   }
@@ -106,7 +107,7 @@ class _MyFormState extends State<MyForm> {
       // If encountering an error, return 0
       return 0;
     }
-  }
+  }*/
 
   Future<String> getTime() async{
   Response response =  await get(Uri.parse('http://worldtimeapi.org/api/timezone/Asia/Taipei')) ;
@@ -137,34 +138,31 @@ class _MyFormState extends State<MyForm> {
   void initState(){
     super.initState();
     requestPermission();
-    initInfo();
+    //initInfo();
   }
-  initInfo(){
+  /*initInfo(){
     var androidInitialize = const AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOSInitialize = const IOSInitializationSettings();
+    var iOSInitialize = const DarwinInitializationSettings();
     var initializationsSettings = InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
     //the function does not work
-    flutterLocalNotificationsPlugin.initialize(initializationsSettings, onSelectNotification: (String? payload) async {
+    flutterLocalNotificationsPlugin.initialize(initializationsSettings, onDidReceiveNotificationResponse: (payload) async {
       try{
-        if(payload != null && payload.isNotEmpty){
+        if(payload != null){
           print(".......................onBackgroundMessage.......................");
           print("fdfdffdfdfdfdff");
           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
             return History();
           }
           ));
-        } else {
-          print(".......................onBackgroundMessage.......................");
-          print("fdfdffdfdfdfdff");
-          
+        } else {          
         }
       }catch(e){
         print(e.toString());
       }
       return;
     });
-    //some problems here I can not address
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
+    some problems here I can not address
+    */ /*FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
       print(".......................onMessage.......................");
       print("onMessage: ${message.notification?.title}/${message.notification?.body}");
       BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
@@ -175,17 +173,16 @@ class _MyFormState extends State<MyForm> {
       );
       AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'hi', 
-        'hi channel',
         'hi',
-        importance: Importance.high,
+        importance: Importance.max,
         styleInformation: bigTextStyleInformation, 
         priority: Priority.high, 
         playSound: true,
-        additionalFlags: Int32List.fromList([FLAG_IMMUTABLE]),
+
       );
       NotificationDetails PlatformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
-        iOS: const IOSNotificationDetails()
+        iOS: const DarwinNotificationDetails()
       );
       await flutterLocalNotificationsPlugin.show(
         0, 
@@ -194,7 +191,7 @@ class _MyFormState extends State<MyForm> {
         PlatformChannelSpecifics,
         payload: message.data['body']);
     });
-  }
+  }*/
   void requestPermission() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     NotificationSettings settings = await messaging.requestPermission(
@@ -278,11 +275,11 @@ class _MyFormState extends State<MyForm> {
                 onPressed: () async {
                   // file picker
                   try {
-
                     final FilePicker picker = FilePicker.platform;
                     file = await picker.pickFiles(
                       type: FileType.custom,
                       allowedExtensions: ["jpg", "png", "pdf", "jpeg"],
+                      withData: true,
                     );
                     if (file == null) {
                       Fluttertoast.showToast(
@@ -291,16 +288,21 @@ class _MyFormState extends State<MyForm> {
                       return;
 
                     } else {
+                      
+                      pickedFile = file!.files.first;
+                      String tmp = file!.files[0].name;
+                      result = File(pickedFile!.path!);
                       setState(() {
-                        filename = file!.files[0].name;
-                        result = File(file!.files.single.path!);
-                        /*final userModel = UserModel(file: result);
-                        final userProvider = Provider.of<UserProvider>(context, listen: false);
-                        userProvider.setUserModel(userModel);*/
-                        openPDF(context, result);
+                        int size = tmp.length;
+                        for(int i=0; i<size-4; i++){
+                          filename += tmp[i];
+                        }
+                        //result = File(file!.files.single.path!);
+                        //result = File(filePath);
                       });
+                      openPDF(context, result);
+                      debugPrint("successfully select file");
                     }
-                    debugPrint("successfully select file");
                   } catch (e) {
                     debugPrint('Error at file picker: $e');
                     SnackBar(
@@ -369,9 +371,7 @@ class _MyFormState extends State<MyForm> {
                   child: TextFormField(
                     controller: controller2,
                     validator: (value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          !value.contains("@")) {
+                      if (value == null || value.isEmpty || !value.contains("@")) {
                         return "invalid email";
                       } else {
                         return null;
@@ -397,7 +397,7 @@ class _MyFormState extends State<MyForm> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     String time = await getTime();
-                    //存一些資料在firestore，用來顯示在帶簽署那裏，讓使用者清楚知道一些合約基本資訊
+                    //存一些資料在firestore，用來顯示在待簽署那裏，讓使用者清楚知道一些合約基本資訊
                     var name1 = controller3.text;
                     var name2 = controller4.text;
                     String name = '$name1, $name2';
@@ -405,42 +405,44 @@ class _MyFormState extends State<MyForm> {
                     var email1 = controller1.text;
                     var email2 = controller2.text;
 
-                    var cidOfContract = file!.files.single.path!;
+                    //var cidOfContract = file!.files.single.path!;
+                    //var cidOfContract = "1";
+                    final path = 'files/$email1+$email2/$filename';
+                    final ref = FirebaseStorage.instance.ref().child(path);
+                    await ref.putFile(result);
+                    final urlDownload = await ref.getDownloadURL();
+                    final path1 = await appDocPath;
+                    final totalPath = '$path1/$path';
+                    await Dio().download(urlDownload, totalPath);
 
-                    await FirebaseFirestore.instance
-                        .collection("user")
-                        .doc(email1)
+                    await FirebaseFirestore.instance.collection("user").doc(email1)
                         .collection("contract")
                         .doc(filename)
                         .set(User(
                           name: name,
                           contractname: filename,
                           another_email: email2,
-                          have_checked: true,
                           time: time,
-                          order: "first",
-                          path: cidOfContract,
+                          order: "等待對方同意",
+                          path: path,
                         ).toJson());
-                    await FirebaseFirestore.instance
-                        .collection("user")
-                        .doc(email2)
+                    await FirebaseFirestore.instance.collection("user").doc(email2)
                         .collection("contract")
                         .doc(filename)
                         .set(User(
                           name: name,
                           contractname: filename,
                           another_email: email1,
-                          have_checked: false,
                           time: "not sign yet",
-                          order: "second",
-                          path: cidOfContract,
+                          order: "需同意",
+                          path: path,
                         ).toJson());
 
                     DocumentSnapshot snap =
                       await FirebaseFirestore.instance.collection("user").doc(email2).get();
                       String token = snap['token'];
-                      //print(token);
-                      sendPushMessage(token, "New contract!", "Log in and sign the contract");
+
+                    sendPushMessage(token, "New contract!", "Log in and sign the contract");
 
                     Navigator.pushReplacement(
                       context, 
@@ -448,7 +450,6 @@ class _MyFormState extends State<MyForm> {
                         builder: (context) => const History(),
                       ),
                     );
-
                   }
                 },
                 child: const Text("submit"),

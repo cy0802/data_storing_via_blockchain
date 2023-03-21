@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-//import 'package:mailer/mailer.dart';
-//import 'package:mailer/smtp_server/gmail.dart';
 
 class GoogleSignInProvider extends ChangeNotifier {
   final googleSignIn = GoogleSignIn();
@@ -33,7 +31,6 @@ class GoogleSignInProvider extends ChangeNotifier {
       
       //將現在用戶email存起來
 
-
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
@@ -43,7 +40,6 @@ class GoogleSignInProvider extends ChangeNotifier {
 
       await FirebaseAuth.instance.signInWithCredential(credential);
       
-
     } catch(e){
       print(e.toString());
     }

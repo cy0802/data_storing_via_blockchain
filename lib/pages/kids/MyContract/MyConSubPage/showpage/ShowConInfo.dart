@@ -1,8 +1,7 @@
 import 'dart:io';
-import 'package:data_storing_via_blockchain/Classes/usermodel.dart';
+import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 
 class ShowInfo extends StatefulWidget {
@@ -58,7 +57,6 @@ class _ShowInfoState extends State<ShowInfo> {
         children: [
           Row(
             children: [
-              
               Container(
                 padding: EdgeInsets.fromLTRB(10, 20, 0, 15),
                 child: Text(
@@ -68,12 +66,14 @@ class _ShowInfoState extends State<ShowInfo> {
                   ) 
                 ),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
-                child: Text(
-                  contractname,
-                  style: TextStyle(
-                    fontSize: 20,
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
+                  child: Text(
+                    contractname,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
@@ -106,7 +106,7 @@ class _ShowInfoState extends State<ShowInfo> {
               Container(
                 padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
                 child: Text(
-                  "簽署時間 : ",
+                  "同意時間 : ",
                   style: TextStyle(
                     fontSize: 20,
                   ) 
@@ -146,8 +146,10 @@ class _ShowInfoState extends State<ShowInfo> {
             ),
             onPressed: () async {
 
-              var result = File(path);
-              openPDF(context, result);
+              final path1 = await appDocPath;
+              final totalPath = '$path1/$path';
+              final file = File(totalPath);
+              openPDF(context, file);
             }, 
           ),
           const Spacer(flex: 19),
@@ -161,8 +163,7 @@ class _ShowInfoState extends State<ShowInfo> {
               ),
             ),
           ),
-          const Spacer(flex: 1),
-          
+          const Spacer(flex: 1),  
         ],
       )
     );

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 import 'package:data_storing_via_blockchain/pages/LoginHome.dart';
@@ -58,10 +59,7 @@ class _MyAPPState extends State<MyAPP> with WidgetsBindingObserver{
     }
   }
   void _logout() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
       await FirebaseAuth.instance.signOut();
-    }
   }
   @override
   Widget build(BuildContext context) {

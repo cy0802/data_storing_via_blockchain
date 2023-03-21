@@ -2,43 +2,40 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_storing_via_blockchain/Classes/userpreserve.dart';
+import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
-import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ipfs/flutter_ipfs.dart';
-import 'package:provider/provider.dart';
-import 'package:data_storing_via_blockchain/pages/generateNFT.dart';
+//import 'package:flutter_ipfs/flutter_ipfs.dart';
 
 class WaitUpload extends StatefulWidget {
   final Map<String, dynamic> data;
   final String email;
-  final String user2time;
+  final String time;
 
-  const WaitUpload({
-    super.key,
-    required this.data,
-    required this.email,
-    required this.user2time,
-  });
+  const WaitUpload(
+      {super.key, required this.data, required this.email, required this.time});
 
   @override
   State<WaitUpload> createState() =>
-      _WaitUploadState(data: data, email: email, user2time: user2time);
+      _WaitUploadState(data: data, email: email, time: time);
 }
 
 class _WaitUploadState extends State<WaitUpload> {
   late String contractname;
   late String name;
   late String user1time;
-  late String user2time;
   late String emailuser2;
   late String path;
+  late String totalPath;
+  late File file;
+
   bool isChecked = false;
 
   final Map<String, dynamic> data;
   final String email;
+  final String time;
   _WaitUploadState(
-      {required this.data, required this.email, required this.user2time});
+      {required this.data, required this.email, required this.time});
 
   void openPDF(BuildContext context, File file) => Navigator.of(context)
       .push(MaterialPageRoute(builder: (context) => PDFViewPage(file: file)));
@@ -81,12 +78,14 @@ class _WaitUploadState extends State<WaitUpload> {
                         fontSize: 20,
                       )),
                 ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
-                  child: Text(
-                    contractname,
-                    style: TextStyle(
-                      fontSize: 20,
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
+                    child: Text(
+                      contractname,
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
                     ),
                   ),
                 ),
@@ -142,7 +141,7 @@ class _WaitUploadState extends State<WaitUpload> {
               alignment: Alignment.topLeft,
               padding: EdgeInsets.fromLTRB(30, 0, 10, 20),
               child: Text(
-                user2time,
+                time,
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -171,8 +170,10 @@ class _WaitUploadState extends State<WaitUpload> {
                     const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
               ),
               onPressed: () async {
-                var result = File(path);
-                openPDF(context, result);
+                final path1 = await appDocPath;
+                totalPath = '$path1/$path';
+                file = File(totalPath);
+                openPDF(context, file);
               },
             ),
             CheckboxListTile(
@@ -200,7 +201,11 @@ class _WaitUploadState extends State<WaitUpload> {
                   ),
                   onPressed: () async {
                     if (isChecked) {
-                      //var cidOfContract = await FlutterIpfs().uploadToIpfs(path);
+                      final path1 = await appDocPath;
+                      totalPath = '$path1/$path';
+                      file = File(totalPath);
+
+                      //var cidOfContract = await FlutterIpfs().uploadToIpfs();
 
                       await FirebaseFirestore.instance
                           .collection("user")
@@ -226,40 +231,38 @@ class _WaitUploadState extends State<WaitUpload> {
                             contractname: contractname,
                             another_email: email,
                             key: "23",
-                            time: user2time,
+                            time: time,
                             pic_cid: "123",
                           ).toJson());
 
-                      showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (BuildContext context) => const ProgressDialog(
-                          status: 'Contract Uploading to IPFS',
-                        ),
-                      );
+                      /*showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext context) => const ProgressDialog(
+                        status: 'Contract Uploading to IPFS',
+                      ),
+                    );
 
-                      // debugPrint("cidOfContract: $cidOfContract");
-                      // String jsonPath = "";
-                      // generateNFT(cidOfContract, email, emailuser2).then((s) {
-                      //   setState(() {
-                      //     jsonPath = s;
-                      //   });
-                      //   mint(jsonPath);
-                      // });
-
-                      FirebaseFirestore.instance
-                          .collection("user")
-                          .doc(email)
-                          .collection("contract")
-                          .doc(contractname)
-                          .delete();
-                      FirebaseFirestore.instance
+                  debugPrint("cidOfContract: $cidOfContract");
+                  String jsonPath = "";
+                    generateNFT(cidOfContract, email, emailuser2).then((s) {
+                      setState(() {
+                        jsonPath = s;
+                      });
+                      mint(jsonPath);
+                    });*/
+                      final doc2 = FirebaseFirestore.instance
                           .collection("user")
                           .doc(emailuser2)
                           .collection("contract")
-                          .doc(contractname)
-                          .delete();
-
+                          .doc(contractname);
+                      final doc1 = FirebaseFirestore.instance
+                          .collection("user")
+                          .doc(email)
+                          .collection("contract")
+                          .doc(contractname);
+                      doc1.delete();
+                      doc2.delete();
                       Navigator.of(context).pop();
                     }
                   }),

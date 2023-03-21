@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'package:data_storing_via_blockchain/Classes/usermodel.dart';
+import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 
 class WaitToBeSigned extends StatefulWidget {
@@ -68,12 +68,14 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
                   ) 
                 ),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
-                child: Text(
-                  contractname,
-                  style: TextStyle(
-                    fontSize: 20,
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
+                  child: Text(
+                    contractname,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
@@ -143,8 +145,11 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
             onPressed: () async {
-              var result = File(path);
-              openPDF(context, result);
+              final path1 = await appDocPath;
+              final totalPath = '$path1/$path';
+              final file = File(totalPath);
+              //var result = File(path);
+              openPDF(context, file);
             }, 
           ),
           const Spacer(flex: 19),

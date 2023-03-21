@@ -2,8 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
+import 'package:dio/dio.dart'hide Response;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
@@ -78,12 +81,14 @@ class _WaitToSignState extends State<WaitToSign> {
                   ) 
                 ),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
-                child: Text(
-                  contractname,
-                  style: TextStyle(
-                    fontSize: 20,
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
+                  child: Text(
+                    contractname,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
@@ -116,7 +121,7 @@ class _WaitToSignState extends State<WaitToSign> {
               Container(
                 padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
                 child: Text(
-                  "簽署時間 : ",
+                  "同意時間 : ",
                   style: TextStyle(
                     fontSize: 20,
                   ) 
@@ -155,8 +160,13 @@ class _WaitToSignState extends State<WaitToSign> {
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
             onPressed: () async {
-              var result = File(path);
-              openPDF(context, result);
+              final ref = FirebaseStorage.instance.ref().child(path);
+              final urlDownload = await ref.getDownloadURL();
+              final path1 = await appDocPath;
+              final totalPath = '$path1/$path';
+              await Dio().download(urlDownload, totalPath);
+              final file = File(totalPath);
+              openPDF(context, file);
             }, 
           ),
           CheckboxListTile(
@@ -187,19 +197,24 @@ class _WaitToSignState extends State<WaitToSign> {
                 ),
               ),
               onPressed: () async{
-                final docuser = await FirebaseFirestore.instance.collection("user").doc(email).collection("contract").doc(contractname);
+                final docuser1 = await FirebaseFirestore.instance.collection("user").doc(email).collection("contract").doc(contractname);
+                DocumentSnapshot snap = await docuser1.get();
+                String email2 = snap['another_email'];
+                final docuser2 = await FirebaseFirestore.instance.collection("user").doc(email2).collection("contract").doc(contractname);
                 if(isChecked){
-                  docuser.update({
-                    'have_checked': true,
+                  docuser1.update({
+                    'order': "等待對方上鏈",
                     'time': await getTime(),
+                  });
+                  docuser2.update({
+                    'order': "等待上鏈",
                   });
                   Navigator.of(context).pop();
                 }
               },
             ),
           ),
-          const Spacer(flex: 1),
-          
+          const Spacer(flex: 1), 
         ],
       )
     );
