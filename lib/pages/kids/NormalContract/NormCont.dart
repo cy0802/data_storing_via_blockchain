@@ -5,6 +5,9 @@ import 'dart:typed_data';
 import 'dart:math';
 import 'dart:io';
 //import 'package:data_storing_via_blockchain/pages/generateNFT.dart';
+import 'package:data_storing_via_blockchain/function/local_folder.dart';
+import 'package:dio/dio.dart' hide Response;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:data_storing_via_blockchain/pages/kids/MyContract/RecordedCon.dart';
 import 'package:data_storing_via_blockchain/Classes/user.dart';
@@ -23,7 +26,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 //import 'package:provider/provider.dart';
 //import 'package:web3dart/web3dart.dart';
 //import 'package:data_storing_via_blockchain/pages/protectedInfo.dart';
@@ -62,6 +64,7 @@ class _MyFormState extends State<MyForm> {
   String filePath = "";
   String cid = "";
   FilePickerResult? file;
+  PlatformFile? pickedFile;
   late File result;
   final _formKey = GlobalKey<FormState>();
   
@@ -285,26 +288,17 @@ class _MyFormState extends State<MyForm> {
                       return;
 
                     } else {
-                      //here
-                      Directory appDocDir = await getApplicationDocumentsDirectory();
-                      String appDocPath = appDocDir.path;
+                      
+                      pickedFile = file!.files.first;
                       String tmp = file!.files[0].name;
-                      //debugPrint("*********$appDoc")
-                      filePath = "$appDocPath/$tmp";
-                      var localFile = File(filePath);
-                      bool t = (file!.files.first.bytes == null);
-                      //debugPrint("********$t");
-                      localFile.writeAsBytes(file!.files.first.bytes as Uint8List);
-                      //debugPrint("********$appDocPath/$tmp");
-                      //debugPrint("*******${file!.files}");
-
+                      result = File(pickedFile!.path!);
                       setState(() {
                         int size = tmp.length;
                         for(int i=0; i<size-4; i++){
                           filename += tmp[i];
                         }
                         //result = File(file!.files.single.path!);
-                        result = File(filePath);
+                        //result = File(filePath);
                       });
                       openPDF(context, result);
                       debugPrint("successfully select file");
@@ -403,7 +397,7 @@ class _MyFormState extends State<MyForm> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     String time = await getTime();
-                    //存一些資料在firestore，用來顯示在帶簽署那裏，讓使用者清楚知道一些合約基本資訊
+                    //存一些資料在firestore，用來顯示在待簽署那裏，讓使用者清楚知道一些合約基本資訊
                     var name1 = controller3.text;
                     var name2 = controller4.text;
                     String name = '$name1, $name2';
@@ -413,6 +407,13 @@ class _MyFormState extends State<MyForm> {
 
                     //var cidOfContract = file!.files.single.path!;
                     //var cidOfContract = "1";
+                    final path = 'files/$email1+$email2/$filename';
+                    final ref = FirebaseStorage.instance.ref().child(path);
+                    await ref.putFile(result);
+                    final urlDownload = await ref.getDownloadURL();
+                    final path1 = await appDocPath;
+                    final totalPath = '$path1/$path';
+                    await Dio().download(urlDownload, totalPath);
 
                     await FirebaseFirestore.instance.collection("user").doc(email1)
                         .collection("contract")
@@ -423,7 +424,7 @@ class _MyFormState extends State<MyForm> {
                           another_email: email2,
                           time: time,
                           order: "等待對方同意",
-                          path: filePath,
+                          path: path,
                         ).toJson());
                     await FirebaseFirestore.instance.collection("user").doc(email2)
                         .collection("contract")
@@ -434,7 +435,7 @@ class _MyFormState extends State<MyForm> {
                           another_email: email1,
                           time: "not sign yet",
                           order: "需同意",
-                          path: filePath,
+                          path: path,
                         ).toJson());
 
                     DocumentSnapshot snap =
