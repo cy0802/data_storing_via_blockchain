@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_storing_via_blockchain/Classes/userpreserve.dart';
+import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_ipfs/flutter_ipfs.dart';
@@ -30,6 +31,8 @@ class _WaitUploadState extends State<WaitUpload> {
   late String user1time;
   late String emailuser2;
   late String path;
+  late String totalPath;
+  late File file;
 
   bool isChecked = false;
 
@@ -183,8 +186,10 @@ class _WaitUploadState extends State<WaitUpload> {
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
             onPressed: () async {
-              var result = File(path);
-              openPDF(context, result);
+              final path1 = await appDocPath;
+              totalPath = '$path1/$path';
+              file = File(totalPath);
+              openPDF(context, file);
             }, 
           ),
           CheckboxListTile(
@@ -217,7 +222,7 @@ class _WaitUploadState extends State<WaitUpload> {
               onPressed: () async{
                 if(isChecked){
   
-                  //var cidOfContract = await FlutterIpfs().uploadToIpfs(path);
+                  //var cidOfContract = await FlutterIpfs().uploadToIpfs();
                   
                   await FirebaseFirestore.instance
                         .collection("user")
