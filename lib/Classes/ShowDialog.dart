@@ -2,11 +2,16 @@ import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void show_dialog(BuildContext context, String email) =>  showDialog(
+void show_dialog(BuildContext context, String email, /*String url*/) =>  showDialog(
   context: context,
   builder: (BuildContext context) => SimpleDialog(
-    title: Text(email),
+    
     children: <Widget>[
+      /*CircleAvatar(
+        radius: 30,
+        backgroundImage: NetworkImage(url),
+      ),*/
+      Text(email),
       Divider(color: Colors.grey[500]),
       SimpleDialogOption(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
