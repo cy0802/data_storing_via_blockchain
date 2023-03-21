@@ -309,3 +309,18 @@ StreamBuilder(
     user2Time = snap['time'];
     user2HaveCheck = snap['have_checked'];
   }
+
+
+
+  //here
+                      /*Directory appDocDir = await getApplicationDocumentsDirectory();
+                      String appDocPath = appDocDir.path;*/
+                      
+                      //debugPrint("*********$appDoc")
+                      //filePath = "$appDocPath/$tmp";
+                     // var localFile = File(filePath);
+                      //bool t = (file!.files.first.bytes == null);
+                      //debugPrint("********$t");
+                      //localFile.writeAsBytes(file!.files.first.bytes as Uint8List);
+                      //debugPrint("********$appDocPath/$tmp");
+                      //debugPrint("*******${file!.files}");
