@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:flutter/material.dart';
 
@@ -145,8 +146,10 @@ class _ShowInfoState extends State<ShowInfo> {
             ),
             onPressed: () async {
 
-              var result = File(path);
-              openPDF(context, result);
+              final path1 = await appDocPath;
+              final totalPath = '$path1/$path';
+              final file = File(totalPath);
+              openPDF(context, file);
             }, 
           ),
           const Spacer(flex: 19),
