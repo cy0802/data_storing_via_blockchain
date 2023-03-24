@@ -50,8 +50,11 @@ void drawArt(ArtWork artWork, Canvas canvas, Size size) {
 }
 
 // return the path of the json file
-Future<String> generateNFT(
-    String contractCid, String email1, String email2) async {
+Future<List<String>> generateNFT(
+    // return jsonPath, cidOfImg
+    String contractCid,
+    String email1,
+    String email2) async {
   ArtWork artWork = ArtWork();
   Directory appDocDir = await getApplicationDocumentsDirectory();
   String appDocPath = appDocDir.path;
@@ -70,6 +73,7 @@ Future<String> generateNFT(
   myFile.writeAsBytesSync(pngBytes);
   var cidOfImage =
       await FlutterIpfs().uploadToIpfs("$appDocPath/${artWork.title}.png");
+  debugPrint("generateNFT.dart: NFTImgPath: ${myFile.path}");
   String traits =
       '[{"trait_type":"BgColor","value": "${artWork.backgroundIndex}"},'
       '{"trait_type":"FgColor","value": "${artWork.forgroundIndex}"},'
@@ -83,65 +87,62 @@ Future<String> generateNFT(
       '"email2": "$email2"}';
   myFile = File("$appDocPath/${artWork.title}.json");
   myFile.writeAsStringSync(nftJson);
-  return Future.value("$appDocPath/${artWork.title}.json");
+  return Future.value(["$appDocPath/${artWork.title}.json", cidOfImage]);
 }
 
-class BlockChain {
+/*class BlockChain {
   static Client httpClient = Client();
   static Web3Client ethClient = Web3Client(rpcEndPoint, httpClient);
-}
+}*/
 
 Future<DeployedContract> getContract() async {
   const name = "";
   const address = contractAddress;
-  String abi = await rootBundle.loadString("asset/fileStore.abi");
-  final contract = DeployedContract(
+  String abi = await rootBundle.loadString("assets/fileStore.abi");
+  DeployedContract contract = DeployedContract(
     ContractAbi.fromJson(abi, name),
     EthereumAddress.fromHex(address),
   );
   return contract;
 }
 
-void mint(String jsonPath) async {
+Future<String> mint(String jsonPath) async {
   var cidOfJson = await FlutterIpfs().uploadToIpfs(jsonPath);
   String url = "ipfs://$cidOfJson";
-  // var fromAddress = EthereumAddress.fromHex(walletAddress);
+  var fromAddress = EthereumAddress.fromHex(walletAddress);
   // error msg: Unhandled Exception: RPCError: got code -32000 with msg "insufficient funds for gas * price + value"
   // value要填寫account全部有的錢，可以稍微少一點，1ETH = 10^18 Wei，填的數字都要是偶數
-  // var value = EtherAmount.inWei(BigInt.from(400000));
-  // var gasPrice = EtherAmount.inWei(BigInt.from(200000));
-  // var gasLimit = 21000;
+  //var value = EtherAmount.inWei(BigInt.from(400000));
+  //var gasPrice = EtherAmount.inWei(BigInt.from(200000));
+  //var gasLimit = 21000;
   var smartContract = await getContract();
   ContractFunction function = smartContract.function('mint');
-  Credentials key = EthPrivateKey.fromHex(walletPrivateKey);
-  await BlockChain.ethClient
+  var transaction = Transaction(
+      from: fromAddress,
+      to: smartContract.address,
+      //value: value,
+      //gasPrice: gasPrice,
+      //maxGas: gasLimit,
+      data: Transaction.callContract(
+          contract: smartContract, function: function, parameters: [url]).data
+  );
+  Credentials credentials = EthPrivateKey.fromHex(privateKey);
+  var httpClient = Client();
+  var client = Web3Client(rpcEndPoint, httpClient);
+  String transactionHash = "";
+  await client
       .sendTransaction(
-          key,
-          Transaction.callContract(
-              contract: smartContract, function: function, parameters: [url]),
-          chainId: 5)
+    credentials,
+    transaction,
+    chainId: 5,
+  )
       .then((s) {
     debugPrint(s);
+    transactionHash = s;
   });
-//   var transaction = Transaction(
-//       from: fromAddress,
-//       to: smartContract.address,
-//       value: value,
-//       gasPrice: gasPrice,
-//       maxGas: gasLimit,
-//       data: Transaction.callContract(
-//           contract: smartContract, function: function, parameters: [url]).data);
-//   var rng = Random.secure();
-//   Credentials credentials = EthPrivateKey.createRandom(rng);
-//   print(credentials);
-//   var address = await credentials.extractAddress();
-//   debugPrint(address.hex);
-//   await client
-//       .sendTransaction(
-//     credentials,
-//     transaction,
-//     chainId: 5,
-//   ).then((s) {
-//     debugPrint(s);
-//   });
+  if (transactionHash != "") {
+    return transactionHash;
+  } else {
+    return "fail";
+  }
 }

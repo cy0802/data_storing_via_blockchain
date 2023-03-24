@@ -5,7 +5,8 @@ import 'package:data_storing_via_blockchain/Classes/userpreserve.dart';
 import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_ipfs/flutter_ipfs.dart';
+import 'package:flutter_ipfs/flutter_ipfs.dart';
+import 'package:data_storing_via_blockchain/pages/generateNFT.dart';
 
 class WaitUpload extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -141,7 +142,7 @@ class _WaitUploadState extends State<WaitUpload> {
               alignment: Alignment.topLeft,
               padding: EdgeInsets.fromLTRB(30, 0, 10, 20),
               child: Text(
-                time,
+                user1time,
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -204,9 +205,43 @@ class _WaitUploadState extends State<WaitUpload> {
                       final path1 = await appDocPath;
                       totalPath = '$path1/$path';
                       file = File(totalPath);
+                      //debugPrint("*******${totalPath}");
 
-                      //var cidOfContract = await FlutterIpfs().uploadToIpfs();
+                      var cidOfContract =
+                          await FlutterIpfs().uploadToIpfs(totalPath);
 
+                      showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (BuildContext context) => const ProgressDialog(
+                          status: 'Contract Uploading to IPFS',
+                        ),
+                      );
+
+                      debugPrint("cidOfContract: $cidOfContract");
+                      String jsonPath = "";
+                      String cidOfNFTImg = "";
+                      await generateNFT(cidOfContract, email, emailuser2)
+                          .then((s) {
+                        setState(() {
+                          jsonPath = s[0];
+                          cidOfNFTImg = s[1];
+                          //debugPrint("##jsonPath: $jsonPath");
+                          //debugPrint("##cidOfNFTImg: $cidOfNFTImg");
+                        });
+                      }).catchError((error) {
+                        debugPrint(error);
+                      });
+                      //debugPrint("###jsonPath: $jsonPath");
+                      //debugPrint("###cidOfNFTImg: $cidOfNFTImg");
+                      String transactionHash = "";
+                      await mint(jsonPath).then((s) {
+                        transactionHash = s;
+                        //debugPrint("##transactionHash: $transactionHash");
+                      }).catchError((error) {
+                        debugPrint(error);
+                      });
+                      //debugPrint("###transactionHash: $transactionHash");
                       await FirebaseFirestore.instance
                           .collection("user")
                           .doc(email)
@@ -216,9 +251,9 @@ class _WaitUploadState extends State<WaitUpload> {
                             name: name,
                             contractname: contractname,
                             another_email: emailuser2,
-                            key: "12",
+                            key: transactionHash,
                             time: user1time,
-                            pic_cid: "123",
+                            pic_cid: cidOfNFTImg,
                           ).toJson());
 
                       await FirebaseFirestore.instance
@@ -230,27 +265,10 @@ class _WaitUploadState extends State<WaitUpload> {
                             name: name,
                             contractname: contractname,
                             another_email: email,
-                            key: "23",
+                            key: transactionHash,
                             time: time,
-                            pic_cid: "123",
+                            pic_cid: cidOfNFTImg,
                           ).toJson());
-
-                      /*showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) => const ProgressDialog(
-                        status: 'Contract Uploading to IPFS',
-                      ),
-                    );
-
-                  debugPrint("cidOfContract: $cidOfContract");
-                  String jsonPath = "";
-                    generateNFT(cidOfContract, email, emailuser2).then((s) {
-                      setState(() {
-                        jsonPath = s;
-                      });
-                      mint(jsonPath);
-                    });*/
                       final doc2 = FirebaseFirestore.instance
                           .collection("user")
                           .doc(emailuser2)
@@ -264,6 +282,8 @@ class _WaitUploadState extends State<WaitUpload> {
                       doc1.delete();
                       doc2.delete();
                       Navigator.of(context).pop();
+                      //TODO: switch to other page after successful transaction
+                      //please detect if error occur or not
                     }
                   }),
             ),

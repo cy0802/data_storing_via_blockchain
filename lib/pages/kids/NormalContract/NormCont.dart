@@ -292,6 +292,8 @@ class _MyFormState extends State<MyForm> {
                       pickedFile = file!.files.first;
                       String tmp = file!.files[0].name;
                       result = File(pickedFile!.path!);
+                      debugPrint("***********${result.path}");
+                      openPDF(context, result);
                       setState(() {
                         int size = tmp.length;
                         for(int i=0; i<size-4; i++){
@@ -300,7 +302,6 @@ class _MyFormState extends State<MyForm> {
                         //result = File(file!.files.single.path!);
                         //result = File(filePath);
                       });
-                      openPDF(context, result);
                       debugPrint("successfully select file");
                     }
                   } catch (e) {
