@@ -50,8 +50,11 @@ void drawArt(ArtWork artWork, Canvas canvas, Size size) {
 }
 
 // return the path of the json file
-Future<List<String>> generateNFT( // return jsonPath, cidOfImg
-    String contractCid, String email1, String email2) async {
+Future<List<String>> generateNFT(
+    // return jsonPath, cidOfImg
+    String contractCid,
+    String email1,
+    String email2) async {
   ArtWork artWork = ArtWork();
   Directory appDocDir = await getApplicationDocumentsDirectory();
   String appDocPath = appDocDir.path;
@@ -87,6 +90,11 @@ Future<List<String>> generateNFT( // return jsonPath, cidOfImg
   return Future.value(["$appDocPath/${artWork.title}.json", cidOfImage]);
 }
 
+/*class BlockChain {
+  static Client httpClient = Client();
+  static Web3Client ethClient = Web3Client(rpcEndPoint, httpClient);
+}*/
+
 Future<DeployedContract> getContract() async {
   const name = "";
   const address = contractAddress;
@@ -116,7 +124,8 @@ Future<String> mint(String jsonPath) async {
       //gasPrice: gasPrice,
       //maxGas: gasLimit,
       data: Transaction.callContract(
-          contract: smartContract, function: function, parameters: [url]).data);
+          contract: smartContract, function: function, parameters: [url]).data
+  );
   Credentials credentials = EthPrivateKey.fromHex(privateKey);
   var httpClient = Client();
   var client = Web3Client(rpcEndPoint, httpClient);
@@ -126,11 +135,12 @@ Future<String> mint(String jsonPath) async {
     credentials,
     transaction,
     chainId: 5,
-  ).then((s) {
+  )
+      .then((s) {
     debugPrint(s);
     transactionHash = s;
   });
-  if(transactionHash != ""){
+  if (transactionHash != "") {
     return transactionHash;
   } else {
     return "fail";

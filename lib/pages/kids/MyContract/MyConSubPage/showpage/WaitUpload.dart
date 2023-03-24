@@ -142,7 +142,7 @@ class _WaitUploadState extends State<WaitUpload> {
               alignment: Alignment.topLeft,
               padding: EdgeInsets.fromLTRB(30, 0, 10, 20),
               child: Text(
-                time,
+                user1time,
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -221,23 +221,24 @@ class _WaitUploadState extends State<WaitUpload> {
                       debugPrint("cidOfContract: $cidOfContract");
                       String jsonPath = "";
                       String cidOfNFTImg = "";
-                      await generateNFT(cidOfContract, email, emailuser2).then((s) {
+                      await generateNFT(cidOfContract, email, emailuser2)
+                          .then((s) {
                         setState(() {
                           jsonPath = s[0];
                           cidOfNFTImg = s[1];
                           //debugPrint("##jsonPath: $jsonPath");
                           //debugPrint("##cidOfNFTImg: $cidOfNFTImg");
                         });
-                      }).catchError((error){
+                      }).catchError((error) {
                         debugPrint(error);
                       });
                       //debugPrint("###jsonPath: $jsonPath");
                       //debugPrint("###cidOfNFTImg: $cidOfNFTImg");
                       String transactionHash = "";
-                      await mint(jsonPath).then((s){
+                      await mint(jsonPath).then((s) {
                         transactionHash = s;
                         //debugPrint("##transactionHash: $transactionHash");
-                      }).catchError((error){
+                      }).catchError((error) {
                         debugPrint(error);
                       });
                       //debugPrint("###transactionHash: $transactionHash");
