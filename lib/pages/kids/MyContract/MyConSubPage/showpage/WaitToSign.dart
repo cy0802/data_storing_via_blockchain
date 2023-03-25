@@ -29,7 +29,10 @@ class _WaitToSignState extends State<WaitToSign> {
   late String name;
   late String time;
   late String path;
+  late String totalPath;
+  late File file;
   bool isChecked = false;
+
   final Map<String, dynamic>data;
   _WaitToSignState({required this.data});
   
@@ -45,6 +48,12 @@ class _WaitToSignState extends State<WaitToSign> {
     name = data['name'];
     time = data['time'];
     path = data['path'];
+    final ref = FirebaseStorage.instance.ref().child(path);
+    final urlDownload = await ref.getDownloadURL();
+    final path1 = await appDocPath;
+    totalPath = '$path1/$path';
+    await Dio().download(urlDownload, totalPath);
+    file = File(totalPath);
   }
 
   void openPDF(BuildContext context, File file) => Navigator.of(context)
@@ -160,12 +169,6 @@ class _WaitToSignState extends State<WaitToSign> {
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
             onPressed: () async {
-              final ref = FirebaseStorage.instance.ref().child(path);
-              final urlDownload = await ref.getDownloadURL();
-              final path1 = await appDocPath;
-              final totalPath = '$path1/$path';
-              await Dio().download(urlDownload, totalPath);
-              final file = File(totalPath);
               openPDF(context, file);
             }, 
           ),
