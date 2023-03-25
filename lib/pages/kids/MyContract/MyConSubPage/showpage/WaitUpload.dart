@@ -282,6 +282,7 @@ class _WaitUploadState extends State<WaitUpload> {
                           .doc(contractname);
                       doc1.delete();
                       doc2.delete();
+                      Navigator.of(context).pop();
                       Navigator.pushReplacement(
                         context, 
                         MaterialPageRoute(
