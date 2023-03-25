@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleSignInProvider extends ChangeNotifier {
-  final googleSignIn = GoogleSignIn();
+  final googleSignIn = GoogleSignIn(scopes:<String>["email"]);
 
   GoogleSignInAccount? _user;
 
@@ -16,11 +16,11 @@ class GoogleSignInProvider extends ChangeNotifier {
 
     try{
       
-      final googleUser = await googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if(googleUser == null) return null;
 
       _user = googleUser;
-
+      print(_user);
       //print(user.email);
 
       //傳到firebase
@@ -38,7 +38,7 @@ class GoogleSignInProvider extends ChangeNotifier {
         idToken: googleAuth.idToken,
       );
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      return await FirebaseAuth.instance.signInWithCredential(credential);
       
     } catch(e){
       print(e.toString());
