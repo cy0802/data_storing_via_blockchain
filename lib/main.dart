@@ -41,26 +41,7 @@ class MyAPP extends StatefulWidget {
 }
 
 class _MyAPPState extends State<MyAPP> with WidgetsBindingObserver{
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.inactive ||
-        state == AppLifecycleState.detached ||
-        state == AppLifecycleState.paused) {
-      _logout();
-    }
-  }
-  void _logout() async {
-      await FirebaseAuth.instance.signOut();
-  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
