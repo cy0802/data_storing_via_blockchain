@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_storing_via_blockchain/Classes/userpreserve.dart';
 import 'package:data_storing_via_blockchain/function/local_folder.dart';
+import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/signed.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ipfs/flutter_ipfs.dart';
@@ -29,6 +30,7 @@ class _WaitUploadState extends State<WaitUpload> {
   late String path;
   late String totalPath;
   late File file;
+  late String path1;
 
   bool isChecked = false;
 
@@ -54,8 +56,12 @@ class _WaitUploadState extends State<WaitUpload> {
     user1time = data['time'];
     emailuser2 = data['another_email'];
     path = data['path'];
+    path1 = await appDocPath;
+    totalPath = '$path1/$path';
+    file = File(totalPath);
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,9 +177,6 @@ class _WaitUploadState extends State<WaitUpload> {
                     const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
               ),
               onPressed: () async {
-                final path1 = await appDocPath;
-                totalPath = '$path1/$path';
-                file = File(totalPath);
                 openPDF(context, file);
               },
             ),
@@ -202,9 +205,7 @@ class _WaitUploadState extends State<WaitUpload> {
                   ),
                   onPressed: () async {
                     if (isChecked) {
-                      final path1 = await appDocPath;
-                      totalPath = '$path1/$path';
-                      file = File(totalPath);
+
                       //debugPrint("*******${totalPath}");
 
                       var cidOfContract =
@@ -281,7 +282,12 @@ class _WaitUploadState extends State<WaitUpload> {
                           .doc(contractname);
                       doc1.delete();
                       doc2.delete();
-                      Navigator.of(context).pop();
+                      Navigator.pushReplacement(
+                        context, 
+                        MaterialPageRoute(
+                          builder: (context) => SignedCon(),
+                        ),
+                      );
                       //TODO: switch to other page after successful transaction
                       //please detect if error occur or not
                     }
