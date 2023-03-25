@@ -82,9 +82,7 @@ Future<List<String>> generateNFT(
       '"description": "This is a circle",'
       '"image": "ipfs://$cidOfImage",'
       '"attributes": $traits,'
-      '"cidOfContract": "$contractCid",'
-      '"email1": "$email1",'
-      '"email2": "$email2"}';
+      '"cidOfContract": "$contractCid"}';
   myFile = File("$appDocPath/${artWork.title}.json");
   myFile.writeAsStringSync(nftJson);
   return Future.value(["$appDocPath/${artWork.title}.json", cidOfImage]);
