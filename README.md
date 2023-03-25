@@ -53,6 +53,27 @@ Open terminal, run `flutter doctor` Install the required software and agree to t
     4. Click create device in the top toolbar 
     5. Choose one emulator and keep clicking "Next" to install it 
     6. Click "Finish" to accomplish installation
+    
+5. Start the app
+    1. Choose google login to get into the home page
+    2. If someone want to perserve their data into the block_chain, they can push the "upload to blockchain" button
+    3. After getting into the new screen, please follow the below steps:
+        1. choose a file
+        2. type your name 
+        3. type another contractor's name
+        4. type another contractor's email
+        5. press the submit button
+    4. Next you will be nevigated to "my contract", there will be two tapbars, "wait for upload" and "uploaded" respectively.
+    5. In "wait for upload", the screen are shown a list of contracts waited to be signed and uploaded.
+    6. There are four states, "wait for agreement", "agree", "wait for uploaded", "upload", shown on the right side of each contract for users to know what they are going to do.
+        1. If you are the one who filled in the form in "upload to blockchain" screen, you will see the below two states
+            1. "wait for agreement": After completing the form and having already submited, your state will become this, which means you are waiting for another contractor to agree to upload
+            2. "upload": After being agreed to upload, you will get this state means you can finally upload it.
+        2. If you are the one who just need to check whether the contract is correct or not, you will see the below two states
+            1. "agree": you can agree or reject the upload process
+            2. "wait for uploaded": If you agree to upload, you will get this state and wait for another contractor to complete the sop
+        PS all the state will navigate you to different screen and show different data
+    
 
 ## License
 
