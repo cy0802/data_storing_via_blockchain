@@ -217,7 +217,7 @@ class _MyFormState extends State<MyForm> {
         Uri.parse('https://fcm.googleapis.com/fcm/send'),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          'Authorization': 'key=AAAARCD6qcU:APA91bFaf-FagTZePoWGBGoFRHE1Nu0-8Og_N_IDYdEU6PkZt5YCjSs3pCVzlfg7zgtfJsz36NE6HLNTlYY-XEtrkzhFkLZR1n4qrb-ofJtZzHas28qL1DJS6LOwyJYZwdFSgJgDDxb7',
+          'Authorization': 'key=AAAAqOwXa7E:APA91bEMcWU-zUiG7l8p4eEvuHGfmpFEpxGzl0DbLk-fbeXsd14005kPtvpDlvz1LhV0XM9Aj9ZkPaGwjCGXtO-ZGdmpKbItOMPkLynCW0OX2TbTa-Dfe0iVWwQ4AV5ArYziUXy00SCj',
         },
         body: jsonEncode(
           <String, dynamic>{
@@ -274,6 +274,7 @@ class _MyFormState extends State<MyForm> {
                 ),
                 onPressed: () async {
                   // file picker
+
                   try {
                     final FilePicker picker = FilePicker.platform;
                     file = await picker.pickFiles(
@@ -288,7 +289,7 @@ class _MyFormState extends State<MyForm> {
                       return;
 
                     } else {
-                      
+                      filename = "";
                       pickedFile = file!.files.first;
                       String tmp = file!.files[0].name;
                       result = File(pickedFile!.path!);
