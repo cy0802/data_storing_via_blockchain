@@ -73,6 +73,8 @@ Open terminal, run `flutter doctor` Install the required software and agree to t
             1. "agree": you can agree or reject the upload process
             2. "wait for uploaded": If you agree to upload, you will get this state and wait for another contractor to complete the sop
         PS all the state will navigate you to different screen and show different data
+    7. After uploading the contract to the blockchain, you successfully put your contract into where nobody can easily touch it or even edit it!
+    8. you can now see a list of your contracts, which have already being uploaded, in the "uploaded" screen, and you can get your own nft image and a key in each of the contract, the key allows you to see the contract's details, but you may have to pay some money to do this act.
     
 
 ## License
