@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_storing_via_blockchain/Classes/userpreserve.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,8 +19,8 @@ class _SignedConState extends State<SignedCon> {
 
   @override
   Widget build(BuildContext context) {
-    final tmp = Provider.of<GoogleSignInProvider>(context);
-    String email= tmp.user.email;
+    final user = FirebaseAuth.instance.currentUser!;
+    String email= user.email!;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -130,6 +131,7 @@ class _SignedConState extends State<SignedCon> {
                             subtitle: Text(data['name']),
                             trailing: Icon(Icons.arrow_forward_ios),
                             onTap: ()async{
+                              
                             }
                           )
                         );
@@ -149,6 +151,7 @@ class _SignedConState extends State<SignedCon> {
                             subtitle: Text(data['name']),
                             trailing: Icon(Icons.arrow_forward_ios),
                             onTap: ()async{
+
                             }
                           )
                         );
