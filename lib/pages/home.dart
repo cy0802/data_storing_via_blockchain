@@ -14,14 +14,25 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String value = "3";
+
+  @override
+  void initState(){
+    // TODO: implement initState
+    super.initState();
+    initialization();
+  }
+  void initialization() async{
+    final currentUser = await FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      await currentUser.reload();
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser ?? 0;
-    late String email;
-    final tmp = Provider.of<GoogleSignInProvider>(context);
-    email = tmp.user.email;
+    
+    final user = FirebaseAuth.instance.currentUser!;
 
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -44,13 +55,13 @@ class _HomeState extends State<Home> {
           )
         ),
         actions: [
-          IconButton(
-          onPressed: ()=> show_dialog(context, email),
-           icon: Icon(
-            Icons.account_circle_rounded,
-            color: Colors.black,
+          TextButton(
+            onPressed: ()=> show_dialog(context, user.email!),
+            child: CircleAvatar(
+              radius: 17,
+              backgroundImage: NetworkImage(user.photoURL!),
           ),
-          ),
+            )
           
         ]
       ),
@@ -144,7 +155,8 @@ class _HomeState extends State<Home> {
                 child: const Text('我的合約',
                     style: TextStyle(
                       color: Colors.white,
-                    )),
+                    )
+                  ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 62, 161, 243),
                   padding:
@@ -152,7 +164,8 @@ class _HomeState extends State<Home> {
                 ),
                 onPressed: () {
                   Navigator.pushNamed(context, '/RecordedCon');
-                }),
+                }
+              ),
           ),
           const Spacer(flex: 4),
         ],
