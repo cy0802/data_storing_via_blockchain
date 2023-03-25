@@ -9,6 +9,7 @@ import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/s
 import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/showpage/WaitToSign.dart';
 import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/showpage/WaitUpload.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,8 +25,9 @@ class _UnSignConState extends State<UnSignCon> {
 
   @override
   Widget build(BuildContext context) {
-    final tmp = Provider.of<GoogleSignInProvider>(context);
-    email = tmp.user.email;
+
+    final user = FirebaseAuth.instance.currentUser!;
+    email= user.email!;
 
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
