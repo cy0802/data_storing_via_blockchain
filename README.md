@@ -33,9 +33,41 @@ flutter pubget
 ```
 flutter run
 ```
+5. Start the app
+- Perserve file on the block_chain:
+    1. Click the "Submit Contract" button
+    2. choose a file
+    3. Type your name
+    4. Type another singer's name
+    5. Type your email
+    5. Type another singer's email
+    6. Press the submit button
+    
+- History contract:
+In the history contract, there are two options in the top toolbar, "Wait for upload" and "Uploaded". There are 4 states shown on the right side of each contract:
+    1. Wait for agreement
+    2. Agreed
+    3. Wait for uploaded
+    4. Uploaded
+
+- You can depoly contract on IPFS follow the steps below:
+1. For receiver side:
+    1. Click the contract of "Wait for agreement" state
+    2. Check the box whcih says "Confirmed"
+    3. Click the purple box whcih says "I agree" 
+    4. Then contract will show up "Agreed"
+
+2. Wait for upload of sender side: 
+    1. Click the contract of "Wait for uploaded" state
+    2. Check the box whcih says "Confirmed"
+    3. Click the purple box whcih says "Upload"
+    4. Then contract will show up "Uploaded"
+
+- Uploaded Contract: 
+You can see all your contracts being uploaded in the "uploaded" screen!
 
 ## Install
-**This is for ==Windows==**
+**_This is for Windows_**
 
 1. Install flutter: 
 Go to [this web page](https://docs.flutter.dev/get-started/install), choose you're os. Scroll down until find Get the Flutter SDK, click the installation file.
@@ -53,29 +85,6 @@ Open terminal, run `flutter doctor` Install the required software and agree to t
     4. Click create device in the top toolbar 
     5. Choose one emulator and keep clicking "Next" to install it 
     6. Click "Finish" to accomplish installation
-    
-5. Start the app
-    1. Choose google login to get into the home page
-    2. If someone want to perserve their data into the block_chain, they can push the "upload to blockchain" button
-    3. After getting into the new screen, please follow the below steps:
-        1. choose a file
-        2. type your name 
-        3. type another contractor's name
-        4. type another contractor's email
-        5. press the submit button
-    4. Next you will be nevigated to "my contract", there will be two tapbars, "wait for upload" and "uploaded" respectively.
-    5. In "wait for upload", the screen are shown a list of contracts waited to be signed and uploaded.
-    6. There are four states, "wait for agreement", "agree", "wait for uploaded", "upload", shown on the right side of each contract for users to know what they are going to do.
-        1. If you are the one who filled in the form in "upload to blockchain" screen, you will see the below two states
-            1. "wait for agreement": After completing the form and having already submited, your state will become this, which means you are waiting for another contractor to agree to upload
-            2. "upload": After being agreed to upload, you will get this state means you can finally upload it.
-        2. If you are the one who just need to check whether the contract is correct or not, you will see the below two states
-            1. "agree": you can agree or reject the upload process
-            2. "wait for uploaded": If you agree to upload, you will get this state and wait for another contractor to complete the sop
-        PS all the state will navigate you to different screen and show different data
-    7. After uploading the contract to the blockchain, you successfully put your contract into where nobody can easily touch it or even edit it!
-    8. you can now see a list of your contracts, which have already being uploaded, in the "uploaded" screen, and you can get your own nft image and a key in each of the contract, the key allows you to see the contract's details, but you may have to pay some money to do this act.
-    
 
 ## License
 
