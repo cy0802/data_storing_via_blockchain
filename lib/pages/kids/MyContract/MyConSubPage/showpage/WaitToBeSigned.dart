@@ -74,7 +74,7 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
           ),
           Container(
             alignment:Alignment.topLeft,
-            padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
+            padding: EdgeInsets.fromLTRB(35, 0, 35, 30),
             child: Text(
               contractname,
               style: TextStyle(
@@ -94,7 +94,7 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
           ),
           Container(
             alignment:Alignment.topLeft,
-            padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
+            padding: EdgeInsets.fromLTRB(35, 0, 35, 30),
             child: Text(
               name,
               style: TextStyle(
@@ -114,7 +114,7 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
           ),
           Container(
             alignment: Alignment.topLeft,
-            padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
+            padding: EdgeInsets.fromLTRB(35, 0, 35, 30),
             child: Text(
               time,
               style: TextStyle(

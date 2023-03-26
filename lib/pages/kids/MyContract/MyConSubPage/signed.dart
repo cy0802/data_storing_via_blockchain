@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_storing_via_blockchain/Classes/userpreserve.dart';
+import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/showpage/Showpic.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -73,59 +74,81 @@ class _SignedConState extends State<SignedCon> {
                   return Text('Something went Wrong! ${snapshot.error}');
           
                 } else if(snapshot.hasData){
-                  return 
-                    ListView.builder(
+                  int length = snapshot.data!.docs.length;
+                  if(length == 0){
+                    return Center(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 100),
+                          Text(
+                            textAlign: TextAlign.center,
+                            'Hi !\nThere are no contracts having already uploaded\nTry to upload your own contract !',
+                            style: TextStyle(
+                              fontSize: 18
+                            )
+                          ),
+                        ],
+                      )
+                    );
+                  }else {
+                    return ListView.builder(
                       shrinkWrap: true,
                       itemCount: snapshot.data!.docs.length, 
                       itemBuilder: (context, index) {
                         var data = snapshot.data!.docs[index].data() as Map<String, dynamic>;
-                        if(name.isEmpty) {
-                          return Card(
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: Color.fromARGB(255, 209, 208, 208),
-                              ),
-                              title: Expanded(
-                                child: Text(
+                        String cid = data['pic_cid'];
+                          if(name.isEmpty) {
+                            
+                            return Card(
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Color.fromARGB(255, 209, 208, 208),
+                                  backgroundImage: NetworkImage('https://ipfs.io/ipfs/$cid'),
+                                ),
+                                title: Expanded(
+                                  child: Text(
+                                    data['contractname'],
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    )
+                                  ),
+                                ),
+                                subtitle: Text(data['name']),
+                                trailing: Icon(Icons.arrow_forward_ios),
+                                onTap: ()async{
+                                  Show_pic(context, data);
+                                }
+                              )
+                            );
+                          }
+                          if(data['contractname'].toString().toLowerCase().startsWith(name.toLowerCase())){
+                            return Card(
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Color.fromARGB(255, 209, 208, 208),
+                                  backgroundImage: NetworkImage('https://ipfs.io/ipfs/$cid'),
+                                ),
+                                title: Text(
                                   data['contractname'],
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
                                   style: TextStyle(
                                     fontSize: 20,
                                   )
                                 ),
-                              ),
-                              subtitle: Text(data['name']),
-                              trailing: Icon(Icons.arrow_forward_ios),
-                              onTap: ()async{
-                                
-                              }
-                            )
-                          );
-                        }
-                        if(data['contractname'].toString().toLowerCase().startsWith(name.toLowerCase())){
-                           return Card(
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: Color.fromARGB(255, 209, 208, 208),
-                              ),
-                              title: Text(
-                                data['contractname'],
-                                style: TextStyle(
-                                  fontSize: 20,
-                                )
-                              ),
-                              subtitle: Text(data['name']),
-                              trailing: Icon(Icons.arrow_forward_ios),
-                              onTap: ()async{
-      
-                              }
-                            )
-                          );
-                        }
-                        return Container();
+                                subtitle: Text(data['name']),
+                                trailing: Icon(Icons.arrow_forward_ios),
+                                onTap: ()async{
+                                  Show_pic(context, data);
+                                }
+                              )
+                            );
+                          }
+                          return Container();
+                          
                       },
-                  );
+                   );
+                  }
                 } else if (snapshot.connectionState == ConnectionState.waiting){
                   return const Center(child: CircularProgressIndicator());
                 } else {
@@ -138,7 +161,8 @@ class _SignedConState extends State<SignedCon> {
       ),
     );  
   }
-  
-  
 }
+void Show_pic(BuildContext context, Map<String, dynamic> data) =>
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => ShowPic(data : data)));
   

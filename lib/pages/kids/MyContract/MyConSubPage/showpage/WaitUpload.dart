@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,10 +6,13 @@ import 'package:data_storing_via_blockchain/Classes/userpreserve.dart';
 import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/signed.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ipfs/flutter_ipfs.dart';
 import 'package:data_storing_via_blockchain/pages/generateNFT.dart';
+import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 
 class WaitUpload extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -214,7 +218,6 @@ class _WaitUploadState extends State<WaitUpload> {
                       ),
                       onPressed: () async {
                         if (isChecked) {
-
                           var cidOfContract =
                               await FlutterIpfs().uploadToIpfs(totalPath);
 
@@ -250,6 +253,7 @@ class _WaitUploadState extends State<WaitUpload> {
                             debugPrint(error);
                           });
                           //debugPrint("###transactionHash: $transactionHash");
+                          String ult_time = await getTime();
                           await FirebaseFirestore.instance
                               .collection("user")
                               .doc(email)
@@ -260,7 +264,7 @@ class _WaitUploadState extends State<WaitUpload> {
                                 contractname: contractname,
                                 another_email: emailuser2,
                                 key: transactionHash,
-                                time: user1time,
+                                time: ult_time,
                                 pic_cid: cidOfNFTImg,
                               ).toJson());
 
@@ -274,7 +278,7 @@ class _WaitUploadState extends State<WaitUpload> {
                                 contractname: contractname,
                                 another_email: email,
                                 key: transactionHash,
-                                time: time,
+                                time: ult_time,
                                 pic_cid: cidOfNFTImg,
                               ).toJson());
                           final doc2 = FirebaseFirestore.instance
@@ -287,6 +291,8 @@ class _WaitUploadState extends State<WaitUpload> {
                             .doc(email)
                             .collection("contract")
                             .doc(contractname);
+                          final ref = FirebaseStorage.instance.ref().child(path);
+                          await ref.delete();
                           doc1.delete();
                           doc2.delete();
                           Navigator.pop(context);
@@ -355,6 +361,8 @@ class _WaitUploadState extends State<WaitUpload> {
             .doc(email)
             .collection("contract")
             .doc(contractname);
+            final ref = FirebaseStorage.instance.ref().child(path);
+            ref.delete();
             doc1.delete();
             doc2.delete();
             Navigator.of(context).pop();
@@ -365,4 +373,19 @@ class _WaitUploadState extends State<WaitUpload> {
     )
   );
 }
+}
+Future<String> getTime() async{
+  Response response =  await get(Uri.parse('http://worldtimeapi.org/api/timezone/Asia/Taipei')) ;
+    Map data = jsonDecode(response.body);
+    print(data);
+    String datetime = data['datetime'];
+    String offset = data['utc_offset'].substring(1,3);
+    //print(datetime);
+    //print(offset);
+
+    //create DateTime object
+    DateTime now = DateTime.parse(datetime);
+    now = now.add(Duration(hours: int.parse(offset)));
+    String time = DateFormat.yMEd().add_jms().format(now);
+    return time;
 }

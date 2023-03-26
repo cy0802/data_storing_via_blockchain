@@ -94,7 +94,7 @@ class _WaitToSignState extends State<WaitToSign> {
           ),
           Container(
             alignment:Alignment.topLeft,
-            padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
+            padding: EdgeInsets.fromLTRB(35, 0, 35, 30),
             child: Text(
               contractname,
               style: TextStyle(
@@ -114,7 +114,7 @@ class _WaitToSignState extends State<WaitToSign> {
           ),
           Container(
             alignment:Alignment.topLeft,
-            padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
+            padding: EdgeInsets.fromLTRB(35, 0, 35, 30),
             child: Text(
               name,
               style: TextStyle(
@@ -134,7 +134,7 @@ class _WaitToSignState extends State<WaitToSign> {
           ),
           Container(
             alignment: Alignment.topLeft,
-            padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
+            padding: EdgeInsets.fromLTRB(35, 0, 35, 30),
             child: Text(
               time,
               style: TextStyle(
@@ -274,6 +274,8 @@ class _WaitToSignState extends State<WaitToSign> {
             DocumentSnapshot snap = await docuser1.get();
             String email2 = snap['another_email'];
             final docuser2 = await FirebaseFirestore.instance.collection("user").doc(email2).collection("contract").doc(contractname);
+            final ref = FirebaseStorage.instance.ref().child(path);
+            ref.delete();
             docuser1.delete();
             docuser2.delete();
             Navigator.of(context).pop();

@@ -45,7 +45,7 @@ class _UnSignConState extends State<UnSignCon> {
                 return Center(
                   child: Text(
                     textAlign: TextAlign.center,
-                    'Hi !\nThere are no contracts waiting to be uploaded\ntry to upload your own contract !',
+                    'Hi !\nThere are no contracts waiting to be uploaded\nTry to upload your own contract !',
                     style: TextStyle(
                       fontSize: 18
                       
@@ -111,8 +111,7 @@ class _UnSignConState extends State<UnSignCon> {
   }
 }
 
-void Show_data1(BuildContext context, Map<String, dynamic> data, String email,
-        String time) =>
+void Show_data1(BuildContext context, Map<String, dynamic> data, String email,String time) =>
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) =>
             WaitUpload(data: data, email: email, time: time)));
