@@ -23,150 +23,118 @@ class _SignedConState extends State<SignedCon> {
     String email= user.email!;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(20),
-            child: TextField(
-              controller: controller,
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                hintText: 'Contract',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: const BorderSide(color: Colors.blue),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(20),
+              child: TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.search),
+                  hintText: 'Contract',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: const BorderSide(color: Colors.blue),
+                  ),
                 ),
+                onChanged: (val){
+                  setState(() {
+                    name = val;
+                  });
+                }
               ),
-              onChanged: (val){
-                setState(() {
-                  name = val;
-                });
-              }
             ),
-          ),
-          Row(
-              children: <Widget>[
+            Row(
+              children: [
                 Expanded(
-                  flex: 5,
                   child: Container(
-                    margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    margin: const EdgeInsets.fromLTRB(3, 0, 3, 10),
                     alignment: Alignment.center,
                     color: Colors.grey[400],
-                    width: 48.0,
+                    width: 100.0,
                     height: 48.0,
                     child: const Text(
-                      'Contract Name',
+                      'Contract Information',
                       style: TextStyle(
                         fontSize: 16,
                       )
                     ),
                   ),
                 ),
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                    margin: const EdgeInsets.fromLTRB(1, 0, 0, 0),
-                    alignment: Alignment.center,
-                    color: Colors.grey[400],
-                    width: 48.0,
-                    height: 48.0,
-                    child: const Text(
-                      'Key',
-                      style: TextStyle(
-                        fontSize: 16,
-                      )
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    margin: const EdgeInsets.fromLTRB(1, 0, 0, 0),
-                    alignment: Alignment.center,
-                    color: Colors.grey[400],
-                    width: 48.0,
-                    height: 48.0,
-                    child: const Text(
-                      'Date',
-                      style: TextStyle(
-                        fontSize: 16,
-                      )
-                    ),
-                  ),
-                ),
-              ]
+              ],
             ),
-          StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-            .collection('user').doc(email).collection('contractPreserve')
-            .snapshots(),
-            builder: (context, snapshot){
-              if (snapshot.hasError){
-                return Text('Something went Wrong! ${snapshot.error}');
-        
-              } else if(snapshot.hasData){
-                return 
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.docs.length, 
-                    itemBuilder: (context, index) {
-                      var data = snapshot.data!.docs[index].data() as Map<String, dynamic>;
-                      if(name.isEmpty) {
-                        return Card(
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Color.fromARGB(255, 209, 208, 208),
-                            ),
-                            title: Expanded(
-                              child: Text(
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+              .collection('user').doc(email).collection('contractPreserve')
+              .snapshots(),
+              builder: (context, snapshot){
+                if (snapshot.hasError){
+                  return Text('Something went Wrong! ${snapshot.error}');
+          
+                } else if(snapshot.hasData){
+                  return 
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.docs.length, 
+                      itemBuilder: (context, index) {
+                        var data = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                        if(name.isEmpty) {
+                          return Card(
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Color.fromARGB(255, 209, 208, 208),
+                              ),
+                              title: Expanded(
+                                child: Text(
+                                  data['contractname'],
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  )
+                                ),
+                              ),
+                              subtitle: Text(data['name']),
+                              trailing: Icon(Icons.arrow_forward_ios),
+                              onTap: ()async{
+                                
+                              }
+                            )
+                          );
+                        }
+                        if(data['contractname'].toString().toLowerCase().startsWith(name.toLowerCase())){
+                           return Card(
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Color.fromARGB(255, 209, 208, 208),
+                              ),
+                              title: Text(
                                 data['contractname'],
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
                                 style: TextStyle(
                                   fontSize: 20,
                                 )
                               ),
-                            ),
-                            subtitle: Text(data['name']),
-                            trailing: Icon(Icons.arrow_forward_ios),
-                            onTap: ()async{
-                              
-                            }
-                          )
-                        );
-                      }
-                      if(data['contractname'].toString().toLowerCase().startsWith(name.toLowerCase())){
-                         return Card(
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Color.fromARGB(255, 209, 208, 208),
-                            ),
-                            title: Text(
-                              data['contractname'],
-                              style: TextStyle(
-                                fontSize: 20,
-                              )
-                            ),
-                            subtitle: Text(data['name']),
-                            trailing: Icon(Icons.arrow_forward_ios),
-                            onTap: ()async{
-
-                            }
-                          )
-                        );
-                      }
-                      return Container();
-                    },
-                );
-              } else if (snapshot.connectionState == ConnectionState.waiting){
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return Text('no data');
+                              subtitle: Text(data['name']),
+                              trailing: Icon(Icons.arrow_forward_ios),
+                              onTap: ()async{
+      
+                              }
+                            )
+                          );
+                        }
+                        return Container();
+                      },
+                  );
+                } else if (snapshot.connectionState == ConnectionState.waiting){
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  return Text('no data');
+                }
               }
-            }
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );  
   }
