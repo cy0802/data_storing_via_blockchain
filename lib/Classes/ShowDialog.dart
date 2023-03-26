@@ -7,6 +7,7 @@ void show_dialog(BuildContext context, String email) =>  showDialog(
   builder: (BuildContext context) => SimpleDialog(
     
     children: <Widget>[
+      SizedBox(height: 10),
       Center(
         child: Text(
           email,
@@ -15,6 +16,7 @@ void show_dialog(BuildContext context, String email) =>  showDialog(
           ),
         )
       ),
+      SizedBox(height: 10),
       Divider(color: Colors.grey[500]),
       SimpleDialogOption(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
