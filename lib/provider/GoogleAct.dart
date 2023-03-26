@@ -4,6 +4,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+//--------------------------------------------------------------- divider ------------------------------------------------------------------
+
 class GoogleSignInProvider extends ChangeNotifier {
   final googleSignIn = GoogleSignIn(scopes:<String>["email"]);
 
@@ -11,26 +13,20 @@ class GoogleSignInProvider extends ChangeNotifier {
 
   GoogleSignInAccount get user => _user!;
 
+  // Login
   Future googleLogin() async {
-    // Login
-
+    
     try{
-      
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if(googleUser == null) return null;
 
       _user = googleUser;
-      print(_user);
-      //print(user.email);
 
-      //傳到firebase
+      //up load user token to firebase in order to send notifications
       await FirebaseMessaging.instance.getToken().then((token) async {
         await FirebaseFirestore.instance.collection("user").doc(user.email).set({'token' : token });
-      }
-      );
+      });
       
-      //將現在用戶email存起來
-
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
@@ -47,8 +43,9 @@ class GoogleSignInProvider extends ChangeNotifier {
     notifyListeners(); 
   }
 
+  // Log out
   Future googleLogout() async {
-    // Log out
+    
     await googleSignIn.disconnect();
     FirebaseAuth.instance.signOut();
   }
