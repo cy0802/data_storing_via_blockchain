@@ -6,7 +6,9 @@ import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:dio/dio.dart'hide Response;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
@@ -31,6 +33,9 @@ class _WaitToSignState extends State<WaitToSign> {
   late String path;
   late String totalPath;
   late File file;
+  late String email;
+  late DocumentReference<Map<String, dynamic>> docuser1;
+  late DocumentReference<Map<String, dynamic>> docuser2;
   bool isChecked = false;
 
   final Map<String, dynamic>data;
@@ -61,13 +66,11 @@ class _WaitToSignState extends State<WaitToSign> {
   
   @override
   Widget build(BuildContext context) {
-    
-    final tmp = Provider.of<GoogleSignInProvider>(context, listen: false);
-    String email= tmp.user.email;
-
+    final user = FirebaseAuth.instance.currentUser!;
+    email= user.email!;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Color.fromARGB(255, 185, 185, 185),
         title: const Text(
           'Contract information',
           style: TextStyle(
@@ -79,90 +82,82 @@ class _WaitToSignState extends State<WaitToSign> {
       ),
       body: Column(
         children: [
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(10, 20, 0, 15),
-                child: Text(
-                  "合約名稱 : ",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ) 
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
-                  child: Text(
-                    contractname,
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
-                child: Text(
-                  "雙方合約人 : ",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ) 
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(5, 0, 10, 20),
-                child: Text(
-                  name,
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
-                child: Text(
-                  "同意時間 : ",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ) 
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(5, 5, 10, 20),
-                child: Text(
-                  time,
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ],
+          Container(
+            alignment:Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(10, 30, 0, 10),
+            child: Text(
+              "Contract's name : ",
+              style: TextStyle(
+                fontSize: 20,
+              ) 
+            ),
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
-            alignment: Alignment.topLeft,
+            alignment:Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
             child: Text(
-              "檢視檔案 : ",
+              contractname,
               style: TextStyle(
                 fontSize: 20,
               ),
             ),
           ),
-          ElevatedButton(
+          Container(
+            alignment:Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
             child: Text(
-              '檢視合約',
+              "Both Signer : ",
+              style: TextStyle(
+                fontSize: 20,
+              ) 
+            ),
+          ),
+          Container(
+            alignment:Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
+            child: Text(
+              name,
               style: TextStyle(
                 fontSize: 20,
               ),
+            ),
+          ),
+          Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
+            child: Text(
+              "Signed Time : ",
+              style: TextStyle(
+                fontSize: 20,
+              ) 
+            ),
+          ),
+          Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
+            child: Text(
+              time,
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
+            alignment: Alignment.topLeft,
+            child: Text(
+              "View Contract : ",
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+          ),
+          ElevatedButton.icon(
+            label: const Text(''),
+            icon: const Icon(
+              size: 30.0,
+              Icons.content_paste_search,
+              color: Colors.white,
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color.fromARGB(255, 107, 92, 203),
@@ -174,7 +169,7 @@ class _WaitToSignState extends State<WaitToSign> {
           ),
           CheckboxListTile(
             title: Text(
-              '您已確認並同意上鏈此份合約'
+              'I agree'
             ),
             controlAffinity: ListTileControlAffinity.leading,
             activeColor: Color.fromARGB(255, 74, 125, 245),
@@ -188,40 +183,107 @@ class _WaitToSignState extends State<WaitToSign> {
             },
           ),
           const Spacer(flex: 19),
-          Container(
-            padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
-            alignment:Alignment.bottomCenter,
-            
-            child: ElevatedButton(
-              child: Text(
-                "請完成同意",
-                style: TextStyle(
-                  fontSize: 18,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Color.fromARGB(255, 96, 121, 219),
+                    ),
+                //padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
+                child: TextButton(
+                  
+                  child: Text(
+                    "consent",
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontSize: 18,
+                    ),
+                  ),
+                  onPressed: () async{
+                    final docuser1 = await FirebaseFirestore.instance.collection("user").doc(email).collection("contract").doc(contractname);
+                    DocumentSnapshot snap = await docuser1.get();
+                    String email2 = snap['another_email'];
+                    final docuser2 = await FirebaseFirestore.instance.collection("user").doc(email2).collection("contract").doc(contractname);
+                    if(isChecked){
+                      docuser1.update({
+                        'order': "wait for uploaded",
+                        'time': await getTime(),
+                      });
+                      docuser2.update({
+                        'order': "upload",
+                      });
+                      Navigator.of(context).pop();
+                    }
+                  },
                 ),
               ),
-              onPressed: () async{
-                final docuser1 = await FirebaseFirestore.instance.collection("user").doc(email).collection("contract").doc(contractname);
-                DocumentSnapshot snap = await docuser1.get();
-                String email2 = snap['another_email'];
-                final docuser2 = await FirebaseFirestore.instance.collection("user").doc(email2).collection("contract").doc(contractname);
-                if(isChecked){
-                  docuser1.update({
-                    'order': "等待對方上鏈",
-                    'time': await getTime(),
-                  });
-                  docuser2.update({
-                    'order': "等待上鏈",
-                  });
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
+              SizedBox(width: 40),
+              Container(
+                decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Color.fromARGB(255, 96, 121, 219),
+                    ),
+                //padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 3),
+                      ),
+                  child: Text(
+                    "reject",
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontSize: 18,
+                    ),
+                  ),
+                  onPressed: ()async { 
+                    show_dialog(context);
+                  }
+                ),
+              ),
+            ],
           ),
-          const Spacer(flex: 1), 
+          const Spacer(flex: 3), 
         ],
       )
     );
   }
+  show_dialog(BuildContext context){
+  showDialog(
+    context: context, 
+    builder: (BuildContext context) =>  CupertinoAlertDialog(
+      title: Text("Think Twice"),
+      content: Text("Want to discard this contract?\nif yes, please refill in the form"),
+      actions: [
+        CupertinoDialogAction(
+          child: Text(
+            'No'
+          ),
+          onPressed: (){
+            Navigator.of(context).pop();
+          },
+        ),
+        CupertinoDialogAction(
+          child: Text(
+            'Yes'
+          ),
+          onPressed: ()async{
+            final docuser1 = await FirebaseFirestore.instance.collection("user").doc(email).collection("contract").doc(contractname);
+            DocumentSnapshot snap = await docuser1.get();
+            String email2 = snap['another_email'];
+            final docuser2 = await FirebaseFirestore.instance.collection("user").doc(email2).collection("contract").doc(contractname);
+            docuser1.delete();
+            docuser2.delete();
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
+        )
+      ],
+    )
+  );
+}
 }
 Future<String> getTime() async{
   Response response =  await get(Uri.parse('http://worldtimeapi.org/api/timezone/Asia/Taipei')) ;
@@ -239,3 +301,9 @@ Future<String> getTime() async{
     String time = DateFormat.yMEd().add_jms().format(now);
     return time;
 }
+
+// CupertinoAlertDialog(
+//                       title: Text("Think Twice"),
+//                       content: Text("Want to discard this contract?")
+//                     );
+
