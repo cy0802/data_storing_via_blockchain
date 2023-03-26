@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
-import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:dio/dio.dart'hide Response;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -12,7 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+
 
 class WaitToSign extends StatefulWidget {
   final Map<String, dynamic>data;
@@ -70,9 +69,10 @@ class _WaitToSignState extends State<WaitToSign> {
     email= user.email!;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 185, 185, 185),
+        iconTheme: IconThemeData(color: Colors.brown),
+        backgroundColor: Color.fromARGB(255, 223, 154, 90),
         title: const Text(
-          'Contract information',
+          'Contract Information',
           style: TextStyle(
             color: Colors.black,
           )
@@ -86,7 +86,7 @@ class _WaitToSignState extends State<WaitToSign> {
             alignment:Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 30, 0, 10),
             child: Text(
-              "Contract's name : ",
+              "Contract's Name : ",
               style: TextStyle(
                 fontSize: 20,
               ) 
@@ -106,7 +106,7 @@ class _WaitToSignState extends State<WaitToSign> {
             alignment:Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
             child: Text(
-              "Both Signer : ",
+              "Both Signers : ",
               style: TextStyle(
                 fontSize: 20,
               ) 
@@ -160,7 +160,7 @@ class _WaitToSignState extends State<WaitToSign> {
               color: Colors.white,
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(255, 107, 92, 203),
+              backgroundColor: Color.fromARGB(255, 167, 118, 100),
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
             onPressed: () async {

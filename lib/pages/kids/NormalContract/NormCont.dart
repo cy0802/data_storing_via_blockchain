@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:data_storing_via_blockchain/font/utils.dart';
 import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:dio/dio.dart' hide Response;
+import 'package:firebase_auth/firebase_auth.dart'hide User;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:data_storing_via_blockchain/pages/kids/MyContract/RecordedCon.dart';
@@ -39,20 +40,34 @@ class NormCon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "Sign",
-          style: TextStyle(
-            letterSpacing: 2,
-            fontSize: 22,
-            //fontWeight: FontWeight.bold,
-          )
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          colorFilter: ColorFilter.mode(Color.fromARGB(255, 249, 214, 179), BlendMode.dstATop),
+          image: AssetImage("assets/normcolor.jpg"),
+          fit: BoxFit.cover,
         ),
       ),
-      body: const MyForm(),
+      child: Scaffold(
+        backgroundColor: Color.fromARGB(142, 255, 214, 157),
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          iconTheme: IconThemeData(color: Colors.brown),
+          centerTitle: true,
+          title: Text(
+            "Sign",
+            style: TextStyle(
+              color: Color.fromARGB(255, 110, 85, 56),
+              letterSpacing: 2,
+              fontSize: 29,
+              //fontWeight: FontWeight.bold,
+            )
+          ),
+        ),
+        body: const MyForm(),
+      ),
     );
   }
 }
@@ -77,7 +92,6 @@ class _MyFormState extends State<MyForm> {
   final _formKey = GlobalKey<FormState>();
   
   //email controller
-  final TextEditingController controller1 = TextEditingController();
   final TextEditingController controller2 = TextEditingController();
   //name controller
   final TextEditingController controller3 = TextEditingController();
@@ -101,7 +115,6 @@ class _MyFormState extends State<MyForm> {
  
   @override
   void dispose() {
-    controller1.dispose();
     controller2.dispose();
     controller3.dispose();
     controller4.dispose();
@@ -224,6 +237,8 @@ class _MyFormState extends State<MyForm> {
   
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
+    final email1 = user.email!;
     return Form(
       key: _formKey,
       child: Column(
@@ -234,21 +249,28 @@ class _MyFormState extends State<MyForm> {
             margin: const EdgeInsets.fromLTRB(10, 20, 0, 0),
             child: const Text("allowed filetype: pdf" /*"jpg", "png", "jpeg"*/ ),
           ),
-          const SizedBox(height: 3.0),
           Container(
             // upload button
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromARGB(231, 238, 167, 86),
+                  Color.fromARGB(255, 247, 191, 72),
+                  Color.fromARGB(231, 238, 166, 82),
+                ],
+              )
+            ),
             alignment: Alignment.centerLeft,
-            margin: const EdgeInsets.fromLTRB(3, 3, 3, 3),
+            margin: const EdgeInsets.fromLTRB(3, 7, 3, 7),
             child: Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 102, 184, 251),
+              child: TextButton(
+                style: TextButton.styleFrom(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
                 ),
                 onPressed: () async {
                   // file picker
-
                   try {
                     final FilePicker picker = FilePicker.platform;
                     file = await picker.pickFiles(
@@ -261,21 +283,18 @@ class _MyFormState extends State<MyForm> {
                         msg: 'No File Selected',
                       );
                       return;
-
                     } else {
                       filename = "";
                       pickedFile = file!.files.first;
                       String tmp = file!.files[0].name;
                       result = File(pickedFile!.path!);
-                      debugPrint("***********${result.path}");
+                      //debugPrint("***********${result.path}");
                       openPDF(context, result);
                       setState(() {
                         int size = tmp.length;
                         for(int i=0; i<size-4; i++){
                           filename += tmp[i];
                         }
-                        //result = File(file!.files.single.path!);
-                        //result = File(filePath);
                       });
                       debugPrint("successfully select file");
                     }
@@ -291,7 +310,12 @@ class _MyFormState extends State<MyForm> {
                     return;
                   }    
                 },
-                child: const Text("Select Contract"),
+                child: const Text(
+                  "Select Contract",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 133, 79, 34)
+                  ),
+                ),
               ),
             ),
           ),
@@ -307,7 +331,11 @@ class _MyFormState extends State<MyForm> {
             child: TextFormField(
               controller: controller3,
               decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(255, 195, 148, 107),width: 2.0)
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(255, 173, 81, 0),width: 2.2)),
                 hintText: 'type your name',
               ),
             ),
@@ -317,25 +345,12 @@ class _MyFormState extends State<MyForm> {
             child: TextFormField(
               controller: controller4,
               decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(255, 195, 148, 107),width: 2.0)
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(255, 173, 81, 0),width: 2.2)),
                 hintText: 'type his/her name',
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(13, 10, 13, 20),
-            child: TextFormField(
-              controller: controller1,
-              validator: (value) {
-                if (value == null || value.isEmpty || !value.contains("@")) {
-                  return "invalid email";
-                } else {
-                  return null;
-                }
-              },
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                hintText: 'type your email',
               ),
             ),
           ),
@@ -354,7 +369,11 @@ class _MyFormState extends State<MyForm> {
                       }
                     },
                     decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color.fromARGB(255, 195, 148, 107),width: 2.0)
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color.fromARGB(255, 173, 81, 0),width: 2.2)),
                       hintText: 'type his/her email',
                     ),
                   ),
@@ -368,6 +387,7 @@ class _MyFormState extends State<MyForm> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: StadiumBorder(),
+                  backgroundColor: Color.fromARGB(255, 175, 110, 53),
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 ),
                 onPressed: () async {
@@ -377,10 +397,9 @@ class _MyFormState extends State<MyForm> {
                     var name1 = controller3.text;
                     var name2 = controller4.text;
                     String name = '$name1, $name2';
-
-                    var email1 = controller1.text;
+    
                     var email2 = controller2.text;
-
+    
                     final path = 'files/$email1+$email2/$filename';
                     final ref = FirebaseStorage.instance.ref().child(path);
                     await ref.putFile(result);
@@ -388,7 +407,7 @@ class _MyFormState extends State<MyForm> {
                     final path1 = await appDocPath;
                     final totalPath = '$path1/$path';
                     await Dio().download(urlDownload, totalPath);
-
+    
                     await FirebaseFirestore.instance.collection("user").doc(email1)
                         .collection("contract")
                         .doc(filename)
@@ -411,13 +430,13 @@ class _MyFormState extends State<MyForm> {
                           order: "agree",
                           path: path,
                         ).toJson());
-
+    
                     DocumentSnapshot snap =
                       await FirebaseFirestore.instance.collection("user").doc(email2).get();
                       String token = snap['token'];
-
+    
                     sendPushMessage(token, "New contract!", "Log in and sign the contract");
-
+    
                     Navigator.pushReplacement(
                       context, 
                       MaterialPageRoute(

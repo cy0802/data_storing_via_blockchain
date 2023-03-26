@@ -22,10 +22,23 @@ class _PDFViewPageState extends State<PDFViewPage> {
     final text = '${indexPage + 1} of $pages';
     return Scaffold(
       appBar: AppBar(
-        title: Text(name),
+        title: Text(
+          name,
+          style: TextStyle(
+            color: Colors.brown
+          )
+        ),
+        iconTheme: IconThemeData(color: Colors.brown),
+        backgroundColor: Color.fromARGB(255, 216, 171, 113),
         actions: pages >= 2
             ? [
-                Center(child: Text(text)),
+                Center(child: Text(
+                  text,
+                  style: TextStyle(
+                    color: Colors.brown
+                  )
+                  )
+                ),
                 IconButton(
                   icon: Icon(Icons.chevron_left, size: 32),
                   onPressed: () {

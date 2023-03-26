@@ -38,11 +38,12 @@ class _ShowPicState extends State<ShowPic> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.brown),
+        backgroundColor: Color.fromARGB(255, 223, 154, 90),
         title : Text(
           
           'Contract detail'
         ),
-        backgroundColor: Color.fromARGB(255, 188, 146, 255),
       ),
       body: SingleChildScrollView (
         child: Column(
@@ -51,7 +52,7 @@ class _ShowPicState extends State<ShowPic> {
             alignment:Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 30, 0, 10),
             child: Text(
-              "Contract's name : ",
+              "Contract's Name : ",
               style: TextStyle(
                 fontSize: 20,
               ) 
@@ -71,7 +72,7 @@ class _ShowPicState extends State<ShowPic> {
             alignment:Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
             child: Text(
-              "Both Signer : ",
+              "Both Signers : ",
               style: TextStyle(
                 fontSize: 20,
               ) 

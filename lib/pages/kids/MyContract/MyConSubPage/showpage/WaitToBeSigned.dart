@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 
@@ -50,9 +49,10 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
     print(contractname);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 185, 185, 185),
+        iconTheme: IconThemeData(color: Colors.brown),
+        backgroundColor: Color.fromARGB(255, 223, 154, 90),
         title: const Text(
-          'Contract information',
+          'Contract Information',
           style: TextStyle(
             color: Colors.black,
           )
@@ -66,7 +66,7 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
             alignment:Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 30, 0, 10),
             child: Text(
-              "Contract's name : ",
+              "Contract's Name : ",
               style: TextStyle(
                 fontSize: 20,
               ) 
@@ -86,7 +86,7 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
             alignment:Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
             child: Text(
-              "Both Signer : ",
+              "Both Signers : ",
               style: TextStyle(
                 fontSize: 20,
               ) 
@@ -140,7 +140,7 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
               color: Colors.white,
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(255, 129, 114, 227),
+              backgroundColor: Color.fromARGB(255, 167, 118, 100),
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
             onPressed: () async {

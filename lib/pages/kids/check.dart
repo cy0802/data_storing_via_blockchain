@@ -12,7 +12,13 @@ class _CheckContractState extends State<CheckContract> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('check your contract'),
+        backgroundColor: Color.fromARGB(255, 249, 207, 116),
+        title: Text(
+          'check your contract',
+          style: TextStyle(
+            color: Colors.brown,
+          )
+        ),
         centerTitle: true,
       ),
       body: Form(
@@ -23,19 +29,22 @@ class _CheckContractState extends State<CheckContract> {
               child: TextFormField(
               decoration: const InputDecoration(
                 hintText: 'key',
-                fillColor: Color.fromARGB(255, 195, 236, 237),
+                fillColor: Color.fromARGB(255, 227, 188, 122),
                 filled: true,
                 contentPadding: EdgeInsets.all(12.0),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white, width: 2.0),
+                  borderSide: BorderSide(color: Color.fromARGB(255, 219, 164, 106), width: 2.0),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color.fromARGB(255, 116, 238, 240), width: 2.0),
+                  borderSide: BorderSide(color: Color.fromARGB(255, 142, 100, 38), width: 2.0),
                 ),
               ),
             ),
             ),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 175, 110, 53),
+              ),
               child: Text(
                 'search',
               ),

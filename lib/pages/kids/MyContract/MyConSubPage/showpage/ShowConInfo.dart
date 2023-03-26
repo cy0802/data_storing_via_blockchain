@@ -49,9 +49,10 @@ class _ShowInfoState extends State<ShowInfo> {
     print(contractname);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 185, 185, 185),
+        iconTheme: IconThemeData(color: Colors.brown),
+        backgroundColor: Color.fromARGB(255, 223, 154, 90),
         title: const Text(
-          'Contract information',
+          'Contract Information',
           style: TextStyle(
             color: Colors.black,
           )
@@ -65,7 +66,7 @@ class _ShowInfoState extends State<ShowInfo> {
             alignment:Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 30, 0, 10),
             child: Text(
-              "Contract's name : ",
+              "Contract's Name : ",
               style: TextStyle(
                 fontSize: 20,
               ) 
@@ -85,7 +86,7 @@ class _ShowInfoState extends State<ShowInfo> {
             alignment:Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
             child: Text(
-              "Both Signer : ",
+              "Both Signers : ",
               style: TextStyle(
                 fontSize: 20,
               ) 
@@ -139,7 +140,7 @@ class _ShowInfoState extends State<ShowInfo> {
               color: Colors.white,
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(255, 107, 92, 203),
+              backgroundColor: Color.fromARGB(255, 167, 118, 100),
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
             onPressed: () async {

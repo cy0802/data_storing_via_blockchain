@@ -324,3 +324,32 @@ StreamBuilder(
                       //localFile.writeAsBytes(file!.files.first.bytes as Uint8List);
                       //debugPrint("********$appDocPath/$tmp");
                       //debugPrint("*******${file!.files}");
+
+
+                      // Column(
+                  //   children: <Widget>[
+                  //     const Text(
+                  //       '定型化契約',
+                  //       style: TextStyle(
+                  //         color: Colors.black,
+                  //         fontSize: 18.0,
+                  //       ),
+                  //     ),
+                  //     const SizedBox(height: 20.0),
+                  //     ElevatedButton.icon(
+                  //       style: ElevatedButton.styleFrom(
+                  //         backgroundColor: const Color.fromARGB(255, 102, 184, 251),
+                  //         padding: const EdgeInsets.symmetric(
+                  //             horizontal: 60, vertical: 90),
+                  //       ),
+                  //       icon: const Icon(
+                  //         Icons.article_rounded,
+                  //         color: Colors.white,
+                  //       ),
+                  //       label: const Text(''),
+                  //       onPressed: () {
+                  //         Navigator.pushNamed(context, '/StdCon');
+                  //       },
+                  //     ),
+                  //   ],
+                  // ),

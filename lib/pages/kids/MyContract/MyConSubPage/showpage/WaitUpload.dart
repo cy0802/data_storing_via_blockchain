@@ -73,7 +73,8 @@ class _WaitUploadState extends State<WaitUpload> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 185, 185, 185),
+          iconTheme: IconThemeData(color: Colors.brown),
+        backgroundColor: Color.fromARGB(255, 223, 154, 90),
           title: const Text('Contract information',
               style: TextStyle(
                 color: Colors.black,
@@ -178,7 +179,7 @@ class _WaitUploadState extends State<WaitUpload> {
                   color: Colors.white,
                 ),
                 style: TextButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 107, 92, 203),
+                  backgroundColor: Color.fromARGB(255, 167, 118, 100),
                   padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
                 ),
                 onPressed: () async {
@@ -205,7 +206,7 @@ class _WaitUploadState extends State<WaitUpload> {
                 Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: Color.fromARGB(255, 96, 121, 219),
+                      color: Color.fromARGB(255, 167, 118, 100),
                     ),
                   alignment: Alignment.bottomCenter,
                   child: TextButton(
@@ -306,7 +307,7 @@ class _WaitUploadState extends State<WaitUpload> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: Color.fromARGB(255, 96, 121, 219),
+                    color: Color.fromARGB(255, 167, 118, 100),
                   ),
                 //padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
                   child: TextButton(

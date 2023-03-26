@@ -45,7 +45,7 @@ class _UnSignConState extends State<UnSignCon> {
                 return Center(
                   child: Text(
                     textAlign: TextAlign.center,
-                    'Hi !\nThere are no contracts waiting to be uploaded\nTry to upload your own contract !',
+                    'Go to upload your own contract !',
                     style: TextStyle(
                       fontSize: 18
                       
@@ -57,9 +57,7 @@ class _UnSignConState extends State<UnSignCon> {
                 shrinkWrap: true,
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
-                  
                   String user1state = "";
-    
                   var data =
                       snapshot.data!.docs[index].data() as Map<String, dynamic>;
                   user1state = data['order'];
@@ -67,19 +65,15 @@ class _UnSignConState extends State<UnSignCon> {
     
                   return Card(
                       child: ListTile(
-                          leading: const CircleAvatar(
-                            backgroundColor: Color.fromARGB(255, 209, 208, 208),
-                          ),
-                          title: Expanded(
-                            child: Text(data['contractname'],
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                )),
-                          ),
+                          leading: state_icon(user1state),
+                          title: Text(data['contractname'],
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: const TextStyle(
+                                fontSize: 20,
+                              )),
                           subtitle: Text(data['name']),
-                          trailing: hi(user1state),
+                          trailing: state_text(user1state),
                           onTap: () async {
                             DocumentSnapshot snap = await FirebaseFirestore
                                 .instance
@@ -125,7 +119,7 @@ void Show_data4(BuildContext context, Map<String, dynamic> data) =>
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => ShowInfo(data: data)));
 
-hi(String user1state) {
+state_text(String user1state) {
   if (user1state == "upload") {
     return const Text(
       'upload',
@@ -154,5 +148,16 @@ hi(String user1state) {
         color: Colors.blue,
       ),
     );
+  }
+}
+state_icon(String user1state) {
+  if (user1state == "upload") {
+    return const Icon(Icons.upload, size: 40.0, color: Colors.brown);
+  } else if (user1state == "wait for agreement") {
+    return const Icon(Icons.access_time_filled, size: 40.0, color: Colors.brown);
+  } else if (user1state == "wait for uploaded") {
+    return const Icon(Icons.data_exploration_rounded, size: 40.0, color: Colors.brown);
+  } else {
+    return const Icon(Icons.drive_file_rename_outline_rounded, size: 40.0, color: Colors.brown);
   }
 }

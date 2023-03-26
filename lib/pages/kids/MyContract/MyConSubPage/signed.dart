@@ -32,12 +32,15 @@ class _SignedConState extends State<SignedCon> {
               child: TextField(
                 controller: controller,
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search,color: Color.fromARGB(255, 170, 111, 23)),
                   hintText: 'Contract',
-                  border: OutlineInputBorder(
+                  enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: const BorderSide(color: Colors.blue),
+                    borderSide: const BorderSide(color: Color.fromARGB(255, 170, 111, 23)),
                   ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(color: Color.fromARGB(255, 173, 81, 0),width: 2.2)),
                 ),
                 onChanged: (val){
                   setState(() {
@@ -46,24 +49,20 @@ class _SignedConState extends State<SignedCon> {
                 }
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.fromLTRB(3, 0, 3, 10),
-                    alignment: Alignment.center,
-                    color: Colors.grey[400],
-                    width: 100.0,
-                    height: 48.0,
-                    child: const Text(
-                      'Contract Information',
-                      style: TextStyle(
-                        fontSize: 16,
-                      )
-                    ),
-                  ),
-                ),
-              ],
+            Container(
+              margin: const EdgeInsets.fromLTRB(3, 0, 3, 10),
+              alignment: Alignment.center,
+              color: Color.fromARGB(255, 252, 209, 144),
+              width: 600.0,
+              height: 48.0,
+              child: const Text(
+                'Contract Information',
+                style: TextStyle(
+                  color: Colors.brown,
+                  fontSize: 20,
+                )
+              ),
+              
             ),
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
@@ -82,7 +81,7 @@ class _SignedConState extends State<SignedCon> {
                           SizedBox(height: 100),
                           Text(
                             textAlign: TextAlign.center,
-                            'Hi !\nThere are no contracts having already uploaded\nTry to upload your own contract !',
+                            'No contract',
                             style: TextStyle(
                               fontSize: 18
                             )
@@ -105,15 +104,13 @@ class _SignedConState extends State<SignedCon> {
                                   backgroundColor: Color.fromARGB(255, 209, 208, 208),
                                   backgroundImage: NetworkImage('https://ipfs.io/ipfs/$cid'),
                                 ),
-                                title: Expanded(
-                                  child: Text(
-                                    data['contractname'],
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                    )
-                                  ),
+                                title: Text(
+                                  data['contractname'],
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  )
                                 ),
                                 subtitle: Text(data['name']),
                                 trailing: Icon(Icons.arrow_forward_ios),

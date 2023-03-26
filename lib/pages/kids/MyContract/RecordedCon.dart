@@ -30,25 +30,51 @@ with SingleTickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     int result = 0;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('History contract'),
-        bottom: TabBar(
-          controller: controller,
-          tabs: [
-            Tab(text: 'wait for upload', icon: Icon(Icons.border_color)),
-            Tab(text: 'uploaded', icon: Icon(Icons.assignment_turned_in)),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          colors: [
+            Color.fromARGB(255, 255, 255, 255),
+            Color.fromARGB(255, 244, 159, 40),
           ],
         )
       ),
-      
-      body: TabBarView(
-        controller: controller,
-        children: [
-          UnSignCon(),
-          SignedCon()
-        ],
-      )
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          iconTheme: IconThemeData(color: Colors.brown),
+          title: const Text(
+            'History contract',
+            style: TextStyle(
+              color: Colors.brown,
+            )
+          ),
+          bottom: TabBar(
+            controller: controller,
+            labelColor: Colors.brown,
+            indicatorColor: Colors.brown,
+            unselectedLabelColor: Color.fromARGB(255, 173, 113, 89),
+            tabs: [
+              Tab(text: 'wait to be uploaded', 
+              icon: Icon(Icons.border_color)),
+              Tab(text: 'uploaded', icon: Icon(Icons.assignment_turned_in)),
+            ],
+          )
+        ),
+        
+        body: TabBarView(
+          controller: controller,
+          children: [
+            UnSignCon(),
+            SignedCon()
+          ],
+        )
+      ),
     );
   }
 } 
