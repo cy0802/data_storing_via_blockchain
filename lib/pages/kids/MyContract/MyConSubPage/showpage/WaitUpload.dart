@@ -289,7 +289,8 @@ class _WaitUploadState extends State<WaitUpload> {
                             .doc(contractname);
                           doc1.delete();
                           doc2.delete();
-                          Navigator.pop(context, 1);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
                           //TODO: switch to other page after successful transaction
                           //please detect if error occur or not
                         }
