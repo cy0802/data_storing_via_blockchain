@@ -21,6 +21,9 @@ class _ShowInfoState extends State<ShowInfo> {
   late String name;
   late String time;
   late String path;
+  late String path1;
+  late String totalPath;
+  late File file;
   final Map<String, dynamic>data;
   _ShowInfoState({required this.data});
 
@@ -36,14 +39,17 @@ class _ShowInfoState extends State<ShowInfo> {
     name = data['name'];
     time = data['time'];
     path = data['path'];
+    path1 = await appDocPath;
+    totalPath = '$path1/$path';
+    file = File(totalPath);
   }
   
   @override
   Widget build(BuildContext context) {
-
+    print(contractname);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Color.fromARGB(255, 185, 185, 185),
         title: const Text(
           'Contract information',
           style: TextStyle(
@@ -55,100 +61,88 @@ class _ShowInfoState extends State<ShowInfo> {
       ),
       body: Column(
         children: [
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(10, 20, 0, 15),
-                child: Text(
-                  "合約名稱 : ",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ) 
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
-                  child: Text(
-                    contractname,
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
-                child: Text(
-                  "雙方合約人 : ",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ) 
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(5, 0, 10, 20),
-                child: Text(
-                  name,
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
-                child: Text(
-                  "同意時間 : ",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ) 
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(5, 5, 10, 20),
-                child: Text(
-                  time,
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ],
+          Container(
+            alignment:Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(10, 30, 0, 10),
+            child: Text(
+              "Contract's name : ",
+              style: TextStyle(
+                fontSize: 20,
+              ) 
+            ),
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
             alignment:Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
             child: Text(
-              "檢視檔案 : ",
+              contractname,
               style: TextStyle(
                 fontSize: 20,
               ),
             ),
           ),
-          ElevatedButton(
+          Container(
+            alignment:Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
             child: Text(
-              '檢視合約',
+              "Both Signer : ",
+              style: TextStyle(
+                fontSize: 20,
+              ) 
+            ),
+          ),
+          Container(
+            alignment:Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
+            child: Text(
+              name,
               style: TextStyle(
                 fontSize: 20,
               ),
+            ),
+          ),
+          Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
+            child: Text(
+              "Signed Time : ",
+              style: TextStyle(
+                fontSize: 20,
+              ) 
+            ),
+          ),
+          Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
+            child: Text(
+              time,
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
+            alignment:Alignment.topLeft,
+            child: Text(
+              "View Contract : ",
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+          ),
+          ElevatedButton.icon(
+            label: const Text(''),
+            icon: const Icon(
+              size: 30.0,
+              Icons.content_paste_search,
+              color: Colors.white,
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color.fromARGB(255, 107, 92, 203),
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
             onPressed: () async {
-
-              final path1 = await appDocPath;
-              final totalPath = '$path1/$path';
-              final file = File(totalPath);
               openPDF(context, file);
             }, 
           ),
@@ -157,7 +151,7 @@ class _ShowInfoState extends State<ShowInfo> {
             padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
             alignment:Alignment.bottomCenter,
             child: Text(
-              "等待對方上傳",
+              "Wait for upload",
               style: TextStyle(
                 fontSize: 26,
               ),
