@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'dart:math';
 import 'dart:io';
 //import 'package:data_storing_via_blockchain/pages/generateNFT.dart';
+import 'package:data_storing_via_blockchain/font/utils.dart';
 import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:dio/dio.dart' hide Response;
 import 'package:firebase_storage/firebase_storage.dart';
@@ -17,7 +18,7 @@ import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.d
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 //選資料
 //import 'package:flutter_ipfs/flutter_ipfs.dart';
@@ -42,7 +43,14 @@ class NormCon extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("簽署"),
+        title: Text(
+          "Sign",
+          style: TextStyle(
+            letterSpacing: 2,
+            fontSize: 22,
+            //fontWeight: FontWeight.bold,
+          )
+        ),
       ),
       body: const MyForm(),
     );
@@ -59,7 +67,7 @@ class MyForm extends StatefulWidget {
 class _MyFormState extends State<MyForm> {
 
   //變數
-  //static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   String filename = "";
   String filePath = "";
   String cid = "";
@@ -74,40 +82,6 @@ class _MyFormState extends State<MyForm> {
   //name controller
   final TextEditingController controller3 = TextEditingController();
   final TextEditingController controller4 = TextEditingController();
-
-  
-  //函式
-  /*Future<String> get _localPath async {
-    final directory = await getTemporaryDirectory();
-    return directory.path;
-  }
-
-  Future<File> get _localFile async {
-    final path = await _localPath;
-    filePath = '$path/tmpData.json';
-    debugPrint(filePath);
-    return File('$path/tmpData.json');
-  }
-
-  Future<File> writeFile(String json) async {
-    final file = await _localFile;
-    return file.writeAsString(json);
-  }
-
-  Future<int> readFile() async {
-    try {
-      final file = await _localFile;
-
-      // Read the file
-      final contents = await file.readAsString();
-      debugPrint(contents);
-
-      return int.parse(contents);
-    } catch (e) {
-      // If encountering an error, return 0
-      return 0;
-    }
-  }*/
 
   Future<String> getTime() async{
   Response response =  await get(Uri.parse('http://worldtimeapi.org/api/timezone/Asia/Taipei')) ;
@@ -138,14 +112,14 @@ class _MyFormState extends State<MyForm> {
   void initState(){
     super.initState();
     requestPermission();
-    //initInfo();
+    initInfo();
   }
-  /*initInfo(){
+  initInfo(){
     var androidInitialize = const AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOSInitialize = const DarwinInitializationSettings();
+    var iOSInitialize = const IOSInitializationSettings();
     var initializationsSettings = InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
     //the function does not work
-    flutterLocalNotificationsPlugin.initialize(initializationsSettings, onDidReceiveNotificationResponse: (payload) async {
+    flutterLocalNotificationsPlugin.initialize(initializationsSettings/*, onSelectNotificationAction: (String? payload) async {
       try{
         if(payload != null){
           print(".......................onBackgroundMessage.......................");
@@ -160,9 +134,8 @@ class _MyFormState extends State<MyForm> {
         print(e.toString());
       }
       return;
-    });
-    some problems here I can not address
-    */ /*FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
+    }*/);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
       print(".......................onMessage.......................");
       print("onMessage: ${message.notification?.title}/${message.notification?.body}");
       BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
@@ -174,6 +147,7 @@ class _MyFormState extends State<MyForm> {
       AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'hi', 
         'hi',
+        'hi',
         importance: Importance.max,
         styleInformation: bigTextStyleInformation, 
         priority: Priority.high, 
@@ -182,7 +156,7 @@ class _MyFormState extends State<MyForm> {
       );
       NotificationDetails PlatformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
-        iOS: const DarwinNotificationDetails()
+        iOS: const IOSNotificationDetails(),
       );
       await flutterLocalNotificationsPlugin.show(
         0, 
@@ -191,7 +165,7 @@ class _MyFormState extends State<MyForm> {
         PlatformChannelSpecifics,
         payload: message.data['body']);
     });
-  }*/
+  }
   void requestPermission() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     NotificationSettings settings = await messaging.requestPermission(
@@ -258,7 +232,7 @@ class _MyFormState extends State<MyForm> {
           Container(
             alignment: Alignment.centerLeft,
             margin: const EdgeInsets.fromLTRB(10, 20, 0, 0),
-            child: const Text("allowed filetype: jpeg, jpg, png, pdf"),
+            child: const Text("allowed filetype: pdf" /*"jpg", "png", "jpeg"*/ ),
           ),
           const SizedBox(height: 3.0),
           Container(
@@ -279,7 +253,7 @@ class _MyFormState extends State<MyForm> {
                     final FilePicker picker = FilePicker.platform;
                     file = await picker.pickFiles(
                       type: FileType.custom,
-                      allowedExtensions: ["jpg", "png", "pdf", "jpeg"],
+                      allowedExtensions: [/*"jpg", "png", "jpeg"*/ "pdf"],
                       withData: true,
                     );
                     if (file == null) {
@@ -334,7 +308,7 @@ class _MyFormState extends State<MyForm> {
               controller: controller3,
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
-                hintText: '輸入您的名字',
+                hintText: 'type your name',
               ),
             ),
           ),
@@ -344,7 +318,7 @@ class _MyFormState extends State<MyForm> {
               controller: controller4,
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
-                hintText: '輸入對方的名字',
+                hintText: 'type his/her name',
               ),
             ),
           ),
@@ -361,7 +335,7 @@ class _MyFormState extends State<MyForm> {
               },
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
-                hintText: '輸入您的電子郵件',
+                hintText: 'type your email',
               ),
             ),
           ),
@@ -381,7 +355,7 @@ class _MyFormState extends State<MyForm> {
                     },
                     decoration: const InputDecoration(
                       border: UnderlineInputBorder(),
-                      hintText: '輸入對方的電子郵件',
+                      hintText: 'type his/her email',
                     ),
                   ),
                 ),
@@ -407,8 +381,6 @@ class _MyFormState extends State<MyForm> {
                     var email1 = controller1.text;
                     var email2 = controller2.text;
 
-                    //var cidOfContract = file!.files.single.path!;
-                    //var cidOfContract = "1";
                     final path = 'files/$email1+$email2/$filename';
                     final ref = FirebaseStorage.instance.ref().child(path);
                     await ref.putFile(result);
@@ -425,7 +397,7 @@ class _MyFormState extends State<MyForm> {
                           contractname: filename,
                           another_email: email2,
                           time: time,
-                          order: "等待對方同意",
+                          order: "wait for agreement",
                           path: path,
                         ).toJson());
                     await FirebaseFirestore.instance.collection("user").doc(email2)
@@ -436,7 +408,7 @@ class _MyFormState extends State<MyForm> {
                           contractname: filename,
                           another_email: email1,
                           time: "not sign yet",
-                          order: "需同意",
+                          order: "agree",
                           path: path,
                         ).toJson());
 
