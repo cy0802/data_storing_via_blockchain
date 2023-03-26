@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
             fontSize: 22,
             //fontWeight: FontWeight.bold,
           )
-        ),
+        ), 
         actions: [
           TextButton(
             onPressed: ()=> show_dialog(context, user.email!),
@@ -61,15 +61,9 @@ class _HomeState extends State<Home> {
               radius: 17,
               backgroundImage: NetworkImage(user.photoURL!),
           ),
-            )
-          
+            ) 
         ]
       ),
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Color.fromARGB(255, 82, 81, 81),
-        child: const Icon(Icons.add),
-      ),*/
       body: Column(
         children: [
           const Spacer(flex: 4),
@@ -79,71 +73,78 @@ class _HomeState extends State<Home> {
               Column(
                 children: <Widget>[
                   const Text(
-                    '合約上鏈',
+                    'upload contract',
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 18.0,
+                      fontSize: 22.0,
                       fontFamily: 'Fradoka',
                     ),
                   ),
                   const SizedBox(height: 20.0),
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 102, 184, 251),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 60, vertical: 90),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: const Color.fromARGB(255, 102, 184, 251),
                     ),
-                    icon: const Icon(
-                      Icons.add_to_home_screen,
-                      color: Colors.white,
+                    child: TextButton.icon(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 115, vertical: 100),
+                      ),
+                      icon: const Icon(
+                        size: 40.0,
+                        Icons.add_to_home_screen,
+                        color: Colors.white,
+                      ),
+                      label: const Text(''),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/NormCon');
+                      },
                     ),
-                    label: const Text(''),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/NormCon');
-                    },
                   ),
                 ],
               ),
-              Column(
-                children: <Widget>[
-                  const Text(
-                    '定型化契約',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 102, 184, 251),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 60, vertical: 90),
-                    ),
-                    icon: const Icon(
-                      Icons.article_rounded,
-                      color: Colors.white,
-                    ),
-                    label: const Text(''),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/StdCon');
-                    },
-                  ),
-                ],
-              ),
+              // Column(
+              //   children: <Widget>[
+              //     const Text(
+              //       '定型化契約',
+              //       style: TextStyle(
+              //         color: Colors.black,
+              //         fontSize: 18.0,
+              //       ),
+              //     ),
+              //     const SizedBox(height: 20.0),
+              //     ElevatedButton.icon(
+              //       style: ElevatedButton.styleFrom(
+              //         backgroundColor: const Color.fromARGB(255, 102, 184, 251),
+              //         padding: const EdgeInsets.symmetric(
+              //             horizontal: 60, vertical: 90),
+              //       ),
+              //       icon: const Icon(
+              //         Icons.article_rounded,
+              //         color: Colors.white,
+              //       ),
+              //       label: const Text(''),
+              //       onPressed: () {
+              //         Navigator.pushNamed(context, '/StdCon');
+              //       },
+              //     ),
+              //   ],
+              // ),
             ],
           ),
           const Spacer(flex: 1),
           Container(
             child: ElevatedButton(
-                child: const Text('檢查合約',
+                child: const Text(
+                  'check your contract',
                     style: TextStyle(
                       color: Colors.white,
                     )),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 62, 161, 243),
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                      const EdgeInsets.symmetric(horizontal: 75, vertical: 20),
                 ),
                 onPressed: () {
                   Navigator.pushNamed(context, '/check');
@@ -152,7 +153,8 @@ class _HomeState extends State<Home> {
           const Spacer(flex: 1),
           Container(
             child: ElevatedButton(
-                child: const Text('我的合約',
+                child: const Text(
+                  'My Contract',
                     style: TextStyle(
                       color: Colors.white,
                     )
