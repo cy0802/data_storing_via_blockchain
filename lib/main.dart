@@ -1,9 +1,6 @@
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 import 'package:data_storing_via_blockchain/pages/LoginHome.dart';
@@ -12,12 +9,10 @@ import 'package:data_storing_via_blockchain/pages/kids/NormalContract/NormCont.d
 import 'package:data_storing_via_blockchain/pages/kids/Setting.dart';
 import 'package:data_storing_via_blockchain/pages/kids/StdCon.dart';
 import 'package:data_storing_via_blockchain/pages/kids/check.dart';
-import 'package:data_storing_via_blockchain/pages/home.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
-import 'package:data_storing_via_blockchain/pages/SignUp.dart';
 
 
-//..........................................................我是分隔線.........................................................
+//.......................................................... divider .........................................................
 
 // used to send notification 
 Future<void> _backgroundHandler(RemoteMessage message) async{
@@ -48,12 +43,11 @@ class _MyAPPState extends State<MyAPP> with WidgetsBindingObserver{
       create: (_) => GoogleSignInProvider(),
       builder: (context, child){
         return MaterialApp(
+          theme: ThemeData(primarySwatch: Colors.deepPurple),
             debugShowCheckedModeBanner: false,
             initialRoute: '/LoginHome',
             routes: {
               '/LoginHome' : (context) => const HomePage(),
-              '/SignUp': (context) => const SignUpWidget(),
-              '/home': (context) => const Home(),
               '/NormCon': (context) => const NormCon(),
               '/StdCon': (context) => const StdCon(),
               '/check': (context) => const CheckContract(),
