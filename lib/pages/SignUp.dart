@@ -44,11 +44,11 @@ class SignUpWidget extends StatelessWidget {
               child: Text(
                 'Welcome Back!',
                 style: SafeGoogleFont (
-                      'Twinkle Star',
-                      fontSize: 40*ffem,
-                      decorationThickness: 1000,
-                      height: 1.28*ffem/fem,
-                      color: Color.fromARGB(255, 0, 0, 0),
+                  'Twinkle Star',
+                  fontSize: 40*ffem,
+                  decorationThickness: 1000,
+                  height: 1.28*ffem/fem,
+                  color: Color.fromARGB(255, 0, 0, 0),
                 ),
               ),
             ),
