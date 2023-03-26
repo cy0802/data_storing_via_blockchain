@@ -12,27 +12,43 @@ class History extends StatefulWidget {
   State<History> createState() => _HistoryState();
 }
 
-class _HistoryState extends State<History> {
+class _HistoryState extends State<History> 
+with SingleTickerProviderStateMixin{
+  late TabController controller;
+
+  @override
+  void initState(){
+    super.initState();
+    controller = TabController(length: 2, vsync: this);
+  }
+  @override
+  void dispose(){
+    super.dispose();
+    controller.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        
-        appBar: AppBar(
-          title: const Text('History contract'),
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: '待上鏈', icon: Icon(Icons.border_color)),
-              Tab(text: '已上鏈', icon: Icon(Icons.assignment_turned_in)),
-            ],
-          )
-        ),
-        body: const TabBarView(
-          children: [UnSignCon(), SignedCon()],
+    int result = 0;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('History contract'),
+        bottom: TabBar(
+          controller: controller,
+          tabs: [
+            Tab(text: 'wait for upload', icon: Icon(Icons.border_color)),
+            Tab(text: 'uploaded', icon: Icon(Icons.assignment_turned_in)),
+          ],
         )
       ),
+      
+      body: TabBarView(
+        controller: controller,
+        children: [
+          UnSignCon(),
+          SignedCon()
+        ],
+      )
     );
   }
 } 
