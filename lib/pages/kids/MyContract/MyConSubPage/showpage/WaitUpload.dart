@@ -5,6 +5,7 @@ import 'package:data_storing_via_blockchain/Classes/userpreserve.dart';
 import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/signed.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ipfs/flutter_ipfs.dart';
 import 'package:data_storing_via_blockchain/pages/generateNFT.dart';
@@ -31,6 +32,8 @@ class _WaitUploadState extends State<WaitUpload> {
   late String totalPath;
   late File file;
   late String path1;
+  late DocumentReference<Map<String, dynamic>> doc1;
+  late DocumentReference<Map<String, dynamic>> doc2;
 
   bool isChecked = false;
 
@@ -66,7 +69,7 @@ class _WaitUploadState extends State<WaitUpload> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+          backgroundColor: Color.fromARGB(255, 185, 185, 185),
           title: const Text('Contract information',
               style: TextStyle(
                 color: Colors.black,
@@ -76,59 +79,53 @@ class _WaitUploadState extends State<WaitUpload> {
         ),
         body: Column(
           children: [
-            Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(10, 20, 0, 15),
-                  child: Text("合約名稱 : ",
-                      style: TextStyle(
-                        fontSize: 20,
-                      )),
-                ),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(5, 20, 10, 15),
-                    child: Text(
-                      contractname,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
-                  child: Text("雙方合約人 : ",
-                      style: TextStyle(
-                        fontSize: 20,
-                      )),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(5, 0, 10, 20),
-                  child: Text(
-                    name,
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-              ],
-            ),
             Container(
               alignment: Alignment.topLeft,
-              padding: EdgeInsets.fromLTRB(10, 0, 0, 15),
-              child: Text("自身簽署時間 : ",
+              padding: EdgeInsets.fromLTRB(10, 30, 0, 10),
+              child: Text("Contract's name : ",
                   style: TextStyle(
                     fontSize: 20,
                   )),
             ),
             Container(
               alignment: Alignment.topLeft,
-              padding: EdgeInsets.fromLTRB(30, 0, 10, 20),
+              padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
+              child: Text(
+                contractname,
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.topLeft,
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
+              child: Text("Both Signer : ",
+                  style: TextStyle(
+                    fontSize: 20,
+                  )),
+            ),
+            Container(
+              alignment: Alignment.topLeft,
+              padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
+              child: Text(
+                name,
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.topLeft,
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
+              child: Text("My Signed Time : ",
+                  style: TextStyle(
+                    fontSize: 20,
+                  )),
+            ),
+            Container(
+              alignment: Alignment.topLeft,
+              padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
               child: Text(
                 user1time,
                 style: TextStyle(
@@ -138,17 +135,17 @@ class _WaitUploadState extends State<WaitUpload> {
             ),
             Container(
               alignment: Alignment.topLeft,
-              padding: EdgeInsets.fromLTRB(10, 10, 0, 15),
-              child: Text("對方最後簽署時間 : ",
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
+              child: Text("His/Her Signed Time : ",
                   style: TextStyle(
                     fontSize: 20,
                   )),
             ),
             Container(
               alignment: Alignment.topLeft,
-              padding: EdgeInsets.fromLTRB(30, 0, 10, 20),
+              padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
               child: Text(
-                user1time,
+                time,
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -158,30 +155,35 @@ class _WaitUploadState extends State<WaitUpload> {
               padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
               alignment: Alignment.topLeft,
               child: Text(
-                "檢視檔案 : ",
+                "View Contract : ",
                 style: TextStyle(
                   fontSize: 20,
                 ),
               ),
             ),
-            ElevatedButton(
-              child: Text(
-                '檢視合約',
-                style: TextStyle(
-                  fontSize: 20,
+            Container(
+              decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Color.fromARGB(255, 96, 121, 219),
+                    ),
+              child: TextButton.icon(
+                label: const Text(''),
+                icon: const Icon(
+                  size: 30.0,
+                  Icons.content_paste_search,
+                  color: Colors.white,
                 ),
+                style: TextButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 107, 92, 203),
+                  padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
+                ),
+                onPressed: () async {
+                  openPDF(context, file);
+                }, 
               ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 107, 92, 203),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
-              ),
-              onPressed: () async {
-                openPDF(context, file);
-              },
             ),
             CheckboxListTile(
-              title: Text('閱畢無誤且同意上鏈'),
+              title: Text('I agree to upload the contract to blockchain'),
               controlAffinity: ListTileControlAffinity.leading,
               activeColor: Color.fromARGB(255, 74, 125, 245),
               checkColor: Colors.white,
@@ -193,109 +195,173 @@ class _WaitUploadState extends State<WaitUpload> {
               },
             ),
             const Spacer(flex: 19),
-            Container(
-              padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
-              alignment: Alignment.bottomCenter,
-              child: ElevatedButton(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Color.fromARGB(255, 96, 121, 219),
+                    ),
+                  alignment: Alignment.bottomCenter,
+                  child: TextButton(
+                      child: Text(
+                        "Upload to Blockchain",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          fontSize: 18,
+                        ),
+                      ),
+                      onPressed: () async {
+                        if (isChecked) {
+
+                          var cidOfContract =
+                              await FlutterIpfs().uploadToIpfs(totalPath);
+
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (BuildContext context) => const ProgressDialog(
+                              status: 'Contract Uploading to IPFS',
+                            ),
+                          );
+
+                          debugPrint("cidOfContract: $cidOfContract");
+                          String jsonPath = "";
+                          String cidOfNFTImg = "";
+                          await generateNFT(cidOfContract, email, emailuser2)
+                              .then((s) {
+                            setState(() {
+                              jsonPath = s[0];
+                              cidOfNFTImg = s[1];
+                              //debugPrint("##jsonPath: $jsonPath");
+                              //debugPrint("##cidOfNFTImg: $cidOfNFTImg");
+                            });
+                          }).catchError((error) {
+                            debugPrint(error);
+                          });
+                          //debugPrint("###jsonPath: $jsonPath");
+                          //debugPrint("###cidOfNFTImg: $cidOfNFTImg");
+                          String transactionHash = "";
+                          await mint(jsonPath).then((s) {
+                            transactionHash = s;
+                            //debugPrint("##transactionHash: $transactionHash");
+                          }).catchError((error) {
+                            debugPrint(error);
+                          });
+                          //debugPrint("###transactionHash: $transactionHash");
+                          await FirebaseFirestore.instance
+                              .collection("user")
+                              .doc(email)
+                              .collection("contractPreserve")
+                              .doc(contractname)
+                              .set(UserPreserve(
+                                name: name,
+                                contractname: contractname,
+                                another_email: emailuser2,
+                                key: transactionHash,
+                                time: user1time,
+                                pic_cid: cidOfNFTImg,
+                              ).toJson());
+
+                          await FirebaseFirestore.instance
+                              .collection("user")
+                              .doc(emailuser2)
+                              .collection("contractPreserve")
+                              .doc(contractname)
+                              .set(UserPreserve(
+                                name: name,
+                                contractname: contractname,
+                                another_email: email,
+                                key: transactionHash,
+                                time: time,
+                                pic_cid: cidOfNFTImg,
+                              ).toJson());
+                          final doc2 = FirebaseFirestore.instance
+                            .collection("user")
+                            .doc(emailuser2)
+                            .collection("contract")
+                            .doc(contractname);
+                          final doc1 = FirebaseFirestore.instance
+                            .collection("user")
+                            .doc(email)
+                            .collection("contract")
+                            .doc(contractname);
+                          doc1.delete();
+                          doc2.delete();
+                          Navigator.pop(context, 1);
+                          //TODO: switch to other page after successful transaction
+                          //please detect if error occur or not
+                        }
+                      }),
+                ),
+                SizedBox(width: 40),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Color.fromARGB(255, 96, 121, 219),
+                  ),
+                //padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 3),
+                    ),
                   child: Text(
-                    "上鏈",
+                    "reject",
                     style: TextStyle(
+                      color: Color.fromARGB(255, 255, 255, 255),
                       fontSize: 18,
                     ),
                   ),
-                  onPressed: () async {
-                    if (isChecked) {
-
-                      //debugPrint("*******${totalPath}");
-
-                      var cidOfContract =
-                          await FlutterIpfs().uploadToIpfs(totalPath);
-
-                      showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (BuildContext context) => const ProgressDialog(
-                          status: 'Contract Uploading to IPFS',
-                        ),
-                      );
-
-                      debugPrint("cidOfContract: $cidOfContract");
-                      String jsonPath = "";
-                      String cidOfNFTImg = "";
-                      await generateNFT(cidOfContract, email, emailuser2)
-                          .then((s) {
-                        setState(() {
-                          jsonPath = s[0];
-                          cidOfNFTImg = s[1];
-                          //debugPrint("##jsonPath: $jsonPath");
-                          //debugPrint("##cidOfNFTImg: $cidOfNFTImg");
-                        });
-                      }).catchError((error) {
-                        debugPrint(error);
-                      });
-                      //debugPrint("###jsonPath: $jsonPath");
-                      //debugPrint("###cidOfNFTImg: $cidOfNFTImg");
-                      String transactionHash = "";
-                      await mint(jsonPath).then((s) {
-                        transactionHash = s;
-                        //debugPrint("##transactionHash: $transactionHash");
-                      }).catchError((error) {
-                        debugPrint(error);
-                      });
-                      //debugPrint("###transactionHash: $transactionHash");
-                      await FirebaseFirestore.instance
-                          .collection("user")
-                          .doc(email)
-                          .collection("contractPreserve")
-                          .doc(contractname)
-                          .set(UserPreserve(
-                            name: name,
-                            contractname: contractname,
-                            another_email: emailuser2,
-                            key: transactionHash,
-                            time: user1time,
-                            pic_cid: cidOfNFTImg,
-                          ).toJson());
-
-                      await FirebaseFirestore.instance
-                          .collection("user")
-                          .doc(emailuser2)
-                          .collection("contractPreserve")
-                          .doc(contractname)
-                          .set(UserPreserve(
-                            name: name,
-                            contractname: contractname,
-                            another_email: email,
-                            key: transactionHash,
-                            time: time,
-                            pic_cid: cidOfNFTImg,
-                          ).toJson());
-                      final doc2 = FirebaseFirestore.instance
-                          .collection("user")
-                          .doc(emailuser2)
-                          .collection("contract")
-                          .doc(contractname);
-                      final doc1 = FirebaseFirestore.instance
-                          .collection("user")
-                          .doc(email)
-                          .collection("contract")
-                          .doc(contractname);
-                      doc1.delete();
-                      doc2.delete();
-                      Navigator.of(context).pop();
-                      Navigator.pushReplacement(
-                        context, 
-                        MaterialPageRoute(
-                          builder: (context) => SignedCon(),
-                        ),
-                      );
-                      //TODO: switch to other page after successful transaction
-                      //please detect if error occur or not
-                    }
-                  }),
-            ),
-            const Spacer(flex: 1),
-          ],
-        ));
+                  onPressed: () => show_dialog(context)
+                ),
+              ),
+            ],
+          ),
+          const Spacer(flex: 3),
+        ],
+      )
+    );
   }
+  show_dialog(BuildContext context){
+  showDialog(
+    context: context, 
+    builder: (BuildContext context) =>  CupertinoAlertDialog(
+      title: Text("Think Twice"),
+      content: Text("Want to discard this contract?"),
+      actions: [
+        CupertinoDialogAction(
+          child: Text(
+            'No'
+          ),
+          onPressed: (){
+            Navigator.of(context).pop();
+          },
+        ),
+        CupertinoDialogAction(
+          child: Text(
+            'Yes'
+          ),
+          onPressed: ()async{
+            final doc2 = FirebaseFirestore.instance
+            .collection("user")
+            .doc(emailuser2)
+            .collection("contract")
+            .doc(contractname);
+          final doc1 = FirebaseFirestore.instance
+            .collection("user")
+            .doc(email)
+            .collection("contract")
+            .doc(contractname);
+            doc1.delete();
+            doc2.delete();
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
+        )
+      ],
+    )
+  );
+}
 }
