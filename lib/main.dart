@@ -43,7 +43,6 @@ class _MyAPPState extends State<MyAPP> with WidgetsBindingObserver{
       create: (_) => GoogleSignInProvider(),
       builder: (context, child){
         return MaterialApp(
-          theme: ThemeData(primarySwatch: Colors.deepPurple),
             debugShowCheckedModeBanner: false,
             initialRoute: '/LoginHome',
             routes: {
