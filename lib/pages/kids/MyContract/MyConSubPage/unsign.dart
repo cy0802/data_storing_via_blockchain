@@ -29,68 +29,85 @@ class _UnSignConState extends State<UnSignCon> {
     final user = FirebaseAuth.instance.currentUser!;
     email= user.email!;
 
-    return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('user')
-            .doc(email)
-            .collection('contract')
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('Something went Wrong! ${snapshot.error}');
-          } else if (snapshot.hasData) {
-            return ListView.builder(
-              shrinkWrap: true,
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                String user1state = "";
-
-                var data =
-                    snapshot.data!.docs[index].data() as Map<String, dynamic>;
-                user1state = data['order'];
-                String anotherEmail1 = data['another_email'];
-
-                return Card(
-                    child: ListTile(
-                        leading: const CircleAvatar(
-                          backgroundColor: Color.fromARGB(255, 209, 208, 208),
-                        ),
-                        title: Expanded(
-                          child: Text(data['contractname'],
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: const TextStyle(
-                                fontSize: 20,
-                              )),
-                        ),
-                        subtitle: Text(data['name']),
-                        trailing: hi(user1state),
-                        onTap: () async {
-                          DocumentSnapshot snap = await FirebaseFirestore
-                              .instance
-                              .collection("user")
-                              .doc(anotherEmail1)
-                              .collection("contract")
-                              .doc(data['contractname'])
-                              .get();
-                          if (user1state == "等待對方同意") {
-                            Show_data2(context, data);
-                          } else if (user1state == "需同意") {
-                            Show_data3(context, data);
-                          } else if (user1state == "等待上鏈") {
-                            Show_data1(context, data, email, snap['time']);
-                          } else {
-                            Show_data4(context, data);
-                          }
-                        }));
-              },
-            );
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            return const Text('no data');
-          }
-        });
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('user')
+              .doc(email)
+              .collection('contract')
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went Wrong! ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              int length = snapshot.data!.docs.length;
+              if(length == 0){
+                return Center(
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    'Hi !\nThere are no contracts waiting to be uploaded\ntry to upload your own contract !',
+                    style: TextStyle(
+                      fontSize: 18
+                      
+                    )
+                  )
+                );
+              }else {
+                return ListView.builder(
+                shrinkWrap: true,
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  
+                  String user1state = "";
+    
+                  var data =
+                      snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                  user1state = data['order'];
+                  String anotherEmail1 = data['another_email'];
+    
+                  return Card(
+                      child: ListTile(
+                          leading: const CircleAvatar(
+                            backgroundColor: Color.fromARGB(255, 209, 208, 208),
+                          ),
+                          title: Expanded(
+                            child: Text(data['contractname'],
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                )),
+                          ),
+                          subtitle: Text(data['name']),
+                          trailing: hi(user1state),
+                          onTap: () async {
+                            DocumentSnapshot snap = await FirebaseFirestore
+                                .instance
+                                .collection("user")
+                                .doc(anotherEmail1)
+                                .collection("contract")
+                                .doc(data['contractname'])
+                                .get();
+                            if (user1state == "wait for agreement") {
+                              Show_data2(context, data);
+                            } else if (user1state == "agree") {
+                              Show_data3(context, data);
+                            } else if (user1state == "upload") {
+                              Show_data1(context, data, email, snap['time']);
+                            } else {
+                              Show_data4(context, data);
+                            }
+                          }));
+                },
+              );
+              }
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return const Text('no data');
+            }
+          }),
+    );
   }
 }
 
@@ -110,30 +127,30 @@ void Show_data4(BuildContext context, Map<String, dynamic> data) =>
         .push(MaterialPageRoute(builder: (context) => ShowInfo(data: data)));
 
 hi(String user1state) {
-  if (user1state == "等待上鏈") {
+  if (user1state == "upload") {
     return const Text(
-      '等待上鏈',
+      'upload',
       style: TextStyle(
         color: Color.fromARGB(255, 53, 137, 56),
       ),
     );
-  } else if (user1state == "等待對方同意") {
+  } else if (user1state == "wait for agreement") {
     return const Text(
-      '等待對方同意',
+      'wait for agreement',
       style: TextStyle(
         color: Colors.blue,
       ),
     );
-  } else if (user1state == "等待對方上鏈") {
+  } else if (user1state == "wait for uploaded") {
     return const Text(
-      '等待對方上鏈',
+      'wait for uploaded',
       style: TextStyle(
         color: Color.fromARGB(255, 53, 137, 56),
       ),
     );
   } else {
     return const Text(
-      '需同意',
+      'agree',
       style: TextStyle(
         color: Colors.blue,
       ),
