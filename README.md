@@ -1,5 +1,5 @@
 # data_storing_via_blockchain
-In this flutter app, you can choose the file you want to store, and people you want to sign an agreement with. 
+In this flutter app, you can choose the file you want to store, and people you want to sign an agree with. 
 
 After you fill up all the spaces, click the submit buttom, then your file will transfer to json file stored on [IPFS](https://ipfs.tech/). And [solidity contract](./blockChain/fileStore.sol) will take this json file as input to mint a NFT. 
 
