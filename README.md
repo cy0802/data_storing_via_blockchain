@@ -34,7 +34,8 @@ flutter pubget
 flutter run
 ```
 5. Start the app
-- Perserve file on the block_chain:
+- Use your google account to login
+- Perserve file on the blockchain:
     1. Click the "Submit Contract" button
     2. choose a file
     3. Type your name
