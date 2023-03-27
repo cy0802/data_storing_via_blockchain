@@ -39,7 +39,6 @@ flutter run
     2. choose a file
     3. Type your name
     4. Type another singer's name
-    5. Type your email
     5. Type another singer's email
     6. Press the submit button
     
@@ -50,7 +49,7 @@ In the history contract, there are two options in the top toolbar, "Wait for upl
     3. Wait for uploaded
     4. Uploaded
 
-- You can depoly contract on IPFS follow the steps below:
+- You can deploy contract on IPFS follow the steps below:
 1. For receiver side:
     1. Click the contract of "Wait for agreement" state
     2. Check the box whcih says "Confirmed"
