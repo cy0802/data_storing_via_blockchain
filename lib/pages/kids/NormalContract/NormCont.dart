@@ -88,6 +88,7 @@ class _MyFormState extends State<MyForm> {
   String cid = "";
   FilePickerResult? file;
   PlatformFile? pickedFile;
+  bool isLoading = false;
   late File result;
   final _formKey = GlobalKey<FormState>();
   
@@ -241,7 +242,25 @@ class _MyFormState extends State<MyForm> {
     final email1 = user.email!;
     return Form(
       key: _formKey,
-      child: Column(
+      child: isLoading? 
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                backgroundColor: Color.fromARGB(255, 213, 162, 110),
+                valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 180, 111, 32))),
+              Text(
+                'Processing',
+                style: TextStyle(
+                  color: Colors.brown,
+                  fontSize: 23,
+                ),
+              )
+            ],
+          ),
+        )
+        :  Column(
         children: [
           const Spacer(flex: 1),
           Container(
@@ -271,17 +290,25 @@ class _MyFormState extends State<MyForm> {
                 ),
                 onPressed: () async {
                   // file picker
+                  setState(() {
+                    isLoading = true;
+                  });
                   try {
                     final FilePicker picker = FilePicker.platform;
+                    
                     file = await picker.pickFiles(
                       type: FileType.custom,
                       allowedExtensions: [/*"jpg", "png", "jpeg"*/ "pdf"],
                       withData: true,
                     );
+                    
                     if (file == null) {
                       Fluttertoast.showToast(
                         msg: 'No File Selected',
                       );
+                      setState(() {
+                        isLoading = false;
+                      });
                       return;
                     } else {
                       filename = "";
@@ -289,6 +316,9 @@ class _MyFormState extends State<MyForm> {
                       String tmp = file!.files[0].name;
                       result = File(pickedFile!.path!);
                       //debugPrint("***********${result.path}");
+                      setState(() {
+                          isLoading = false;
+                        });
                       openPDF(context, result);
                       setState(() {
                         int size = tmp.length;
@@ -392,6 +422,9 @@ class _MyFormState extends State<MyForm> {
                 ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
+                    setState(() {
+                          isLoading = true;
+                    });
                     String time = await getTime();
                     //存一些資料在firestore，用來顯示在待簽署那裏，讓使用者清楚知道一些合約基本資訊
                     var name1 = controller3.text;
@@ -436,7 +469,9 @@ class _MyFormState extends State<MyForm> {
                       String token = snap['token'];
     
                     sendPushMessage(token, "New contract!", "Log in and sign the contract");
-    
+                    setState(() {
+                      isLoading = false;
+                    });
                     Navigator.pushReplacement(
                       context, 
                       MaterialPageRoute(

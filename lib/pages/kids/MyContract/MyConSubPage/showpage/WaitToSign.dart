@@ -38,6 +38,7 @@ class _WaitToSignState extends State<WaitToSign> {
   bool isChecked = false;
 
   final Map<String, dynamic>data;
+  bool isLoading = false;
   _WaitToSignState({required this.data});
   
   @override
@@ -80,7 +81,25 @@ class _WaitToSignState extends State<WaitToSign> {
         centerTitle: true,
         actions: []
       ),
-      body: Column(
+      body: isLoading? 
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                backgroundColor: Color.fromARGB(255, 213, 162, 110),
+                valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 180, 111, 32))),
+              Text(
+                'Showing Picture',
+                style: TextStyle(
+                  color: Colors.brown,
+                  fontSize: 23,
+                ),
+              )
+            ],
+          ),
+        )
+        :  Column(
         children: [
           Container(
             alignment:Alignment.topLeft,
@@ -163,13 +182,19 @@ class _WaitToSignState extends State<WaitToSign> {
               backgroundColor: Color.fromARGB(255, 167, 118, 100),
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
-            onPressed: () async {
+            onPressed: () {
+              setState(() {
+                isLoading = true;
+              });
               openPDF(context, file);
+              setState(() {
+                isLoading = false;
+              });
             }, 
           ),
           CheckboxListTile(
             title: Text(
-              'I agree'
+              'I Confirm the correctness of the contract'
             ),
             controlAffinity: ListTileControlAffinity.leading,
             activeColor: Color.fromARGB(255, 74, 125, 245),

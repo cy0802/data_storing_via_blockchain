@@ -15,6 +15,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  late User user;
   @override
   void initState(){
     // TODO: implement initState
@@ -22,16 +23,11 @@ class _HomeState extends State<Home> {
     initialization();
   }
   void initialization() async{
-    final currentUser = await FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      await currentUser.reload();
-    }
+    user = FirebaseAuth.instance.currentUser!;
   }
 
   @override
   Widget build(BuildContext context) {
-    
-    final user = FirebaseAuth.instance.currentUser!;
 
     return Container(
       decoration: BoxDecoration(
@@ -149,7 +145,7 @@ class _HomeState extends State<Home> {
                       'My Contract',
                         style: TextStyle(
                           color: Color.fromARGB(255, 137, 81, 35),
-                          fontSize: 20
+                          fontSize: 18.5
                         )
                       ),
                     style: TextButton.styleFrom(
@@ -179,7 +175,7 @@ class _HomeState extends State<Home> {
                     'Check Your Contract',
                     style: TextStyle(
                       color: Color.fromARGB(255, 133, 79, 34),
-                      fontSize: 20
+                      fontSize: 18.5
                     )
                   ),
                   style: TextButton.styleFrom(

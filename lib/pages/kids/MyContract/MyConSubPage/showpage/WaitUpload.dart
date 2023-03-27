@@ -38,7 +38,7 @@ class _WaitUploadState extends State<WaitUpload> {
   late String path1;
   late DocumentReference<Map<String, dynamic>> doc1;
   late DocumentReference<Map<String, dynamic>> doc2;
-
+  bool isLoading = false;
   bool isChecked = false;
 
   final Map<String, dynamic> data;
@@ -82,7 +82,25 @@ class _WaitUploadState extends State<WaitUpload> {
           centerTitle: true,
           actions: [],
         ),
-        body: Column(
+        body: isLoading? 
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                backgroundColor: Color.fromARGB(255, 213, 162, 110),
+                valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 180, 111, 32))),
+              Text(
+                'Showing Picture',
+                style: TextStyle(
+                  color: Colors.brown,
+                  fontSize: 23,
+                ),
+              )
+            ],
+          ),
+        )
+        :  Column(
           children: [
             Container(
               alignment: Alignment.topLeft,
@@ -183,7 +201,13 @@ class _WaitUploadState extends State<WaitUpload> {
                   padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
                 ),
                 onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
                   openPDF(context, file);
+                  setState(() {
+                    isLoading = false;
+                  });
                 }, 
               ),
             ),
@@ -219,9 +243,6 @@ class _WaitUploadState extends State<WaitUpload> {
                       ),
                       onPressed: () async {
                         if (isChecked) {
-                          var cidOfContract =
-                              await FlutterIpfs().uploadToIpfs(totalPath);
-
                           showDialog(
                             barrierDismissible: false,
                             context: context,
@@ -229,7 +250,9 @@ class _WaitUploadState extends State<WaitUpload> {
                               status: 'Contract Uploading to IPFS',
                             ),
                           );
-
+                          var cidOfContract =
+                              await FlutterIpfs().uploadToIpfs(totalPath);
+                          
                           debugPrint("cidOfContract: $cidOfContract");
                           String jsonPath = "";
                           String cidOfNFTImg = "";

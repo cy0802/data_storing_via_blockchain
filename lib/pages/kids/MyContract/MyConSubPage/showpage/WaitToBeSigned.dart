@@ -25,7 +25,7 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
   late File file;
   late String path1;
   final Map<String, dynamic>data;
-
+  bool isLoading = false;
   _WaitToBeSignedState({required this.data});
 
   @override
@@ -60,7 +60,25 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
         centerTitle: true,
         actions: []
       ),
-      body: Column(
+      body: isLoading? 
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                backgroundColor: Color.fromARGB(255, 213, 162, 110),
+                valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 180, 111, 32))),
+              Text(
+                'Showing Picture',
+                style: TextStyle(
+                  color: Colors.brown,
+                  fontSize: 23,
+                ),
+              )
+            ],
+          ),
+        )
+        :  Column(
         children: [
           Container(
             alignment:Alignment.topLeft,
@@ -144,7 +162,13 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
             onPressed: () async {
+              setState(() {
+                isLoading = true;
+              });
               openPDF(context, file);
+              setState(() {
+                isLoading = false;
+              });
             }, 
           ),
           const Spacer(flex: 19),

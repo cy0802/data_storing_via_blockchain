@@ -49,7 +49,7 @@ with SingleTickerProviderStateMixin{
           backgroundColor: Colors.transparent,
           iconTheme: IconThemeData(color: Colors.brown),
           title: const Text(
-            'History contract',
+            'History Contract',
             style: TextStyle(
               color: Colors.brown,
             )

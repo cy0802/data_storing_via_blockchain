@@ -3,6 +3,7 @@ import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import "package:flutter/material.dart";
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignUpWidget extends StatelessWidget {
   const SignUpWidget({super.key});
@@ -79,30 +80,30 @@ class SignUpWidget extends StatelessWidget {
               ),
             ),
             const Spacer(flex: 4),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                shape: StadiumBorder(),
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-                minimumSize: const Size(double.infinity, 50),
-              ),
-              icon: const Icon( Icons.mail_outlined, color: Colors.red,),
-              label: const Text('Sign Up With Gmail'),
-              onPressed: () async {
-                final provider = 
-                    Provider.of<GoogleSignInProvider>(context, listen: false);
-                await provider.googleLogin();
-                // ignore: prefer_const_constructors
-                final snackBar = SnackBar(
-                  content: const Text(
-                    'Sign In Successfully !',
-                    textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 14),
-                  ),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar); 
-                  },
-            ),
+            // ElevatedButton.icon(
+            //   style: ElevatedButton.styleFrom(
+            //     shape: StadiumBorder(),
+            //     backgroundColor: Colors.white,
+            //     foregroundColor: Colors.black,
+            //     minimumSize: const Size(double.infinity, 50),
+            //   ),
+            //   icon: const Icon( Icons.mail_outlined, color: Colors.red,),
+            //   label: const Text('Sign In With Gmail'),
+            //   onPressed: () async {
+            //     final provider = 
+            //         Provider.of<GoogleSignInProvider>(context, listen: false);
+            //     await provider.googleLogin();
+            //     // ignore: prefer_const_constructors
+            //     final snackBar = SnackBar(
+            //       content: const Text(
+            //         'Sign In Successfully !',
+            //         textAlign: TextAlign.center,
+            //           style: const TextStyle(fontSize: 14),
+            //       ),
+            //     );
+            //     ScaffoldMessenger.of(context).showSnackBar(snackBar); 
+            //       },
+            // ),
             const Spacer(flex: 1),
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
@@ -112,36 +113,54 @@ class SignUpWidget extends StatelessWidget {
                 minimumSize: const Size(double.infinity, 50),
               ),
               icon: const FaIcon(FontAwesomeIcons.google, color: Colors.red),
-              label: const Text('Sign Up With Google'),
+              label: const Text('Sign In With Google'),
               onPressed: () async {
                 final provider = 
                     Provider.of<GoogleSignInProvider>(context, listen: false);
-                await provider.googleLogin();
+                final sto = await provider.googleLogin();
+                if(sto!=null){
+                  final snackBar = SnackBar(
+                    backgroundColor: Color.fromARGB(255, 245, 174, 103),
+                    content: const Text(
+                      'Sign In Successfully !',
+                      textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.brown
+                          ),
+                    ),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar); 
+                }
                 // ignore: prefer_const_constructors
-                final snackBar = SnackBar(
-                  content: const Text(
-                    'Sign In Successfully !',
-                    textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 14),
-                  ),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar); 
-                  },
+                },
             ),
             const SizedBox(height: 40),
-            RichText(
-              text: const TextSpan(
-                text: 'Don’t have a google account?  ',
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextSpan(
-                    text: 'Sign up',
+                  Text(
+                    'Don’t have a google account?',
                     style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontStyle: FontStyle.italic,
+                      color: Colors.brown,
+                    )
+                  ),
+                  TextButton(
+                    onPressed: ()async{
+                      await launch("https://accounts.google.com/signup/v2/webcreateaccount?biz=false&cc=TW&continue=https%3A%2F%2Fwww.google.com.tw%2F&dsh=S-385784584%3A1679887735348535&flowEntry=SignUp&flowName=GlifWebSignIn&hl=zh-TW&authuser=0");
+                    }, 
+                    child: Text(
+                      'Sign up',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.brown,
                     ),
+                    )
                   )
-                ]
-              ),
+                ],
+              )
             ),
             const Spacer(flex: 4),
           ],
