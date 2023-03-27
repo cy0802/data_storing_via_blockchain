@@ -38,29 +38,29 @@ flutter run
     1. Click the "Submit Contract" button
     2. choose a file
     3. Type your name
-    4. Type another singer's name
-    5. Type another singer's email
+    4. Type another signer's name
+    5. Type another signer's email
     6. Press the submit button
     
 - History contract:
-In the history contract, there are two options in the top toolbar, "Wait for upload" and "Uploaded". There are 4 states shown on the right side of each contract:
+In the history contract, there are two options in the top toolbar, "Wait to be upload" and "Uploaded". There are 4 states shown on the right side of each contract:
     1. Wait for agreement
-    2. Agreed
+    2. Agree
     3. Wait for uploaded
-    4. Uploaded
+    4. Upload
 
 - You can deploy contract on IPFS follow the steps below:
 1. For receiver side:
-    1. Click the contract of "Wait for agreement" state
-    2. Check the box whcih says "Confirmed"
-    3. Click the purple box whcih says "I agree" 
-    4. Then contract will show up "Agreed"
+    1. Click the contract of "agree" state
+    2. Get into the contract info screen, and Check the box whcih says "I Confirm the correctness of the contract"
+    3. Click the brown button whcih says "I agree" 
+    4. Then contract will show up "Agreed" 
 
 2. Wait for upload of sender side: 
-    1. Click the contract of "Wait for uploaded" state
-    2. Check the box whcih says "Confirmed"
-    3. Click the purple box whcih says "Upload"
-    4. Then contract will show up "Uploaded"
+    1. Click the contract of "Upload" state
+    2. Get into the contract info screen, and check the box whcih says "I agree to upload the contract to blockchain"
+    3. Click the brown button whcih says "Upload"
+    4. Then contract will show up in "Uploaded"
 
 - Uploaded Contract: 
 You can see all your contracts being uploaded in the "uploaded" screen!
