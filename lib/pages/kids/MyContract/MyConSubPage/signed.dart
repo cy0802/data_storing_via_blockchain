@@ -24,6 +24,13 @@ class _SignedConState extends State<SignedCon> {
     String email= user.email!;
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/check');
+        },
+        backgroundColor: Color.fromARGB(255, 147, 116, 62),
+        child: const Icon(Icons.search),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -78,7 +85,7 @@ class _SignedConState extends State<SignedCon> {
                     return Center(
                       child: Column(
                         children: [
-                          SizedBox(height: 100),
+                          SizedBox(height: 150),
                           Text(
                             textAlign: TextAlign.center,
                             'No contract',
