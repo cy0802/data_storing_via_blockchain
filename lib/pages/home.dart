@@ -4,6 +4,7 @@ import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 //import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -60,8 +61,8 @@ class _HomeState extends State<Home> {
               child: CircleAvatar(
                 radius: 17,
                 backgroundImage: NetworkImage(user.photoURL!),
-            ),
-              ) 
+              ),
+            ) 
           ]
         ),
         drawer: Drawer(
@@ -142,7 +143,7 @@ class _HomeState extends State<Home> {
                 ),
                 child: TextButton(
                     child: const Text(
-                      'My Contract',
+                      'My Contracts',
                         style: TextStyle(
                           color: Color.fromARGB(255, 137, 81, 35),
                           fontSize: 18.5
@@ -157,8 +158,8 @@ class _HomeState extends State<Home> {
                     }
                   ),
               ),
-              const Spacer(flex: 2),
-              Container(
+              //const Spacer(flex: 2),
+              /*Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   gradient: LinearGradient(
@@ -186,7 +187,7 @@ class _HomeState extends State<Home> {
                     Navigator.pushNamed(context, '/check');
                   }
                 ),
-              ),
+              ),*/
               const Spacer(flex: 11),
             ],
           ),
@@ -238,15 +239,39 @@ Container(
     runSpacing: 16,
     children: [
       ListTile(
-        title: const Text('test'),
+        leading: const Icon(Icons.home_outlined),
+        title: const Text('Home'),
         onTap: () {
           Navigator.pop(context);
         },
       ),
       ListTile(
-        title: const Text('test'),
+        leading: const Icon(Icons.auto_stories_outlined),
+        title: const Text('Instruction'),
+        onTap: () {
+          Navigator.pushNamed(context, '/Instruction');
+        },
+      ),
+      ListTile(
+        leading: const Icon(Icons.notifications_outlined),
+        title: const Text('Notifications'),
         onTap: () {
           Navigator.pop(context);
+        },
+      ),
+      Divider(color: Colors.black),
+      ListTile(
+        leading: CircleAvatar(
+          radius: 17,
+          backgroundImage: AssetImage("assets/gdsc.png"),
+        ), 
+        title: const Text('Google Developer'),
+        onTap: () async{
+          final Uri toLaunch =
+            Uri(scheme: 'https', host: 'developers.google.com');
+          await launchUrl(
+            toLaunch,
+            mode: LaunchMode.externalApplication,);
         },
       ),
     ],

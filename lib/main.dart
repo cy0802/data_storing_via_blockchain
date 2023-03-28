@@ -1,3 +1,4 @@
+import 'package:data_storing_via_blockchain/pages/instruction.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -51,6 +52,7 @@ class _MyAPPState extends State<MyAPP> with WidgetsBindingObserver{
               '/check': (context) => const CheckContract(),
               '/RecordedCon' : (context) => const History(),
               '/Setting' : (context) => const Setting(),
+              '/Instruction' : (context) => const Instruction(),
             }
         );
       }
