@@ -154,9 +154,9 @@ state_icon(String user1state) {
   if (user1state == "upload") {
     return const Icon(Icons.upload, size: 40.0, color: Colors.brown);
   } else if (user1state == "wait for agreement") {
-    return const Icon(Icons.access_time_filled, size: 40.0, color: Colors.brown);
+    return const Icon(Icons.history_rounded, size: 40.0, color: Colors.brown);
   } else if (user1state == "wait for uploaded") {
-    return const Icon(Icons.data_exploration_rounded, size: 40.0, color: Colors.brown);
+    return const Icon(Icons.outbox_rounded, size: 40.0, color: Colors.brown);
   } else {
     return const Icon(Icons.drive_file_rename_outline_rounded, size: 40.0, color: Colors.brown);
   }

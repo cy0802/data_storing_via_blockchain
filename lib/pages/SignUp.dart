@@ -148,6 +148,7 @@ class SignUpWidget extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: ()async{
+                      // ignore: deprecated_member_use
                       await launch("https://accounts.google.com/signup/v2/webcreateaccount?biz=false&cc=TW&continue=https%3A%2F%2Fwww.google.com.tw%2F&dsh=S-385784584%3A1679887735348535&flowEntry=SignUp&flowName=GlifWebSignIn&hl=zh-TW&authuser=0");
                     }, 
                     child: Text(

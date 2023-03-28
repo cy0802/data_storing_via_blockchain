@@ -251,7 +251,7 @@ class _MyFormState extends State<MyForm> {
                 backgroundColor: Color.fromARGB(255, 213, 162, 110),
                 valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 180, 111, 32))),
               Text(
-                'Processing',
+                'Waiting',
                 style: TextStyle(
                   color: Colors.brown,
                   fontSize: 23,

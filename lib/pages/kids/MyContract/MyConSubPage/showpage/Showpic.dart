@@ -138,34 +138,41 @@ class _ShowPicState extends State<ShowPic> {
               ),
             ),
           ),
-          SizedBox(height: 217),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-            child: Text(
-              "Scroll down",
-              style: TextStyle(
-                fontSize: 22,
-              ) 
+          SizedBox(height:150),
+          Center(
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                    child: Text(
+                      "Scroll down",
+                      style: TextStyle(
+                        fontSize: 22,
+                      ) 
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                    child: Text(
+                      "and View your own NFT image",
+                      style: TextStyle(
+                        fontSize: 22,
+                      ) 
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: Icon(Icons.expand_more)
+                  ),
+                ]
+              ),
             ),
           ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-            child: Text(
-              "and View your own NFT image",
-              style: TextStyle(
-                fontSize: 22,
-              ) 
-            ),
-          ),
-          Container(
-            
-            alignment: Alignment.center,
-            child: Icon(Icons.expand_more)
-          
-          ),
-          SizedBox(height: 70),
+          SizedBox(height: 200),
           Container(
             child: Image.network(
               'https://ipfs.io/ipfs/$cid',

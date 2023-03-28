@@ -182,13 +182,15 @@ class _WaitToSignState extends State<WaitToSign> {
               backgroundColor: Color.fromARGB(255, 167, 118, 100),
               padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
             ),
-            onPressed: () {
+            onPressed: () async {
               setState(() {
                 isLoading = true;
               });
-              openPDF(context, file);
-              setState(() {
-                isLoading = false;
+              Future.delayed(const Duration(milliseconds: 2000), () {
+                setState(() {
+                  isLoading = false;
+                });
+                openPDF(context, file);
               });
             }, 
           ),
@@ -197,7 +199,7 @@ class _WaitToSignState extends State<WaitToSign> {
               'I Confirm the correctness of the contract'
             ),
             controlAffinity: ListTileControlAffinity.leading,
-            activeColor: Color.fromARGB(255, 74, 125, 245),
+            activeColor: Color.fromARGB(255, 209, 134, 53),
             checkColor: Colors.white,
             value: isChecked,
             
@@ -214,7 +216,7 @@ class _WaitToSignState extends State<WaitToSign> {
               Container(
                 decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: Color.fromARGB(255, 96, 121, 219),
+                      color: Color.fromARGB(255, 167, 118, 100),
                     ),
                 //padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
                 child: TextButton(
@@ -248,7 +250,7 @@ class _WaitToSignState extends State<WaitToSign> {
               Container(
                 decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: Color.fromARGB(255, 96, 121, 219),
+                      color: Color.fromARGB(255, 167, 118, 100),
                     ),
                 //padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: TextButton(
