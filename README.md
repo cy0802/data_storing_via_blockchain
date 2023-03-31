@@ -12,6 +12,11 @@ If you come across legal disputes in the future, with the help of IPFS, you can 
 
 ## Usage
 
+### method 1
+
+download and unzip the APK file in ./lib and install our app on our mobile devices.
+
+### method 2
 1. Clone the repository:
 ```
 git clone https://github.com/cy0802/data_storing_via_blockchain.git
