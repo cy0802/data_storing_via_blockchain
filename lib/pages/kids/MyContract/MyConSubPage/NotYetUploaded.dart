@@ -4,15 +4,18 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_storing_via_blockchain/Classes/user.dart';
-import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/showpage/ShowConInfo.dart';
-import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/showpage/WaitToBeSigned.dart';
-import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/showpage/WaitToSign.dart';
-import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/showpage/WaitUpload.dart';
+import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/showpage/WaitForUploaded.dart';
+import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/showpage/WaitToBeAgreed.dart';
+import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/showpage/WaitToAgreed.dart';
+import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/showpage/WaitToUpload.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//---------------------------------------------------------------divider----------------------------------------------------------------------
+
+// un uploaded
 class UnSignCon extends StatefulWidget {
   const UnSignCon({super.key});
 

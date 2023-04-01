@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-//import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -158,36 +157,6 @@ class _HomeState extends State<Home> {
                     }
                   ),
               ),
-              //const Spacer(flex: 2),
-              /*Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color.fromARGB(255, 249, 207, 116),
-                      Color.fromARGB(231, 239, 157, 63),
-                    ],
-                  )
-                ),
-                child: TextButton(
-                  child: const Text(
-                    'Check Your Contract',
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 133, 79, 34),
-                      fontSize: 18.5
-                    )
-                  ),
-                  style: TextButton.styleFrom(
-                    padding:
-                      const EdgeInsets.symmetric(horizontal: 55, vertical: 18),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/check');
-                  }
-                ),
-              ),*/
               const Spacer(flex: 11),
             ],
           ),

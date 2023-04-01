@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_storing_via_blockchain/Classes/userpreserve.dart';
 import 'package:data_storing_via_blockchain/function/local_folder.dart';
-import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/signed.dart';
+import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/Uploaded.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,6 +14,9 @@ import 'package:data_storing_via_blockchain/pages/generateNFT.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
+//------------------------------------------------------------divider-------------------------------------------------------------------
+
+//both signer have already complete the process and the contract are waited to be uploaded
 class WaitUpload extends StatefulWidget {
   final Map<String, dynamic> data;
   final String email;
@@ -52,7 +55,6 @@ class _WaitUploadState extends State<WaitUpload> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initialization();
   }

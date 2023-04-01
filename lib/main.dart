@@ -8,7 +8,7 @@ import 'package:data_storing_via_blockchain/pages/LoginHome.dart';
 import 'package:data_storing_via_blockchain/pages/kids/MyContract/RecordedCon.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/NormCont.dart';
 import 'package:data_storing_via_blockchain/pages/kids/Setting.dart';
-import 'package:data_storing_via_blockchain/pages/kids/check.dart';
+import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/CheckContract.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 
 
@@ -48,7 +48,6 @@ class _MyAPPState extends State<MyAPP> with WidgetsBindingObserver{
             routes: {
               '/LoginHome' : (context) => const HomePage(),
               '/NormCon': (context) => const NormCon(),
-              ///'/StdCon': (context) => const StdCon(),
               '/check': (context) => const CheckContract(),
               '/RecordedCon' : (context) => const History(),
               '/Setting' : (context) => const Setting(),

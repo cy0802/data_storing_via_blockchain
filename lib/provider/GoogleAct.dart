@@ -6,6 +6,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 //--------------------------------------------------------------- divider ------------------------------------------------------------------
 
+
+// google signin
 class GoogleSignInProvider extends ChangeNotifier {
   final googleSignIn = GoogleSignIn(scopes:<String>["email"]);
 

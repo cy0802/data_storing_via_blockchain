@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_storing_via_blockchain/Classes/userpreserve.dart';
-import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/showpage/Showpic.dart';
+import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/showpage/ShowConInfo.dart';
 import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//-------------------------------------------------------------------divider-------------------------------------------------------------------
 
+
+//The page showing contracts having already being uploaded onto ipfs and blockchhain
 class SignedCon extends StatefulWidget {
   const SignedCon({super.key});
 

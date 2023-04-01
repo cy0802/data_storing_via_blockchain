@@ -12,7 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
+//-------------------------------------------------------------divider--------------------------------------------------------------------
 
+//need to agree
 class WaitToSign extends StatefulWidget {
   final Map<String, dynamic>data;
   const WaitToSign({

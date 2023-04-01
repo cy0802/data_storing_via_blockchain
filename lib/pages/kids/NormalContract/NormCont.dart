@@ -33,7 +33,7 @@ import 'package:intl/intl.dart';
 //import 'package:data_storing_via_blockchain/pages/protectedInfo.dart';
 
 
-//------------------------------------------------------------我是用來美觀的-------------------------------------------------------------------
+//------------------------------------------------------------divider-------------------------------------------------------------------
 
 class NormCon extends StatelessWidget {
   const NormCon({super.key});

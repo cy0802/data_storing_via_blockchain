@@ -49,12 +49,6 @@ class _InstructionState extends State<Instruction> {
                       ),
                     ),
                     Spacer(flex: 2),
-                    // Text(
-                    //   'If you want to store your contract',
-                    //   style: TextStyle(
-                    //     fontSize: 24,
-                    //   ),
-                    // ),
                     Spacer(flex: 1),
                     Text(
                       'Click "Upload Contract" botton',
@@ -397,7 +391,6 @@ class _InstructionState extends State<Instruction> {
                   duration: const Duration(milliseconds: 500), 
                   curve: Curves.easeOut,
                 ), 
-                
               )
           ],
         )

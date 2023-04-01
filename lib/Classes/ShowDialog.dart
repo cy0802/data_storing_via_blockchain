@@ -2,6 +2,7 @@ import 'package:data_storing_via_blockchain/provider/GoogleAct.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//show "logout" and "setting"
 void show_dialog(BuildContext context, String email) =>  showDialog(
   context: context,
   builder: (BuildContext context) => SimpleDialog(

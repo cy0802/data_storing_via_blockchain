@@ -80,30 +80,6 @@ class SignUpWidget extends StatelessWidget {
               ),
             ),
             const Spacer(flex: 4),
-            // ElevatedButton.icon(
-            //   style: ElevatedButton.styleFrom(
-            //     shape: StadiumBorder(),
-            //     backgroundColor: Colors.white,
-            //     foregroundColor: Colors.black,
-            //     minimumSize: const Size(double.infinity, 50),
-            //   ),
-            //   icon: const Icon( Icons.mail_outlined, color: Colors.red,),
-            //   label: const Text('Sign In With Gmail'),
-            //   onPressed: () async {
-            //     final provider = 
-            //         Provider.of<GoogleSignInProvider>(context, listen: false);
-            //     await provider.googleLogin();
-            //     // ignore: prefer_const_constructors
-            //     final snackBar = SnackBar(
-            //       content: const Text(
-            //         'Sign In Successfully !',
-            //         textAlign: TextAlign.center,
-            //           style: const TextStyle(fontSize: 14),
-            //       ),
-            //     );
-            //     ScaffoldMessenger.of(context).showSnackBar(snackBar); 
-            //       },
-            // ),
             const Spacer(flex: 1),
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
@@ -148,8 +124,11 @@ class SignUpWidget extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: ()async{
-                      // ignore: deprecated_member_use
-                      await launch("https://accounts.google.com/signup/v2/webcreateaccount?biz=false&cc=TW&continue=https%3A%2F%2Fwww.google.com.tw%2F&dsh=S-385784584%3A1679887735348535&flowEntry=SignUp&flowName=GlifWebSignIn&hl=zh-TW&authuser=0");
+                      final Uri toLaunch =
+                        Uri(scheme: 'https', host: 'accounts.google.com',path: 'signup/');
+                      await launchUrl(
+                        toLaunch,
+                        mode: LaunchMode.externalApplication,);
                     }, 
                     child: Text(
                       'Sign up',

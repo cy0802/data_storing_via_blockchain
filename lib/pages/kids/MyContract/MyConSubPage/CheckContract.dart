@@ -9,6 +9,8 @@ class CheckContract extends StatefulWidget {
 final TextEditingController controller1 = TextEditingController();
 
 class _CheckContractState extends State<CheckContract> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

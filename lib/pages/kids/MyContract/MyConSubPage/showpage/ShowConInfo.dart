@@ -1,87 +1,56 @@
-import 'dart:io';
-import 'package:data_storing_via_blockchain/function/local_folder.dart';
-import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 
-class ShowInfo extends StatefulWidget {
-  final Map<String, dynamic>data;
+//show contract's info including nft and key
+class ShowPic extends StatefulWidget {
+  final Map<String, dynamic> data;
 
-  const ShowInfo({
-    super.key,
-    required this.data,
-  });
+  const ShowPic({super.key, required this.data});
 
   @override
-  State<ShowInfo> createState() => _ShowInfoState(data: data);
+  State<ShowPic> createState() => _ShowPicState(data: data);
 }
 
-class _ShowInfoState extends State<ShowInfo> {
+class _ShowPicState extends State<ShowPic> {
+  final Map<String, dynamic> data;
   late String contractname;
   late String name;
   late String time;
-  late String path;
-  late String path1;
-  late String totalPath;
-  late File file;
-  final Map<String, dynamic>data;
-  bool isLoading = false;
-  _ShowInfoState({required this.data});
+  late String key;
+  late String cid;
+  _ShowPicState({required this.data});
 
   @override
-  void initState() {
-    // TODO: implement initState
+  void initState(){
     super.initState();
     initialization();
   }
 
-  void initialization()async{
+  void initialization() {
     contractname = data['contractname'];
     name = data['name'];
     time = data['time'];
-    path = data['path'];
-    path1 = await appDocPath;
-    totalPath = '$path1/$path';
-    file = File(totalPath);
+    key = data['key'];
+    cid = data['pic_cid'];
   }
-  
   @override
   Widget build(BuildContext context) {
-    print(contractname);
+    
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         iconTheme: IconThemeData(color: Colors.brown),
         backgroundColor: Color.fromARGB(255, 223, 154, 90),
-        title: const Text(
-          'Contract Information',
-          style: TextStyle(
-            color: Colors.black,
-          )
+        title : Text(
+          
+          'Contract detail'
         ),
-        centerTitle: true,
-        actions: []
       ),
-      body: isLoading? 
-        Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(
-                backgroundColor: Color.fromARGB(255, 213, 162, 110),
-                valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 180, 111, 32))),
-              Text(
-                'Showing Picture',
-                style: TextStyle(
-                  color: Colors.brown,
-                  fontSize: 23,
-                ),
-              )
-            ],
-          ),
-        )
-        :  Column(
-        children: [
-          Container(
+      body: SingleChildScrollView (
+        child: Column(
+          children: [
+            Container(
             alignment:Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 30, 0, 10),
             child: Text(
@@ -93,7 +62,7 @@ class _ShowInfoState extends State<ShowInfo> {
           ),
           Container(
             alignment:Alignment.topLeft,
-            padding: EdgeInsets.fromLTRB(40, 0, 10, 30),
+            padding: EdgeInsets.fromLTRB(35, 0, 35, 30),
             child: Text(
               contractname,
               style: TextStyle(
@@ -125,7 +94,7 @@ class _ShowInfoState extends State<ShowInfo> {
             alignment: Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
             child: Text(
-              "Signed Time : ",
+              "Uploaded Time : ",
               style: TextStyle(
                 fontSize: 20,
               ) 
@@ -142,53 +111,81 @@ class _ShowInfoState extends State<ShowInfo> {
             ),
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
-            alignment:Alignment.topLeft,
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
             child: Text(
-              "View Contract : ",
+              "Contract's key : ",
+              style: TextStyle(
+                fontSize: 20,
+              ) 
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.fromLTRB(18, 0, 18, 5),
+            child: SelectableText(
+              key,
               style: TextStyle(
                 fontSize: 20,
               ),
             ),
           ),
-          ElevatedButton.icon(
-            label: const Text(''),
-            icon: const Icon(
-              size: 30.0,
-              Icons.content_paste_search,
-              color: Colors.white,
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(255, 167, 118, 100),
-              padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 10),
-            ),
-            onPressed: () async {
-              setState(() {
-                isLoading = true;
-              });
-              openPDF(context, file);
-              setState(() {
-                isLoading = false;
-              });
-            }, 
-          ),
-          const Spacer(flex: 19),
           Container(
-            padding: EdgeInsets.fromLTRB(10, 0, 0, 20),
-            alignment:Alignment.bottomCenter,
+            alignment: Alignment.center,
+            padding: EdgeInsets.fromLTRB(0,  0, 0, 30),
             child: Text(
-              "Wait for upload",
+              "(This key allows you to view your contract)\n",
               style: TextStyle(
-                fontSize: 26,
+                fontSize: 15,
               ),
             ),
           ),
-          const Spacer(flex: 1),  
-        ],
-      )
+          SizedBox(height:150),
+          Center(
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                    child: Text(
+                      "Scroll down",
+                      style: TextStyle(
+                        fontSize: 22,
+                      ) 
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                    child: Text(
+                      "and View your own NFT image",
+                      style: TextStyle(
+                        fontSize: 22,
+                      ) 
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: Icon(Icons.expand_more)
+                  ),
+                ]
+              ),
+            ),
+          ),
+          SizedBox(height: 200),
+          Container(
+            child: Image.network(
+              'https://ipfs.io/ipfs/$cid',
+              fit: BoxFit.cover
+            ),
+            //constraints: new BoxConstraints.expand(),
+          ),
+            
+          ],
+        ),
+      ),
     );
   }
 }
-
-void openPDF(BuildContext context, File file) => Navigator.of(context)
-    .push(MaterialPageRoute(builder: (context) => PDFViewPage(file: file)));

@@ -1,10 +1,13 @@
 
-import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/signed.dart';
-import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/unsign.dart';
+import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/Uploaded.dart';
+import 'package:data_storing_via_blockchain/pages/kids/MyContract/MyConSubPage/NotYetUploaded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
+//-------------------------------------------------------------------divider---------------------------------------------------------------
+
+//show user's contracts' info, divided into not yet uploaded and uploaded
 class History extends StatefulWidget {
   const History({super.key});
 

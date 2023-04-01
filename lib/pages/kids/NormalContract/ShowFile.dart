@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
+
+//------------------------------------------------------------divider-------------------------------------------------------------------
+
 class PDFViewPage extends StatefulWidget {
   final File file;
   const PDFViewPage({

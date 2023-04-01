@@ -9,6 +9,8 @@ import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart';
 import 'package:flutter/services.dart';
 
+//--------------------------------------------------------------divider-------------------------------------------------------------------------
+
 class ArtWork {
   String title;
   Size artSize;

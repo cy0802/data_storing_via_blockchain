@@ -3,7 +3,7 @@ import 'package:data_storing_via_blockchain/function/local_folder.dart';
 import 'package:data_storing_via_blockchain/pages/kids/NormalContract/ShowFile.dart';
 import 'package:flutter/material.dart';
 
-
+//the first one wait for the other one to agree
 class WaitToBeSigned extends StatefulWidget {
   final Map<String, dynamic>data;
 
@@ -30,7 +30,6 @@ class _WaitToBeSignedState extends State<WaitToBeSigned> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initialization();
   }
